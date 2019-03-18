@@ -139,11 +139,11 @@ main
 					UART6_Write
 		nakacisena_gateway
 			mikrobus_logWrite
-			WIFI4_cmdSingle
 			WIFI4_connectToAP
 				WIFI4_cmdSingle
 				strcpy
 				strcat
+			WIFI4_cmdSingle
 	mikrobus_logWrite
 	appTask
 		WIFI4_process

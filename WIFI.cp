@@ -114,10 +114,12 @@ void RX_ISR()iv IVT_UART_2 ilevel 7 ics ICS_SRS
 }
 void nakacisena_gateway()
 {
-#line 34 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI.c"
  mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
- WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,\"1\"");
+
+
  WIFI4_connectToAP("MikroE Public","mikroe.guest");
+
+ WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
  Delay_ms(3000);
 
  mikrobus_logWrite( "GOTOVO", _LOG_LINE );

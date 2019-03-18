@@ -32,8 +32,10 @@ void nakacisena_gateway()
 {
     mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
 
-    WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,\"1\"");
+
     WIFI4_connectToAP("MikroE Public","mikroe.guest");
+    
+    WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
     Delay_ms(3000);
 
     mikrobus_logWrite( "GOTOVO", _LOG_LINE );

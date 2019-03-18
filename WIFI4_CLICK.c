@@ -435,7 +435,7 @@ void WIFI4_ping(uint8_t *ipAddr)
        createEvent(tmp,&currentEv);
        currentEv.wDogLimit=3*currentEv.wDogLimit;
 
-        waitTime=2000; //wait 1s
+        waitTime=2000; //wait 2s
        WIFI4_writeText2(tmp);
          watchDogTime=0; //reset watchdog
         f_wdogStart=1;

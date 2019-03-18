@@ -139,19 +139,24 @@ main
 					UART6_Write
 		nakacisena_gateway
 			mikrobus_logWrite
+			WIFI4_cmdSingle
 			WIFI4_connectToAP
 				WIFI4_cmdSingle
 				strcpy
 				strcat
-			WIFI4_cmdSingle
 	mikrobus_logWrite
 	appTask
 		WIFI4_process
 		mikrobus_logWrite
 		vidiipadresu
 			WIFI4_cmdSingle
-		pisiWIFIstatus
-			WIFI4_cmdSingle
+		WIFI4_ping
+			strcpy
+			strcat
+			WIFI4_process
+			createEvent
+			WIFI4_writeText2
+		WIFI4_cmdSingle
 RX_ISR
 	UART2_Read
 	WIFI4_putc

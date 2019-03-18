@@ -570,9 +570,9 @@ void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
  WIFI4_cmdSingle("AT+S.SSIDTXT=",ssid);
 
 
- strcpy(newPass,"wifi_wpa_psk_text,\"");
+ strcpy(newPass,"wifi_wpa_psk_text,");
  strcat(newPass,pass);
- strcat(newPass,"\"");
+
  WIFI4_cmdSingle("AT+S.SCFG=",newPass);
 }
 void WIFI4_putc(char c)
@@ -613,7 +613,7 @@ void WIFI4_process()
 
  f_wdogStart=0;
  f_timerStart=0;
- rxB.buff[rxB.ind]='\0';
+ rxB.buff[rxB.ind++]='\0';
  createEvent(rxB.buff, &currentEv);
   { currentEv.evArg[_WIFI4_EVARG_EVENT_T] = _WIFI4_EVENT_RESPONSE; currentEv.fpHdl(rxB.buff, currentEv.evArg); } ;
  rxB.buff[0]=0;
@@ -632,7 +632,7 @@ void WIFI4_process()
  DTE_setState(0);
  f_wdogStart=0;
  f_timerStart=0;
- rxB.buff[rxB.ind]='\0';
+ rxB.buff[rxB.ind++]='\0';
  createEvent(rxB.buff, &currentEv);
   { currentEv.evArg[_WIFI4_EVARG_EVENT_T] = _WIFI4_EVENT_RESPONSE; currentEv.fpHdl(rxB.buff, currentEv.evArg); } ;
  rxB.buff[0]=0;

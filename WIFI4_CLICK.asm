@@ -1349,7 +1349,7 @@ LUI	R25, hi_addr(?lstr5_WIFI4_CLICK+0)
 ORI	R25, R25, lo_addr(?lstr5_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,460 :: 		strcpy(newPass,"wifi_wpa_psk_text,\"");
+;WIFI4_CLICK.c,460 :: 		strcpy(newPass,"wifi_wpa_psk_text,");
 ADDIU	R2, SP, 16
 LUI	R26, hi_addr(?lstr6_WIFI4_CLICK+0)
 ORI	R26, R26, lo_addr(?lstr6_WIFI4_CLICK+0)
@@ -1362,18 +1362,11 @@ ADDIU	R2, SP, 16
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,462 :: 		strcat(newPass,"\"");
-ADDIU	R2, SP, 16
-LUI	R26, hi_addr(?lstr7_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr7_WIFI4_CLICK+0)
-MOVZ	R25, R2, R0
-JAL	_strcat+0
-NOP	
 ;WIFI4_CLICK.c,463 :: 		WIFI4_cmdSingle("AT+S.SCFG=",newPass);
 ADDIU	R2, SP, 16
 MOVZ	R26, R2, R0
-LUI	R25, hi_addr(?lstr8_WIFI4_CLICK+0)
-ORI	R25, R25, lo_addr(?lstr8_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr7_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr7_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
 ;WIFI4_CLICK.c,464 :: 		}
@@ -1496,12 +1489,15 @@ NOP
 SB	R0, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
 ;WIFI4_CLICK.c,502 :: 		f_timerStart=0;
 SB	R0, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-;WIFI4_CLICK.c,503 :: 		rxB.buff[rxB.ind]='\0';
+;WIFI4_CLICK.c,503 :: 		rxB.buff[rxB.ind++]='\0';
 LHU	R3, Offset(WIFI4_CLICK_rxB+2500)(GP)
 LUI	R2, hi_addr(WIFI4_CLICK_rxB+0)
 ORI	R2, R2, lo_addr(WIFI4_CLICK_rxB+0)
 ADDU	R2, R2, R3
 SB	R0, 0(R2)
+LHU	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
+ADDIU	R2, R2, 1
+SH	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
 ;WIFI4_CLICK.c,504 :: 		createEvent(rxB.buff, &currentEv);
 LUI	R26, hi_addr(WIFI4_CLICK_currentEv+0)
 ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)
@@ -1556,12 +1552,15 @@ NOP
 SB	R0, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
 ;WIFI4_CLICK.c,521 :: 		f_timerStart=0;
 SB	R0, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-;WIFI4_CLICK.c,522 :: 		rxB.buff[rxB.ind]='\0';
+;WIFI4_CLICK.c,522 :: 		rxB.buff[rxB.ind++]='\0';
 LHU	R3, Offset(WIFI4_CLICK_rxB+2500)(GP)
 LUI	R2, hi_addr(WIFI4_CLICK_rxB+0)
 ORI	R2, R2, lo_addr(WIFI4_CLICK_rxB+0)
 ADDU	R2, R2, R3
 SB	R0, 0(R2)
+LHU	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
+ADDIU	R2, R2, 1
+SH	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
 ;WIFI4_CLICK.c,523 :: 		createEvent(rxB.buff, &currentEv);
 LUI	R26, hi_addr(WIFI4_CLICK_currentEv+0)
 ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)

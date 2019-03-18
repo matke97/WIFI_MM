@@ -116,11 +116,6 @@ main
 			mikrobus_logWrite
 			WIFI4_cmdSingle
 			WIFI4_connectToAP
-				StrToHex
-					strcpy
-					strlen
-					ByteToHex
-					strcat
 				WIFI4_cmdSingle
 				strcpy
 				strcat

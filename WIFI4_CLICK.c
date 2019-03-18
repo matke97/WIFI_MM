@@ -452,13 +452,13 @@ void WIFI4_ping(uint8_t *ipAddr)
 void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
 {
   uint8_t newPass[80];
-  uint8_t hexPass[100];
-  StrToHex(&pass[0],hexPass);
+  //uint8_t hexPass[100];
+// StrToHex(&pass[0],hexPass);
    WIFI4_cmdSingle("AT+S.SSIDTXT=",ssid);
    
   // WIFI4_cmdSingle("AT+SCFG=wifi_wpa_psk_raw,",hexPass);
-   strcpy(newPass,"wifi_wpa_psk_raw,\"");
-   strcat(newPass,hexPass);
+   strcpy(newPass,"wifi_wpa_psk_text,\"");
+   strcat(newPass,pass);
    strcat(newPass,"\"");
     WIFI4_cmdSingle("AT+S.SCFG=",newPass);
 }

@@ -15,5 +15,5 @@ diagnostics: 181	123	Compiled Successfully	__hal_pic32.c
 diagnostics: 0	127	All files Compiled in 93 ms	 
 diagnostics: 0	125	Project Linked Successfully	WIFI.mcp32
 diagnostics: 0	128	Linked in 219 ms	 
-diagnostics: 0	129	Project 'WIFI.mcp32' completed: 1108 ms	 
-diagnostics: 0	103	Finished successfully: 18 Mar 2019, 11:25:34	WIFI.mcp32
+diagnostics: 0	129	Project 'WIFI.mcp32' completed: 1155 ms	 
+diagnostics: 0	103	Finished successfully: 18 Mar 2019, 11:38:25	WIFI.mcp32

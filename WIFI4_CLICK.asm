@@ -1338,35 +1338,27 @@ NOP
 ; end of _WIFI4_ping
 _WIFI4_connectToAP:
 ;WIFI4_CLICK.c,452 :: 		void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
-ADDIU	SP, SP, -196
+ADDIU	SP, SP, -96
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,456 :: 		StrToHex(&pass[0],hexPass);
+;WIFI4_CLICK.c,457 :: 		WIFI4_cmdSingle("AT+S.SSIDTXT=",ssid);
 SW	R25, 4(SP)
 SW	R26, 8(SP)
-ADDIU	R2, SP, 96
-SW	R25, 12(SP)
-MOVZ	R25, R26, R0
-MOVZ	R26, R2, R0
-JAL	_StrToHex+0
-NOP	
-LW	R25, 12(SP)
-;WIFI4_CLICK.c,457 :: 		WIFI4_cmdSingle("AT+S.SSIDTXT=",ssid);
+SW	R26, 12(SP)
 MOVZ	R26, R25, R0
 LUI	R25, hi_addr(?lstr5_WIFI4_CLICK+0)
 ORI	R25, R25, lo_addr(?lstr5_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,460 :: 		strcpy(newPass,"wifi_wpa_psk_raw,\"");
+;WIFI4_CLICK.c,460 :: 		strcpy(newPass,"wifi_wpa_psk_text,\"");
 ADDIU	R2, SP, 16
 LUI	R26, hi_addr(?lstr6_WIFI4_CLICK+0)
 ORI	R26, R26, lo_addr(?lstr6_WIFI4_CLICK+0)
 MOVZ	R25, R2, R0
 JAL	_strcpy+0
 NOP	
-;WIFI4_CLICK.c,461 :: 		strcat(newPass,hexPass);
-ADDIU	R3, SP, 96
+LW	R26, 12(SP)
+;WIFI4_CLICK.c,461 :: 		strcat(newPass,pass);
 ADDIU	R2, SP, 16
-MOVZ	R26, R3, R0
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
@@ -1389,7 +1381,7 @@ L_end_WIFI4_connectToAP:
 LW	R26, 8(SP)
 LW	R25, 4(SP)
 LW	RA, 0(SP)
-ADDIU	SP, SP, 196
+ADDIU	SP, SP, 96
 JR	RA
 NOP	
 ; end of _WIFI4_connectToAP

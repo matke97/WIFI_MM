@@ -567,6 +567,10 @@ void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
  uint8_t newPass[80];
 
 
+ WIFI4_cmdSingle("AT+S.SCFG=","wifi_priv_mode,2");
+ WIFI4_cmdSingle("AT+S.SCFG=","wifi_mode,1");
+ WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
+
  WIFI4_cmdSingle("AT+S.SSIDTXT=",ssid);
 
 

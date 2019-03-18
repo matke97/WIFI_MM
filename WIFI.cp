@@ -118,12 +118,11 @@ void nakacisena_gateway()
 
 
 
- WIFI4_cmdSingle("AT+S.SCFG=","wifi_priv_mode,2");
- WIFI4_cmdSingle("AT+S.SCFG=","wifi_mode,1");
- WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
  WIFI4_connectToAP("MikroE Public","mikroe.guest") ;
-#line 47 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI.c"
- Delay_ms(3000);
+
+
+
+ Delay_ms(4000);
 
  mikrobus_logWrite( "GOTOVO", _LOG_LINE );
 }
@@ -180,7 +179,7 @@ void appTask()
 
  mikrobus_logWrite("PRVA KOMANDA",_LOG_LINE);
  vidiipadresu();
- WIFI4_ping("8.8.8.8");
+ WIFI4_ping("mikroe.com");
  Delay_ms(1500);
  mikrobus_logWrite("DRUGA KOMANDA",_LOG_LINE);
  pisiWIFIstatus();

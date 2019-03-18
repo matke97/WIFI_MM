@@ -117,7 +117,7 @@ void nakacisena_gateway()
 #line 34 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI.c"
  mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
  WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,\"1\"");
- WIFI4_connectToAP("Mikroe Public","mikroe.guest");
+ WIFI4_connectToAP("MikroE Public","mikroe.guest");
  Delay_ms(3000);
 
  mikrobus_logWrite( "GOTOVO", _LOG_LINE );

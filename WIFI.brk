@@ -1,31 +1,13 @@
 <BREAKS>
   <BP>
     <UnitName>WIFI.c</UnitName>
-    <Line>84</Line>
+    <Line>62</Line>
     <Enabled>True</Enabled>
     <Type>0</Type>
   </BP>
   <BP>
     <UnitName>WIFI.c</UnitName>
-    <Line>79</Line>
-    <Enabled>True</Enabled>
-    <Type>0</Type>
-  </BP>
-  <BP>
-    <UnitName>WIFI.c</UnitName>
-    <Line>93</Line>
-    <Enabled>True</Enabled>
-    <Type>0</Type>
-  </BP>
-  <BP>
-    <UnitName>WIFI.c</UnitName>
-    <Line>70</Line>
-    <Enabled>True</Enabled>
-    <Type>0</Type>
-  </BP>
-  <BP>
-    <UnitName>WIFI.c</UnitName>
-    <Line>52</Line>
+    <Line>57</Line>
     <Enabled>True</Enabled>
     <Type>0</Type>
   </BP>

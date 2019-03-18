@@ -608,7 +608,7 @@ void WIFI4_process()
  if(f_wDogStart){
  if(flag_wdogOut)
  {
-
+ DTE_setState(0);
 
 
  f_wdogStart=0;
@@ -620,7 +620,7 @@ void WIFI4_process()
  rxB.ind=0;
  flag_wdogOut=0;
  flag_cmdEx=0;
-
+ DTE_setState(1);
 
  }
  }
@@ -629,7 +629,7 @@ void WIFI4_process()
  {
 
 
-
+ DTE_setState(0);
  f_wdogStart=0;
  f_timerStart=0;
  rxB.buff[rxB.ind]='\0';
@@ -639,7 +639,7 @@ void WIFI4_process()
  rxB.ind=0;
  flag_timesUp=0;
  flag_cmdEx=0;
-
+ DTE_setState(1);
 
  }
  }

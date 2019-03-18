@@ -456,7 +456,7 @@ void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
 // StrToHex(&pass[0],hexPass);
    WIFI4_cmdSingle("AT+S.SSIDTXT=",ssid);
    
-  // WIFI4_cmdSingle("AT+SCFG=wifi_wpa_psk_raw,",hexPass);
+
    strcpy(newPass,"wifi_wpa_psk_text,\"");
    strcat(newPass,pass);
    strcat(newPass,"\"");
@@ -495,7 +495,7 @@ void WIFI4_process()
   if(f_wDogStart){
     if(flag_wdogOut)
     {
-  // DTE_setState(0);
+   DTE_setState(0);
     //DisableInterrupts();
      //mikrobus_logWrite("ISTEKLO WDOG",_LOG_LINE);
          f_wdogStart=0;
@@ -507,7 +507,7 @@ void WIFI4_process()
         rxB.ind=0;
        flag_wdogOut=0;
        flag_cmdEx=0;
-   //    DTE_setState(1);
+     DTE_setState(1);
     // EnableInterrupts();
     }
     }
@@ -516,7 +516,7 @@ void WIFI4_process()
     {
      // mikrobus_logWrite("ISTEKLO VREME",_LOG_LINE);
     //DisableInterrupts();
-  //  DTE_setState(0);
+   DTE_setState(0);
          f_wdogStart=0;
          f_timerStart=0;
          rxB.buff[rxB.ind]='\0';
@@ -526,7 +526,7 @@ void WIFI4_process()
         rxB.ind=0;
       flag_timesUp=0;
       flag_cmdEx=0;
-    //  DTE_setState(1);
+      DTE_setState(1);
      // EnableInterrupts();
     }
     }

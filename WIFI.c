@@ -30,10 +30,10 @@ void RX_ISR()iv IVT_UART_2 ilevel 7 ics ICS_SRS
 }
 void nakacisena_gateway()
 {
-    mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );\
+    mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
 
     WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,\"1\"");
-    WIFI4_connectToAP("Mikroe Public","mikroe.guest");
+    WIFI4_connectToAP("MikroE Public","mikroe.guest");
     Delay_ms(3000);
 
     mikrobus_logWrite( "GOTOVO", _LOG_LINE );

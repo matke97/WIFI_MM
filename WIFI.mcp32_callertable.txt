@@ -85,6 +85,31 @@ main
 			strcpy
 			strcat
 			WIFI4_process
+				DTE_setState
+					_setAN_1
+					_setRST_1
+					_setCS_1
+					_setSCK_1
+					_setMISO_1
+					_setMOSI_1
+					_setPWM_1
+					_setINT_1
+					_setRX_1
+					_setTX_1
+					_setSCL_1
+					_setSDA_1
+					_setAN_2
+					_setRST_2
+					_setCS_2
+					_setSCK_2
+					_setMISO_2
+					_setMOSI_2
+					_setPWM_2
+					_setINT_2
+					_setRX_2
+					_setTX_2
+					_setSCL_2
+					_setSDA_2
 				createEvent
 					__CC2DW
 					searchLut

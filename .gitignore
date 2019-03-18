@@ -1,5 +1,5 @@
-.emcl
-.asm
-.hex
-.cp
-.wch
+*.emcl
+*.asm
+*.hex
+*.cp
+*.wch

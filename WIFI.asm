@@ -167,7 +167,7 @@ LUI	R25, hi_addr(?lstr2_WIFI+0)
 ORI	R25, R25, lo_addr(?lstr2_WIFI+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI.c,36 :: 		WIFI4_connectToAP("Mikroe Public","mikroe.guest");
+;WIFI.c,36 :: 		WIFI4_connectToAP("MikroE Public","mikroe.guest");
 LUI	R26, hi_addr(?lstr5_WIFI+0)
 ORI	R26, R26, lo_addr(?lstr5_WIFI+0)
 LUI	R25, hi_addr(?lstr4_WIFI+0)

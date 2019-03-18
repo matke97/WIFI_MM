@@ -1488,6 +1488,10 @@ NOP
 J	L_WIFI4_process57
 NOP	
 L__WIFI4_process140:
+;WIFI4_CLICK.c,498 :: 		DTE_setState(0);
+MOVZ	R25, R0, R0
+JAL	WIFI4_CLICK_DTE_setState+0
+NOP	
 ;WIFI4_CLICK.c,501 :: 		f_wdogStart=0;
 SB	R0, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
 ;WIFI4_CLICK.c,502 :: 		f_timerStart=0;
@@ -1522,6 +1526,10 @@ SH	R0, Offset(WIFI4_CLICK_rxB+2500)(GP)
 SB	R0, Offset(WIFI4_CLICK_flag_wdogOut+0)(GP)
 ;WIFI4_CLICK.c,509 :: 		flag_cmdEx=0;
 SB	R0, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
+;WIFI4_CLICK.c,510 :: 		DTE_setState(1);
+ORI	R25, R0, 1
+JAL	WIFI4_CLICK_DTE_setState+0
+NOP	
 ;WIFI4_CLICK.c,512 :: 		}
 L_WIFI4_process57:
 ;WIFI4_CLICK.c,513 :: 		}
@@ -1540,6 +1548,10 @@ NOP
 J	L_WIFI4_process59
 NOP	
 L__WIFI4_process144:
+;WIFI4_CLICK.c,519 :: 		DTE_setState(0);
+MOVZ	R25, R0, R0
+JAL	WIFI4_CLICK_DTE_setState+0
+NOP	
 ;WIFI4_CLICK.c,520 :: 		f_wdogStart=0;
 SB	R0, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
 ;WIFI4_CLICK.c,521 :: 		f_timerStart=0;
@@ -1574,6 +1586,10 @@ SH	R0, Offset(WIFI4_CLICK_rxB+2500)(GP)
 SB	R0, Offset(WIFI4_CLICK_flag_timesUp+0)(GP)
 ;WIFI4_CLICK.c,528 :: 		flag_cmdEx=0;
 SB	R0, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
+;WIFI4_CLICK.c,529 :: 		DTE_setState(1);
+ORI	R25, R0, 1
+JAL	WIFI4_CLICK_DTE_setState+0
+NOP	
 ;WIFI4_CLICK.c,531 :: 		}
 L_WIFI4_process59:
 ;WIFI4_CLICK.c,532 :: 		}

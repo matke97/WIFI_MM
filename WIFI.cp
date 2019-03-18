@@ -115,16 +115,15 @@ void RX_ISR()iv IVT_UART_2 ilevel 7 ics ICS_SRS
 void nakacisena_gateway()
 {
  mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
- WIFI4_cmdSIngle("AT+S.WIFI=","0");
+
 
 
  WIFI4_cmdSingle("AT+S.SCFG=","wifi_priv_mode,2");
-
-
- WIFI4_connectToAP("MikroE Public","mikroe.guest");
-
- WIFI4_cmdSIngle("AT+S.WIFI=","1");
- Delay_ms(6000);
+ WIFI4_cmdSingle("AT+S.SCFG=","wifi_mode,1");
+ WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
+ WIFI4_connectToAP("MikroE Public","mikroe.guest") ;
+#line 47 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI.c"
+ Delay_ms(3000);
 
  mikrobus_logWrite( "GOTOVO", _LOG_LINE );
 }
@@ -182,9 +181,9 @@ void appTask()
  mikrobus_logWrite("PRVA KOMANDA",_LOG_LINE);
  vidiipadresu();
  WIFI4_ping("8.8.8.8");
- Delay_ms(500);
+ Delay_ms(1500);
  mikrobus_logWrite("DRUGA KOMANDA",_LOG_LINE);
- WIFI4_cmdSingle("AT&V","");
+ pisiWIFIstatus();
  Delay_ms(4000);
 
 }

@@ -459,7 +459,7 @@ void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
 
    strcpy(newPass,"wifi_wpa_psk_text,");
    strcat(newPass,pass);
-   //strcat(newPass,"");
+  // strcat(newPass,"");
     WIFI4_cmdSingle("AT+S.SCFG=",newPass);
 }
 void WIFI4_putc(char c)

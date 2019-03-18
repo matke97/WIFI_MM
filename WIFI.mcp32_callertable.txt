@@ -156,7 +156,8 @@ main
 			WIFI4_process
 			createEvent
 			WIFI4_writeText2
-		WIFI4_cmdSingle
+		pisiWIFIstatus
+			WIFI4_cmdSingle
 RX_ISR
 	UART2_Read
 	WIFI4_putc

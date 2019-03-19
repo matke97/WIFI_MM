@@ -370,7 +370,7 @@ static volatile uint8_t flag_wdogOut;
 static volatile uint8_t flag_cmdEx;
 static volatile uint8_t f_wdogStart;
 static volatile uint8_t f_timerStart;
-static volatile uint16_t waitTime;
+static volatile uint32_t waitTime;
 static volatile uint8_t f_cpyRXtoTmp;
 
 void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog)
@@ -584,6 +584,7 @@ void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
  strcat(newPass,pass);
  WIFI4_cmdSingle("AT+S.SCFG=",newPass);
 }
+
 void WIFI4_putc(char c)
 {
  flag_cmdEx=1;
@@ -673,7 +674,7 @@ void WIFI4_createFile(uint8_t *name,uint16_t len)
  strcat(params,len);
  WIFI4_cmdSingle("AT+S.FSC=",params);
 }
-#line 571 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 572 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 {
  char tmp[80];

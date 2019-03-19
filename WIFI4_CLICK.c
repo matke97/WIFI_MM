@@ -602,12 +602,17 @@ uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
        {
          WIFI4_process();
        }
-
+      //ubaci ispitivanje id:
      i=strchr(tmpB.buff,':');
-     // ret=atoi(tmpB.buff+i+1);
-      return 0;
+     ret=atoi(tmpB.buff+i+1);
+      return ret;
 }
+/****************
+     Write data to socket
+     id- id of socket
+     wdata- data to be written
 
+*****************/
 void WIFI4_socketWrite(uint8_t id,uint8_t *wdata)
 {
   uint16_t len=strlen(wdata);

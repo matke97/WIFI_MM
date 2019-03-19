@@ -376,9 +376,9 @@ ADDIU	R24, R24, -1
 BNE	R24, R0, L_appInit7
 NOP	
 NOP	
-;WIFI.c,94 :: 		socket=WIFI4_socketOpen("10.101.22.202",32000,'t');
+;WIFI.c,94 :: 		socket=WIFI4_socketOpen("10.101.22.202",85,'t');
 ORI	R27, R0, 116
-ORI	R26, R0, 32000
+ORI	R26, R0, 85
 LUI	R25, hi_addr(?lstr13_WIFI+0)
 ORI	R25, R25, lo_addr(?lstr13_WIFI+0)
 JAL	_WIFI4_socketOpen+0

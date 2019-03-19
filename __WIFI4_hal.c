@@ -1,30 +1,30 @@
 /*
-    __c3gsara_hal.c
+    __WIFI4_hal.c
 
 -----------------------------------------------------------------------------
 
   This file is part of mikroSDK.
 
-  Copyright (c) 2017, MikroElektonika - http://www.mikroe.com
+  Copyright (c) 2019, MikroElektonika - http://www.mikroe.com
 
   All rights reserved.
 
 ----------------------------------------------------------------------------- */
 
 /**
-@file  __c3gsara_hal.c
-@brief   C3GSARA HAL Interface
+@file  __WIFI4_hal.c
+@brief   WIFI4 HAL Interface
 */
 /**
-@defgroup   C3GSARA_HAL
-@brief      3G_Sara HAL Interface
+@defgroup   WIFI4_HAL
+@brief      WIFI4 HAL Interface
 @{
 
 | Global Library Prefix | **HAL**            |
 |:---------------------:|:------------------:|
-| Version               | **3.2.1**          |
-| Date                  | **Sep 2017**       |
-| Developer             | **MikroE FW Team** |
+| Version               | **1.0.0**          |
+| Date                  | **Mar 2019**       |
+| Developer             | **Milos MAtic** |
 
 */
 /* -------------------------------------------------------------------------- */
@@ -40,7 +40,7 @@
 #define T_HAL_UART_OBJ  const T_hal_uartObj*
 #define T_HAL_GPIO_OBJ  const T_hal_gpioObj*
 
-/** @defgroup C3GSARA_HAL_COMPILE HAL Cofiguration */            /** @{ */
+/** @defgroup WIFI4_HAL_COMPILE HAL Cofiguration */            /** @{ */
 
 #define __HAL_UART__
 
@@ -72,7 +72,7 @@
                                                                        /** @} */
 #ifdef __HAL_UART__
 
-/** @defgroup C3GSARA_HAL_UART HAL UART Interface */             /** @{ */
+/** @defgroup WIFI4_HAL_UART HAL UART Interface */             /** @{ */
 
 /**
  * @brief Map UART Function Pointers
@@ -346,7 +346,7 @@ static void hal_gpioMap(T_HAL_P gpioObj)
 /*
   __c3gsara_hal.c
 
-  Copyright (c) 2017, MikroElektonika - http://www.mikroe.com
+  Copyright (c) 2019, MikroElektonika - http://www.mikroe.com
 
   All rights reserved.
 

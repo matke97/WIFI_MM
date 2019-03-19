@@ -91,7 +91,7 @@ void appInit()
   nakacisena_gateway();
   WIFI4_cmdSingle("AT&V","");
     Delay_ms(3000);
-   socket=WIFI4_socketOpen("10.101.22.202",32000,'t');
+   socket=WIFI4_socketOpen("10.101.22.202",85,'t');
    mikrobus_logWrite("POCETAK....",_LOG_LINE);
   Delay_ms(1500);
 

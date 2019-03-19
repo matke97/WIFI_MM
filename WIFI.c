@@ -65,16 +65,14 @@ void systemInit()
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
  mikrobus_logWrite(resp,_LOG_LINE);
- }
- 
- uint16_t socket;
+}
+uint8_t in;
 void appInit()
 {
+ WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
  InitTimer1();
  uartInterrupt();
  WIFI4_coreInit(defaultHandler,1500);
-
-
  Delay_ms(500);
  
  //reset device
@@ -83,34 +81,24 @@ void appInit()
  WIFI4_modulePower(1);
  Delay_ms(1000);
 
-  mikrobus_logWrite("POCETAK....",_LOG_LINE);
+
 
   WIFI4_cmdSingle("AT","");
   nakacisena_gateway();
   WIFI4_cmdSingle("AT&V","");
-   //socket=WIFI4_socketOpen("10.101.22.202",32000,'t');
   Delay_ms(1500);
 
 }
-
 void appTask()
 {
- uint8_t pok=0;
- uint8_t slanje[10];
-WIFI4_process();
-while(pok++<10)
-{
-  mikrobus_logWrite("Saljem podatke na soket....",_LOG_TEXT);
-  strcpy(slanje,"TEST");
-  strcat(slanje,pok);
-  //WIFI4_socketWrite(socket,slanje);
-  
-}
-if(pok == 10)
-{
-   //WIFI4_socketClose(socket);
-   pok++;
-}
+   WIFI4_process();
+
+ mikrobus_logWrite("PRVA KOMANDA",_LOG_LINE);
+ vidiipadresu();
+  WIFI4_ping("mikroe.com");
+  Delay_ms(1500);
+ mikrobus_logWrite("DRUGA KOMANDA",_LOG_LINE);
+  pisiWIFIstatus();
  Delay_ms(4000);
 
 }

@@ -377,7 +377,6 @@ abaud_u3mode_bit
 abaud_u4mode_bit
 abaud_u5mode_bit
 abaud_u6mode_bit
-abs
 ackdt
 ackdt
 ackdt
@@ -2158,9 +2157,6 @@ asam
 asam
 asam
 asam_bit
-atof
-atoi
-atol
 attachie
 attachie
 attachie
@@ -3284,7 +3280,6 @@ bufcnt6
 bufcnt6_bit
 bufcnt7
 bufcnt7_bit
-buff
 bufm
 bufm
 bufm
@@ -18585,7 +18580,6 @@ disslw_i2c1con_bit
 disslw_i2c2con_bit
 disslw_i2c4con_bit
 disslw_i2c5con_bit
-div
 dma0ie
 dma0ie
 dma0ie
@@ -29162,6 +29156,7 @@ ifs2inv
 ifs2invbits
 ifs2set
 ifs2setbits
+in
 incm
 incm
 incm
@@ -29178,7 +29173,6 @@ incm1
 incm1
 incm1
 incm1_bit
-ind
 inittimer1
 int0ep
 int0ep
@@ -29598,16 +29592,6 @@ irqm1
 irqm1
 irqm1
 irqm1_bit
-isalnum
-isalpha
-iscntrl
-isdigit
-isgraph
-islower
-ispunct
-isspace
-isupper
-isxdigit
 ivrie
 ivrie
 ivrie
@@ -29745,7 +29729,6 @@ jstate_bit
 jtagen
 jtagen
 jtagen_bit
-labs
 lata
 lata0
 lata0
@@ -30300,7 +30283,6 @@ latginv
 latginvbits
 latgset
 latgsetbits
-ldiv
 lengthck
 lengthck
 lengthck
@@ -30617,7 +30599,6 @@ manfc
 manfc
 manfc
 manfc_bit
-max
 mcen
 mcen
 mcen
@@ -30721,7 +30702,6 @@ mikrobus_gpioinit
 mikrobus_loginit
 mikrobus_logwrite
 mikrobus_uartinit
-min
 min01
 min01
 min01
@@ -36133,7 +36113,6 @@ ra9
 ra9
 ra9
 ra9_bit
-rand
 rb0
 rb0
 rb0
@@ -44461,7 +44440,6 @@ smpi3
 smpi3
 smpi3
 smpi3_bit
-socket
 sofen
 sofen
 sofen
@@ -45309,7 +45287,6 @@ spitur_bit
 spitur_spi1stat_bit
 spitur_spi2stat_bit
 spitur_spi4stat_bit
-srand
 sripl
 sripl
 sripl
@@ -46498,7 +46475,6 @@ tgate_t3con_bit
 tgate_t4con_bit
 tgate_t5con_bit
 timer1interrupt
-tmpb
 tmr1
 tmr10
 tmr10_bit
@@ -46863,7 +46839,6 @@ tokbusy
 tokbusy
 tokbusy
 tokbusy
-tolower
 ton
 ton
 ton
@@ -46924,7 +46899,6 @@ ton
 ton
 ton
 ton
-toupper
 tpc
 tpc
 tpc
@@ -55000,7 +54974,6 @@ uinc_c2fifocon6_bit
 uinc_c2fifocon7_bit
 uinc_c2fifocon8_bit
 uinc_c2fifocon9_bit
-uldiv
 ulock
 ulock
 ulock
@@ -58839,7 +58812,6 @@ wdtwinen_bit
 wifi4_cmdsingle
 wifi4_connecttoap
 wifi4_coreinit
-wifi4_createfile
 wifi4_getssid
 wifi4_modulepower
 wifi4_ping
@@ -58848,9 +58820,6 @@ wifi4_putc
 wifi4_responserec
 wifi4_sethandler
 wifi4_setssid
-wifi4_socketclose
-wifi4_socketopen
-wifi4_socketwrite
 wifi4_tick
 wifi4_uartdriverinit
 wifi4_writetext
@@ -58903,7 +58872,6 @@ wrsp
 wrsp
 wrsp
 wrsp_bit
-xtoi
 year01
 year01
 year01

@@ -244,6 +244,7 @@ static volatile uint8_t flag_cmdEx;
 static volatile uint8_t f_wdogStart;
 static volatile uint8_t f_timerStart;
 static volatile uint16_t waitTime; //set wait for ending of response->for ping
+static volatile uint8_t f_cpyRXtoTmp;
 void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog)
 {
     // KASNIJE SETUJ
@@ -452,8 +453,6 @@ void WIFI4_ping(uint8_t *ipAddr)
 void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
 {
   uint8_t newPass[80];
-  //uint8_t hexPass[100];
-// StrToHex(&pass[0],hexPass);
     WIFI4_cmdSingle("AT+S.SCFG=","wifi_priv_mode,2");
     WIFI4_cmdSingle("AT+S.SCFG=","wifi_mode,1");
     WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
@@ -463,7 +462,6 @@ void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
 
    strcpy(newPass,"wifi_wpa_psk_text,");
    strcat(newPass,pass);
-  // strcat(newPass,"");
     WIFI4_cmdSingle("AT+S.SCFG=",newPass);
 }
 void WIFI4_putc(char c)
@@ -492,6 +490,8 @@ void WIFI4_tick()
  }
  }
 }
+T_WIFI4_rx_buff tmpB; //tmp baf
+
 //funkcija koja se poziva stalno u while petlji->
 void WIFI4_process()
 {
@@ -499,39 +499,141 @@ void WIFI4_process()
   if(f_wDogStart){
     if(flag_wdogOut)
     {
-   DTE_setState(0);
-    //DisableInterrupts();
-     //mikrobus_logWrite("ISTEKLO WDOG",_LOG_LINE);
-         f_wdogStart=0;
-        f_timerStart=0;
-        rxB.buff[rxB.ind++]='\0';
-        createEvent(rxB.buff, &currentEv);
-        EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
-        rxB.buff[0]=0;
-        rxB.ind=0;
-       flag_wdogOut=0;
-       flag_cmdEx=0;
-     DTE_setState(1);
-    // EnableInterrupts();
+    DTE_setState(0);
+
+    f_wdogStart=0;
+    f_timerStart=0;
+    rxB.buff[rxB.ind++]='\0';
+    createEvent(rxB.buff, &currentEv);
+    if(f_cpyRXtoTmp)
+    {
+     strcpy(tmpB.buff,rxB.buff);
+     tmpB.ind=rxB.ind;
+     f_cpyRXtoTmp=0;
+    }
+    EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
+    rxB.buff[0]=0;
+    rxB.ind=0;
+    flag_wdogOut=0;
+    flag_cmdEx=0;
+    
+    DTE_setState(1);
+
     }
     }
     if(f_TimerStart){
     if(flag_timesUp)
     {
-     // mikrobus_logWrite("ISTEKLO VREME",_LOG_LINE);
-    //DisableInterrupts();
-   DTE_setState(0);
-         f_wdogStart=0;
-         f_timerStart=0;
-         rxB.buff[rxB.ind++]='\0';
-        createEvent(rxB.buff, &currentEv);
-        EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
-        rxB.buff[0]=0;
-        rxB.ind=0;
+     DTE_setState(0);
+     f_wdogStart=0;
+      f_timerStart=0;
+       rxB.buff[rxB.ind++]='\0';
+         createEvent(rxB.buff, &currentEv);
+       EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
+       if(f_cpyRXtoTmp)
+    {
+     strcpy(tmpB.buff,rxB.buff);
+     tmpB.ind=rxB.ind;
+     f_cpyRXtoTmp=0;
+    }
+     rxB.buff[0]=0;
+     rxB.ind=0;
       flag_timesUp=0;
       flag_cmdEx=0;
       DTE_setState(1);
-     // EnableInterrupts();
     }
     }
+}
+
+void WIFI4_createFile(uint8_t *name,uint16_t len)
+{
+ uint8_t params[50];
+ strcpy(params,name);
+ strcat(params,",");
+ strcat(params,len);
+ WIFI4_cmdSingle("AT+S.FSC=",params);
+}
+/*
+  Open socket -> 
+  host - ip address od DNS resolvable name
+  port - TCP/UDP socket port
+  protocol-t for TCP,u for UDP and s for secure protcol
+  
+*/
+uint8_t WIFI4_socketOpen(uint8_t *host,uint16_t port,uint8_t protocol)
+{
+     char tmp[50];
+     uint8_t i,ret;
+     uint8_t sPort[6];
+     IntToStr(port,sPort);
+     strcpy(tmp,"AT+S.SOCKON=");
+     strcat(tmp,host);
+     strcat(tmp,',');
+     strcat(tmp,sPort);
+     strcat(tmp,',');
+     strcat(tmp,protocol);
+
+      while(0 != flag_cmdEx)
+       {
+         WIFI4_process();
+       }
+       
+     createEvent(tmp,&currentEv);
+     WIFI4_writeText2(tmp);
+
+     watchDogTime=0; //reset watchdog
+     waitTime=DEFAULT_WTIME;
+     f_wdogStart=1;
+     f_timerStart=1;
+     flag_cmdEx=1;
+     f_cpyRXtoTmp=1;
+     //sacekaj response
+       while(0 != flag_cmdEx)
+       {
+         WIFI4_process();
+       }
+
+      i=strchr(tmpB.buff,':');
+      ret=atoi(tmpB.buff+i+1);
+      return ret;
+}
+void WIFI4_socketWrite(uint8_t id,uint8_t *wdata)
+{
+  uint16_t len=strlen(wdata);
+  uint8_t slen[4];
+  uint8_t cmd[30];
+  IntToStr(len,slen);
+
+  strcpy(cmd,"AT+S.SOCKW=");
+  strcat(cmd,id);
+  strcat(cmd,',');
+  strcat(cmd,len);
+  
+   //AKO JE NEKA DRUGA KOMANDA U TOKU,SACEKAJ
+      while(0 != flag_cmdEx)
+       {
+         WIFI4_process();
+       }
+  createEvent(cmd,&currentEv);
+  WIFI4_writeText2(cmd);
+  WIFI4_writeText2(wdata);
+
+     watchDogTime=0; //reset watchdog
+     waitTime=DEFAULT_WTIME;
+     f_wdogStart=1;
+     f_timerStart=1;
+     flag_cmdEx=1;
+     f_cpyRXtoTmp=0;
+     //sacekaj response
+       while(0 != flag_cmdEx)
+       {
+         WIFI4_process();
+       }
+}
+void WIFI4_socketClose(uint8_t id)
+{
+  uint8_t str[3];
+  ByteToStr(id,str);
+  WIFI4_cmdSIngle("AT+S.SOCKC=",str);
+
 }

@@ -6,7 +6,7 @@ Value=0
 [BUILD_TYPE]
 Value=0
 [ACTIVE_TAB]
-Value=WIFI.c
+Value=WIFI4_CLICK.h
 [USE_EEPROM]
 Value=0
 [USE_HEAP]
@@ -54,7 +54,9 @@ File0=easypicfusion_v7_P32MX795F512L
 File1=UART
 File2=Conversions
 File3=C_String
-Count=4
+File4=C_Stdlib
+File5=C_Type
+Count=6
 [INTERRUPT_DEFS]
 EBASE=9FC01000
 VECTOR_SPACEING=32

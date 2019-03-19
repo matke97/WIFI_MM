@@ -22,6 +22,11 @@ void WIFI4_getSSID();
 void WIFI4_tick();
 void WIFI4_process();
 void WIFI4_ping(uint8_t *ipAddr);
+void WIFI4_createFile(uint8_t *name,uint16_t len);
 void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
+
 uint16_t WIFI4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
+uint8_t WIFI4_socketOpen(uint8_t *host,uint16_t port,uint8_t protocol);
+void WIFI4_socketClose(uint8_t id);
+void WIFI4_socketWrite(uint8_t id,uint8_t *wdata);
 #endif

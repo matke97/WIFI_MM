@@ -666,8 +666,11 @@ with WIFI4_writeText sending text to clients
 *******************************/
 void WIFI4_socketServerOpen(uint16_t port)
 {
-    WIFI4_cmdSingle("AT+S.SOCKD=","32000");
-    Delay_100ms();
+     uint8_t sPort[5];
+     LongToStr(port,sPort);
+     mikrobus_logWrite(sPort,_LOG_LINE);
+    WIFI4_cmdSingle("AT+S.SOCKD=",sPort);
+    //Delay_100ms();
 }
 void WIFI4_socketServerClose()
 {

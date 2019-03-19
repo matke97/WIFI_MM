@@ -71,16 +71,6 @@ void stshandler(uint8_t *resp,uint8_t *args)
 
 
 }
-
-void soketServer()
-{
-
-  WIFI4_cmdSingle("AT+S.STS=ip_sockd_port","");
-  
-
-}
-
-
 void appInit()
 {
     WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
@@ -102,7 +92,7 @@ void appInit()
   nakacisena_gateway();
   WIFI4_cmdSingle("AT&V","");
   Delay_ms(3000);
-  soketServer();
+   WIFI4_socketServerOpen(32000);
   Delay_ms(3000);
 
 
@@ -113,14 +103,7 @@ void appTask()
 {
 
   WIFI4_process();
- //WIFI4_getIpAddress(ipa);
- WIFI4_cmdSingle("AT+S.STS=","ip_ipaddr");
- WIFI4_ping("mikroe.com");
- while(pok++<50)
- {
-  WIFI4_writeText2("TEST\n");
- }
- Delay_ms(10000);
+
  Delay_ms(4000);
 
 }

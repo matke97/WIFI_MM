@@ -150,15 +150,15 @@ main
 				WIFI4_cmdSingle
 				strcpy
 				strcat
-		soketServer
+		WIFI4_socketServerOpen
+			LongToStr
+				LongWordToStr
+			mikrobus_logWrite
 			WIFI4_cmdSingle
+			Delay_100ms
 	mikrobus_logWrite
 	appTask
 		WIFI4_process
-		WIFI4_cmdSingle
-		WIFI4_ping
-			cmdSingle
-		WIFI4_writeText2
 RX_ISR
 	UART2_Read
 	WIFI4_putc

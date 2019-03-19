@@ -73,6 +73,8 @@ uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
 void WIFI4_socketClose(uint8_t id);
 void WIFI4_socketWrite(uint8_t id,uint8_t *wdata);
 void WIFI4_getIPAddress(uint8_t *ip);
+
+void WIFI4_socketServerOpen(uint16_t port);
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/include/stdint.h"
 #line 80 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"
@@ -737,4 +739,18 @@ void WIFI4_socketClose(uint8_t id)
  ByteToStr(id,str);
  WIFI4_cmdSIngle("AT+S.SOCKC=",str);
 
+}
+#line 667 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+void WIFI4_socketServerOpen(uint16_t port)
+{
+ uint8_t sPort[5];
+ LongToStr(port,sPort);
+ mikrobus_logWrite(sPort,_LOG_LINE);
+ WIFI4_cmdSingle("AT+S.SOCKD=",sPort);
+ Delay_100ms();
+}
+void WIFI4_socketServerClose()
+{
+ WIFI4_cmdSingle("AT+S","");
+ WIFI4_cmdSingle("AT+S.SOCKD=",0x0D);
 }

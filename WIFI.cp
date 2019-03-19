@@ -73,6 +73,8 @@ uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
 void WIFI4_socketClose(uint8_t id);
 void WIFI4_socketWrite(uint8_t id,uint8_t *wdata);
 void WIFI4_getIPAddress(uint8_t *ip);
+
+void WIFI4_socketServerOpen(uint16_t port);
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 #line 2 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
@@ -159,16 +161,6 @@ void stshandler(uint8_t *resp,uint8_t *args)
 
 
 }
-
-void soketServer()
-{
- WIFI4_cmdSingle("AT+S.SOCKD=","32000");
- WIFI4_cmdSingle("AT+S.STS=ip_sockd_port","");
-
-
-}
-
-
 void appInit()
 {
  WIFI4_uartDriverInit(( const uint8_t* )&_MIKROBUS1_GPIO,( const uint8_t* )&_MIKROBUS1_UART);
@@ -190,7 +182,7 @@ void appInit()
  nakacisena_gateway();
  WIFI4_cmdSingle("AT&V","");
  Delay_ms(3000);
- soketServer();
+ WIFI4_socketServerOpen(32000);
  Delay_ms(3000);
 
 
@@ -202,19 +194,6 @@ void appTask()
 
  WIFI4_process();
 
- WIFI4_cmdSingle("AT+S.STS=","ip_ipaddr");
- WIFI4_ping("mikroe.com");
- while(pok++<50)
- {
- WIFI4_writeText2("TEST\n");
- }
- Delay_ms(10000);
- if(pok>50 && pok<100)
-{
- WIFI4_cmdSingle("AT+S","");
- WIFI4_cmdSingle("AT+S.SOCKD=","0");
- pok=100;
-}
  Delay_ms(4000);
 
 }

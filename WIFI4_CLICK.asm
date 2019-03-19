@@ -2117,3 +2117,68 @@ ADDIU	SP, SP, 16
 JR	RA
 NOP	
 ; end of _WIFI4_socketClose
+_WIFI4_socketServerOpen:
+;WIFI4_CLICK.c,667 :: 		void WIFI4_socketServerOpen(uint16_t port)
+ADDIU	SP, SP, -20
+SW	RA, 0(SP)
+;WIFI4_CLICK.c,670 :: 		LongToStr(port,sPort);
+SW	R25, 4(SP)
+SW	R26, 8(SP)
+ADDIU	R2, SP, 12
+MOVZ	R26, R2, R0
+ANDI	R25, R25, 65535
+JAL	_LongToStr+0
+NOP	
+;WIFI4_CLICK.c,671 :: 		mikrobus_logWrite(sPort,_LOG_LINE);
+ADDIU	R2, SP, 12
+ORI	R26, R0, 2
+MOVZ	R25, R2, R0
+JAL	_mikrobus_logWrite+0
+NOP	
+;WIFI4_CLICK.c,672 :: 		WIFI4_cmdSingle("AT+S.SOCKD=",sPort);
+ADDIU	R2, SP, 12
+MOVZ	R26, R2, R0
+LUI	R25, hi_addr(?lstr23_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr23_WIFI4_CLICK+0)
+JAL	_WIFI4_cmdSingle+0
+NOP	
+;WIFI4_CLICK.c,673 :: 		Delay_100ms();
+JAL	_Delay_100ms+0
+NOP	
+;WIFI4_CLICK.c,674 :: 		}
+L_end_WIFI4_socketServerOpen:
+LW	R26, 8(SP)
+LW	R25, 4(SP)
+LW	RA, 0(SP)
+ADDIU	SP, SP, 20
+JR	RA
+NOP	
+; end of _WIFI4_socketServerOpen
+_WIFI4_socketServerClose:
+;WIFI4_CLICK.c,675 :: 		void WIFI4_socketServerClose()
+ADDIU	SP, SP, -12
+SW	RA, 0(SP)
+;WIFI4_CLICK.c,677 :: 		WIFI4_cmdSingle("AT+S","");
+SW	R25, 4(SP)
+SW	R26, 8(SP)
+LUI	R26, hi_addr(?lstr25_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr25_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr24_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr24_WIFI4_CLICK+0)
+JAL	_WIFI4_cmdSingle+0
+NOP	
+;WIFI4_CLICK.c,678 :: 		WIFI4_cmdSingle("AT+S.SOCKD=",0x0D);
+ORI	R26, R0, 13
+LUI	R25, hi_addr(?lstr26_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr26_WIFI4_CLICK+0)
+JAL	_WIFI4_cmdSingle+0
+NOP	
+;WIFI4_CLICK.c,679 :: 		}
+L_end_WIFI4_socketServerClose:
+LW	R26, 8(SP)
+LW	R25, 4(SP)
+LW	RA, 0(SP)
+ADDIU	SP, SP, 12
+JR	RA
+NOP	
+; end of _WIFI4_socketServerClose

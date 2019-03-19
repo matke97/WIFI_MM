@@ -114,11 +114,11 @@ SW	RA, 0(SP)
 ;WIFI.c,25 :: 		if( IFS1 & ( 1 << U2RXIF ))
 LW	R2, Offset(IFS1+0)(GP)
 ANDI	R2, R2, 512
-BNE	R2, R0, L__RX_ISR30
+BNE	R2, R0, L__RX_ISR20
 NOP	
 J	L_RX_ISR0
 NOP	
-L__RX_ISR30:
+L__RX_ISR20:
 ;WIFI.c,27 :: 		char  tmp = UART2_Read();
 JAL	_UART2_Read+0
 NOP	
@@ -305,40 +305,11 @@ L_end_stshandler:
 JR	RA
 NOP	
 ; end of _stshandler
-_soketServer:
-;WIFI.c,75 :: 		void soketServer()
-ADDIU	SP, SP, -12
-SW	RA, 0(SP)
-;WIFI.c,77 :: 		WIFI4_cmdSingle("AT+S.SOCKD=","32000");
-SW	R25, 4(SP)
-SW	R26, 8(SP)
-LUI	R26, hi_addr(?lstr10_WIFI+0)
-ORI	R26, R26, lo_addr(?lstr10_WIFI+0)
-LUI	R25, hi_addr(?lstr9_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr9_WIFI+0)
-JAL	_WIFI4_cmdSingle+0
-NOP	
-;WIFI.c,78 :: 		WIFI4_cmdSingle("AT+S.STS=ip_sockd_port","");
-LUI	R26, hi_addr(?lstr12_WIFI+0)
-ORI	R26, R26, lo_addr(?lstr12_WIFI+0)
-LUI	R25, hi_addr(?lstr11_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr11_WIFI+0)
-JAL	_WIFI4_cmdSingle+0
-NOP	
-;WIFI.c,81 :: 		}
-L_end_soketServer:
-LW	R26, 8(SP)
-LW	R25, 4(SP)
-LW	RA, 0(SP)
-ADDIU	SP, SP, 12
-JR	RA
-NOP	
-; end of _soketServer
 _appInit:
-;WIFI.c,84 :: 		void appInit()
+;WIFI.c,74 :: 		void appInit()
 ADDIU	SP, SP, -16
 SW	RA, 0(SP)
-;WIFI.c,86 :: 		WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
+;WIFI.c,76 :: 		WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
 SW	R25, 4(SP)
 SW	R26, 8(SP)
 SW	R27, 12(SP)
@@ -348,27 +319,27 @@ LUI	R25, hi_addr(__MIKROBUS1_GPIO+0)
 ORI	R25, R25, lo_addr(__MIKROBUS1_GPIO+0)
 JAL	_WIFI4_uartDriverInit+0
 NOP	
-;WIFI.c,87 :: 		InitTimer1();
+;WIFI.c,77 :: 		InitTimer1();
 JAL	_InitTimer1+0
 NOP	
-;WIFI.c,88 :: 		uartInterrupt();
+;WIFI.c,78 :: 		uartInterrupt();
 JAL	_uartInterrupt+0
 NOP	
-;WIFI.c,89 :: 		WIFI4_coreInit(defaultHandler,1500);
+;WIFI.c,79 :: 		WIFI4_coreInit(defaultHandler,1500);
 ORI	R26, R0, 1500
 LUI	R25, hi_addr(_defaultHandler+0)
 ORI	R25, R25, lo_addr(_defaultHandler+0)
 JAL	_WIFI4_coreInit+0
 NOP	
-;WIFI.c,90 :: 		WIFI4_setHandler("#  ip_ipaddr =",1500,stshandler);
+;WIFI.c,80 :: 		WIFI4_setHandler("#  ip_ipaddr =",1500,stshandler);
 LUI	R27, hi_addr(_stshandler+0)
 ORI	R27, R27, lo_addr(_stshandler+0)
 ORI	R26, R0, 1500
-LUI	R25, hi_addr(?lstr13_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr13_WIFI+0)
+LUI	R25, hi_addr(?lstr9_WIFI+0)
+ORI	R25, R25, lo_addr(?lstr9_WIFI+0)
 JAL	_WIFI4_setHandler+0
 NOP	
-;WIFI.c,91 :: 		Delay_ms(500);
+;WIFI.c,81 :: 		Delay_ms(500);
 LUI	R24, 203
 ORI	R24, R24, 29524
 L_appInit3:
@@ -377,42 +348,42 @@ BNE	R24, R0, L_appInit3
 NOP	
 NOP	
 NOP	
-;WIFI.c,94 :: 		WIFI4_modulePower(0);
+;WIFI.c,84 :: 		WIFI4_modulePower(0);
 MOVZ	R25, R0, R0
 JAL	_WIFI4_modulePower+0
 NOP	
-;WIFI.c,95 :: 		Delay_100ms();
+;WIFI.c,85 :: 		Delay_100ms();
 JAL	_Delay_100ms+0
 NOP	
-;WIFI.c,96 :: 		WIFI4_modulePower(1);
+;WIFI.c,86 :: 		WIFI4_modulePower(1);
 ORI	R25, R0, 1
 JAL	_WIFI4_modulePower+0
 NOP	
-;WIFI.c,97 :: 		Delay_ms(1000);
+;WIFI.c,87 :: 		Delay_ms(1000);
 LUI	R24, 406
 ORI	R24, R24, 59050
 L_appInit5:
 ADDIU	R24, R24, -1
 BNE	R24, R0, L_appInit5
 NOP	
-;WIFI.c,101 :: 		WIFI4_cmdSingle("AT","");
-LUI	R26, hi_addr(?lstr15_WIFI+0)
-ORI	R26, R26, lo_addr(?lstr15_WIFI+0)
-LUI	R25, hi_addr(?lstr14_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr14_WIFI+0)
+;WIFI.c,91 :: 		WIFI4_cmdSingle("AT","");
+LUI	R26, hi_addr(?lstr11_WIFI+0)
+ORI	R26, R26, lo_addr(?lstr11_WIFI+0)
+LUI	R25, hi_addr(?lstr10_WIFI+0)
+ORI	R25, R25, lo_addr(?lstr10_WIFI+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI.c,102 :: 		nakacisena_gateway();
+;WIFI.c,92 :: 		nakacisena_gateway();
 JAL	_nakacisena_gateway+0
 NOP	
-;WIFI.c,103 :: 		WIFI4_cmdSingle("AT&V","");
-LUI	R26, hi_addr(?lstr17_WIFI+0)
-ORI	R26, R26, lo_addr(?lstr17_WIFI+0)
-LUI	R25, hi_addr(?lstr16_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr16_WIFI+0)
+;WIFI.c,93 :: 		WIFI4_cmdSingle("AT&V","");
+LUI	R26, hi_addr(?lstr13_WIFI+0)
+ORI	R26, R26, lo_addr(?lstr13_WIFI+0)
+LUI	R25, hi_addr(?lstr12_WIFI+0)
+ORI	R25, R25, lo_addr(?lstr12_WIFI+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI.c,104 :: 		Delay_ms(3000);
+;WIFI.c,94 :: 		Delay_ms(3000);
 LUI	R24, 1220
 ORI	R24, R24, 46079
 L_appInit7:
@@ -420,10 +391,11 @@ ADDIU	R24, R24, -1
 BNE	R24, R0, L_appInit7
 NOP	
 NOP	
-;WIFI.c,105 :: 		soketServer();
-JAL	_soketServer+0
+;WIFI.c,95 :: 		WIFI4_socketServerOpen(32000);
+ORI	R25, R0, 32000
+JAL	_WIFI4_socketServerOpen+0
 NOP	
-;WIFI.c,106 :: 		Delay_ms(3000);
+;WIFI.c,96 :: 		Delay_ms(3000);
 LUI	R24, 1220
 ORI	R24, R24, 46079
 L_appInit9:
@@ -431,7 +403,7 @@ ADDIU	R24, R24, -1
 BNE	R24, R0, L_appInit9
 NOP	
 NOP	
-;WIFI.c,109 :: 		}
+;WIFI.c,99 :: 		}
 L_end_appInit:
 LW	R27, 12(SP)
 LW	R26, 8(SP)
@@ -442,130 +414,49 @@ JR	RA
 NOP	
 ; end of _appInit
 _appTask:
-;WIFI.c,112 :: 		void appTask()
-ADDIU	SP, SP, -12
+;WIFI.c,102 :: 		void appTask()
+ADDIU	SP, SP, -4
 SW	RA, 0(SP)
-;WIFI.c,115 :: 		WIFI4_process();
-SW	R25, 4(SP)
-SW	R26, 8(SP)
+;WIFI.c,105 :: 		WIFI4_process();
 JAL	_WIFI4_process+0
 NOP	
-;WIFI.c,117 :: 		WIFI4_cmdSingle("AT+S.STS=","ip_ipaddr");
-LUI	R26, hi_addr(?lstr19_WIFI+0)
-ORI	R26, R26, lo_addr(?lstr19_WIFI+0)
-LUI	R25, hi_addr(?lstr18_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr18_WIFI+0)
-JAL	_WIFI4_cmdSingle+0
-NOP	
-;WIFI.c,118 :: 		WIFI4_ping("mikroe.com");
-LUI	R25, hi_addr(?lstr20_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr20_WIFI+0)
-JAL	_WIFI4_ping+0
-NOP	
-;WIFI.c,119 :: 		while(pok++<50)
-L_appTask11:
-LBU	R3, Offset(_pok+0)(GP)
-LBU	R2, Offset(_pok+0)(GP)
-ADDIU	R2, R2, 1
-SB	R2, Offset(_pok+0)(GP)
-ANDI	R2, R3, 255
-SLTIU	R2, R2, 50
-BNE	R2, R0, L__appTask40
-NOP	
-J	L_appTask12
-NOP	
-L__appTask40:
-;WIFI.c,121 :: 		WIFI4_writeText2("TEST\n");
-LUI	R25, hi_addr(?lstr21_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr21_WIFI+0)
-JAL	_WIFI4_writeText2+0
-NOP	
-;WIFI.c,122 :: 		}
-J	L_appTask11
-NOP	
-L_appTask12:
-;WIFI.c,123 :: 		Delay_ms(10000);
-LUI	R24, 4069
-ORI	R24, R24, 682
-L_appTask13:
-ADDIU	R24, R24, -1
-BNE	R24, R0, L_appTask13
-NOP	
-;WIFI.c,124 :: 		if(pok>50 && pok<100)
-LBU	R2, Offset(_pok+0)(GP)
-SLTIU	R2, R2, 51
-BEQ	R2, R0, L__appTask41
-NOP	
-J	L__appTask24
-NOP	
-L__appTask41:
-LBU	R2, Offset(_pok+0)(GP)
-SLTIU	R2, R2, 100
-BNE	R2, R0, L__appTask42
-NOP	
-J	L__appTask23
-NOP	
-L__appTask42:
-L__appTask22:
-;WIFI.c,126 :: 		WIFI4_cmdSingle("AT+S","");
-LUI	R26, hi_addr(?lstr23_WIFI+0)
-ORI	R26, R26, lo_addr(?lstr23_WIFI+0)
-LUI	R25, hi_addr(?lstr22_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr22_WIFI+0)
-JAL	_WIFI4_cmdSingle+0
-NOP	
-;WIFI.c,127 :: 		WIFI4_cmdSingle("AT+S.SOCKD=","0");
-LUI	R26, hi_addr(?lstr25_WIFI+0)
-ORI	R26, R26, lo_addr(?lstr25_WIFI+0)
-LUI	R25, hi_addr(?lstr24_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr24_WIFI+0)
-JAL	_WIFI4_cmdSingle+0
-NOP	
-;WIFI.c,128 :: 		pok=100;
-ORI	R2, R0, 100
-SB	R2, Offset(_pok+0)(GP)
-;WIFI.c,124 :: 		if(pok>50 && pok<100)
-L__appTask24:
-L__appTask23:
-;WIFI.c,130 :: 		Delay_ms(4000);
+;WIFI.c,107 :: 		Delay_ms(4000);
 LUI	R24, 1627
 ORI	R24, R24, 39594
-L_appTask18:
+L_appTask11:
 ADDIU	R24, R24, -1
-BNE	R24, R0, L_appTask18
+BNE	R24, R0, L_appTask11
 NOP	
-;WIFI.c,132 :: 		}
+;WIFI.c,109 :: 		}
 L_end_appTask:
-LW	R26, 8(SP)
-LW	R25, 4(SP)
 LW	RA, 0(SP)
-ADDIU	SP, SP, 12
+ADDIU	SP, SP, 4
 JR	RA
 NOP	
 ; end of _appTask
 _main:
-;WIFI.c,135 :: 		void main() {
-;WIFI.c,136 :: 		systemInit();
+;WIFI.c,112 :: 		void main() {
+;WIFI.c,113 :: 		systemInit();
 JAL	_systemInit+0
 NOP	
-;WIFI.c,137 :: 		appInit();
+;WIFI.c,114 :: 		appInit();
 JAL	_appInit+0
 NOP	
-;WIFI.c,139 :: 		mikrobus_logWrite("PROBA",_LOG_LINE);
+;WIFI.c,116 :: 		mikrobus_logWrite("PROBA",_LOG_LINE);
 ORI	R26, R0, 2
-LUI	R25, hi_addr(?lstr26_WIFI+0)
-ORI	R25, R25, lo_addr(?lstr26_WIFI+0)
+LUI	R25, hi_addr(?lstr14_WIFI+0)
+ORI	R25, R25, lo_addr(?lstr14_WIFI+0)
 JAL	_mikrobus_logWrite+0
 NOP	
-;WIFI.c,140 :: 		while(1)
-L_main20:
-;WIFI.c,142 :: 		appTask();
+;WIFI.c,117 :: 		while(1)
+L_main13:
+;WIFI.c,119 :: 		appTask();
 JAL	_appTask+0
 NOP	
-;WIFI.c,143 :: 		}
-J	L_main20
+;WIFI.c,120 :: 		}
+J	L_main13
 NOP	
-;WIFI.c,147 :: 		}
+;WIFI.c,124 :: 		}
 L_end_main:
 L__main_end_loop:
 J	L__main_end_loop

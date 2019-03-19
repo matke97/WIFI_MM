@@ -44482,7 +44482,6 @@ softreset
 softreset
 softreset
 softreset_bit
-soketserver
 soscen
 soscen
 soscen
@@ -58849,6 +58848,8 @@ wifi4_sethandler
 wifi4_setssid
 wifi4_socketclose
 wifi4_socketopen
+wifi4_socketserverclose
+wifi4_socketserveropen
 wifi4_socketwrite
 wifi4_tick
 wifi4_uartdriverinit

@@ -78,35 +78,35 @@ JR	RA
 NOP	
 ; end of WIFI4_CLICK_hal_uartReady
 WIFI4_CLICK_DTE_setState:
-;WIFI4_CLICK.c,37 :: 		static void DTE_setState(uint8_t state)
+;WIFI4_CLICK.c,41 :: 		static void DTE_setState(uint8_t state)
 ADDIU	SP, SP, -8
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,40 :: 		if (1 == state)
+;WIFI4_CLICK.c,44 :: 		if (1 == state)
 SW	R25, 4(SP)
 ANDI	R3, R25, 255
 ORI	R2, R0, 1
-BEQ	R3, R2, L_WIFI4_CLICK_DTE_setState82
+BEQ	R3, R2, L_WIFI4_CLICK_DTE_setState79
 NOP	
 J	L_WIFI4_CLICK_DTE_setState0
 NOP	
-L_WIFI4_CLICK_DTE_setState82:
-;WIFI4_CLICK.c,42 :: 		hal_gpio_intSet( 0 );
+L_WIFI4_CLICK_DTE_setState79:
+;WIFI4_CLICK.c,46 :: 		hal_gpio_intSet( 0 );
 MOVZ	R25, R0, R0
 LW	R30, Offset(WIFI4_CLICK_hal_gpio_intSet+0)(GP)
 JALR	RA, R30
 NOP	
-;WIFI4_CLICK.c,43 :: 		}
+;WIFI4_CLICK.c,47 :: 		}
 J	L_WIFI4_CLICK_DTE_setState1
 NOP	
 L_WIFI4_CLICK_DTE_setState0:
-;WIFI4_CLICK.c,46 :: 		hal_gpio_intSet( 1 );
+;WIFI4_CLICK.c,50 :: 		hal_gpio_intSet( 1 );
 ORI	R25, R0, 1
 LW	R30, Offset(WIFI4_CLICK_hal_gpio_intSet+0)(GP)
 JALR	RA, R30
 NOP	
-;WIFI4_CLICK.c,47 :: 		}
+;WIFI4_CLICK.c,51 :: 		}
 L_WIFI4_CLICK_DTE_setState1:
-;WIFI4_CLICK.c,49 :: 		}
+;WIFI4_CLICK.c,53 :: 		}
 L_end_DTE_setState:
 LW	R25, 4(SP)
 LW	RA, 0(SP)
@@ -115,28 +115,28 @@ JR	RA
 NOP	
 ; end of WIFI4_CLICK_DTE_setState
 WIFI4_CLICK_DCE_getState:
-;WIFI4_CLICK.c,51 :: 		static uint8_t DCE_getState()
+;WIFI4_CLICK.c,55 :: 		static uint8_t DCE_getState()
 ADDIU	SP, SP, -4
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,54 :: 		if (0 != hal_gpio_csGet())
+;WIFI4_CLICK.c,58 :: 		if (0 != hal_gpio_csGet())
 LW	R30, Offset(WIFI4_CLICK_hal_gpio_csGet+0)(GP)
 JALR	RA, R30
 NOP	
 ANDI	R2, R2, 255
-BNE	R2, R0, L_WIFI4_CLICK_DCE_getState85
+BNE	R2, R0, L_WIFI4_CLICK_DCE_getState82
 NOP	
 J	L_WIFI4_CLICK_DCE_getState2
 NOP	
-L_WIFI4_CLICK_DCE_getState85:
-;WIFI4_CLICK.c,56 :: 		return 0;
+L_WIFI4_CLICK_DCE_getState82:
+;WIFI4_CLICK.c,60 :: 		return 0;
 MOVZ	R2, R0, R0
 J	L_end_DCE_getState
 NOP	
-;WIFI4_CLICK.c,57 :: 		}
+;WIFI4_CLICK.c,61 :: 		}
 L_WIFI4_CLICK_DCE_getState2:
-;WIFI4_CLICK.c,60 :: 		return 1;
+;WIFI4_CLICK.c,64 :: 		return 1;
 ORI	R2, R0, 1
-;WIFI4_CLICK.c,63 :: 		}
+;WIFI4_CLICK.c,67 :: 		}
 L_end_DCE_getState:
 LW	RA, 0(SP)
 ADDIU	SP, SP, 4
@@ -144,17 +144,17 @@ JR	RA
 NOP	
 ; end of WIFI4_CLICK_DCE_getState
 WIFI4_CLICK_generateHash:
-;WIFI4_CLICK.c,135 :: 		static uint32_t generateHash( char *pCmd )
-;WIFI4_CLICK.c,137 :: 		uint8_t  cnt  = 0;
+;WIFI4_CLICK.c,155 :: 		static uint32_t generateHash( char *pCmd )
+;WIFI4_CLICK.c,157 :: 		uint8_t  cnt  = 0;
 ; cnt start address is: 20 (R5)
 MOVZ	R5, R0, R0
-;WIFI4_CLICK.c,138 :: 		uint16_t ch   = 0;
-;WIFI4_CLICK.c,139 :: 		uint32_t hash = 5;
+;WIFI4_CLICK.c,158 :: 		uint16_t ch   = 0;
+;WIFI4_CLICK.c,159 :: 		uint32_t hash = 5;
 ; hash start address is: 24 (R6)
 ORI	R6, R0, 5
 ; hash end address is: 24 (R6)
 ; cnt end address is: 20 (R5)
-;WIFI4_CLICK.c,141 :: 		while ( ch = *pCmd++ )
+;WIFI4_CLICK.c,161 :: 		while ( ch = *pCmd++ )
 L_WIFI4_CLICK_generateHash4:
 ; hash start address is: 24 (R6)
 ; cnt start address is: 20 (R5)
@@ -164,12 +164,12 @@ MOVZ	R25, R2, R0
 LBU	R2, 0(R3)
 ; ch start address is: 16 (R4)
 ANDI	R4, R2, 255
-BNE	R4, R0, L_WIFI4_CLICK_generateHash88
+BNE	R4, R0, L_WIFI4_CLICK_generateHash85
 NOP	
 J	L_WIFI4_CLICK_generateHash5
 NOP	
-L_WIFI4_CLICK_generateHash88:
-;WIFI4_CLICK.c,143 :: 		hash += (ch << (cnt % 8));
+L_WIFI4_CLICK_generateHash85:
+;WIFI4_CLICK.c,163 :: 		hash += (ch << (cnt % 8));
 ANDI	R2, R5, 7
 ANDI	R3, R4, 65535
 ANDI	R2, R2, 255
@@ -177,38 +177,38 @@ SLLV	R2, R3, R2
 ANDI	R2, R2, 65535
 ADDU	R2, R6, R2
 MOVZ	R6, R2, R0
-;WIFI4_CLICK.c,144 :: 		cnt++;
+;WIFI4_CLICK.c,164 :: 		cnt++;
 ADDIU	R2, R5, 1
 ANDI	R5, R2, 255
-;WIFI4_CLICK.c,145 :: 		}
+;WIFI4_CLICK.c,165 :: 		}
 ; ch end address is: 16 (R4)
 ; cnt end address is: 20 (R5)
 J	L_WIFI4_CLICK_generateHash4
 NOP	
 L_WIFI4_CLICK_generateHash5:
-;WIFI4_CLICK.c,146 :: 		return hash;
+;WIFI4_CLICK.c,166 :: 		return hash;
 MOVZ	R2, R6, R0
 ; hash end address is: 24 (R6)
-;WIFI4_CLICK.c,147 :: 		}
+;WIFI4_CLICK.c,167 :: 		}
 L_end_generateHash:
 JR	RA
 NOP	
 ; end of WIFI4_CLICK_generateHash
 WIFI4_CLICK_locateHandler:
-;WIFI4_CLICK.c,151 :: 		static uint16_t locateHandler( char* pCmd )
+;WIFI4_CLICK.c,171 :: 		static uint16_t locateHandler( char* pCmd )
 ADDIU	SP, SP, -4
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,158 :: 		len = strlen(pCmd);
+;WIFI4_CLICK.c,178 :: 		len = strlen(pCmd);
 JAL	_strlen+0
 NOP	
 ; len start address is: 28 (R7)
 SEH	R7, R2
-;WIFI4_CLICK.c,159 :: 		hash = generateHash(pCmd);
+;WIFI4_CLICK.c,179 :: 		hash = generateHash(pCmd);
 JAL	WIFI4_CLICK_generateHash+0
 NOP	
 ; hash start address is: 16 (R4)
 MOVZ	R4, R2, R0
-;WIFI4_CLICK.c,161 :: 		for (idx = 1; idx < hdB.idx; idx++)
+;WIFI4_CLICK.c,181 :: 		for (idx = 1; idx < hdB.idx; idx++)
 ; idx start address is: 24 (R6)
 ORI	R6, R0, 1
 ; len end address is: 28 (R7)
@@ -224,14 +224,14 @@ L_WIFI4_CLICK_locateHandler6:
 ANDI	R3, R6, 65535
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
 SLTU	R2, R3, R2
-BNE	R2, R0, L_WIFI4_CLICK_locateHandler90
+BNE	R2, R0, L_WIFI4_CLICK_locateHandler87
 NOP	
 J	L_WIFI4_CLICK_locateHandler7
 NOP	
-L_WIFI4_CLICK_locateHandler90:
+L_WIFI4_CLICK_locateHandler87:
 ; hash end address is: 16 (R4)
 ; len end address is: 20 (R5)
-;WIFI4_CLICK.c,163 :: 		if (hdB.storage[idx].len == len)
+;WIFI4_CLICK.c,183 :: 		if (hdB.storage[idx].len == len)
 ; len start address is: 20 (R5)
 ; hash start address is: 16 (R4)
 ANDI	R2, R6, 65535
@@ -242,12 +242,12 @@ ADDU	R2, R2, R3
 LHU	R2, 0(R2)
 ANDI	R3, R2, 65535
 ANDI	R2, R5, 255
-BEQ	R3, R2, L_WIFI4_CLICK_locateHandler91
+BEQ	R3, R2, L_WIFI4_CLICK_locateHandler88
 NOP	
 J	L_WIFI4_CLICK_locateHandler9
 NOP	
-L_WIFI4_CLICK_locateHandler91:
-;WIFI4_CLICK.c,165 :: 		if (hdB.storage[idx].hash == hash)
+L_WIFI4_CLICK_locateHandler88:
+;WIFI4_CLICK.c,185 :: 		if (hdB.storage[idx].hash == hash)
 ANDI	R2, R6, 65535
 SLL	R3, R2, 4
 LUI	R2, hi_addr(WIFI4_CLICK_hdB+4)
@@ -255,53 +255,91 @@ ORI	R2, R2, lo_addr(WIFI4_CLICK_hdB+4)
 ADDU	R2, R2, R3
 ADDIU	R2, R2, 4
 LW	R2, 0(R2)
-BEQ	R2, R4, L_WIFI4_CLICK_locateHandler92
+BEQ	R2, R4, L_WIFI4_CLICK_locateHandler89
 NOP	
 J	L_WIFI4_CLICK_locateHandler10
 NOP	
-L_WIFI4_CLICK_locateHandler92:
+L_WIFI4_CLICK_locateHandler89:
 ; hash end address is: 16 (R4)
 ; len end address is: 20 (R5)
-;WIFI4_CLICK.c,167 :: 		return idx;
+;WIFI4_CLICK.c,187 :: 		return idx;
 ANDI	R2, R6, 65535
 ; idx end address is: 24 (R6)
 J	L_end_locateHandler
 NOP	
-;WIFI4_CLICK.c,168 :: 		}
+;WIFI4_CLICK.c,188 :: 		}
 L_WIFI4_CLICK_locateHandler10:
-;WIFI4_CLICK.c,169 :: 		}
+;WIFI4_CLICK.c,189 :: 		}
 ; idx start address is: 24 (R6)
 ; len start address is: 20 (R5)
 ; hash start address is: 16 (R4)
 L_WIFI4_CLICK_locateHandler9:
-;WIFI4_CLICK.c,161 :: 		for (idx = 1; idx < hdB.idx; idx++)
+;WIFI4_CLICK.c,181 :: 		for (idx = 1; idx < hdB.idx; idx++)
 ADDIU	R2, R6, 1
 ANDI	R6, R2, 65535
-;WIFI4_CLICK.c,170 :: 		}
+;WIFI4_CLICK.c,190 :: 		}
 ; hash end address is: 16 (R4)
 ; len end address is: 20 (R5)
 ; idx end address is: 24 (R6)
 J	L_WIFI4_CLICK_locateHandler6
 NOP	
 L_WIFI4_CLICK_locateHandler7:
-;WIFI4_CLICK.c,172 :: 		return 0;
+;WIFI4_CLICK.c,192 :: 		return 0;
 MOVZ	R2, R0, R0
-;WIFI4_CLICK.c,173 :: 		}
+;WIFI4_CLICK.c,193 :: 		}
 L_end_locateHandler:
 LW	RA, 0(SP)
 ADDIU	SP, SP, 4
 JR	RA
 NOP	
 ; end of WIFI4_CLICK_locateHandler
+_WIFI4_writeText2:
+;WIFI4_CLICK.c,202 :: 		void WIFI4_writeText2(uint8_t *txt)
+ADDIU	SP, SP, -8
+SW	RA, 0(SP)
+;WIFI4_CLICK.c,205 :: 		while(0 != *txt)
+L_WIFI4_writeText211:
+LBU	R2, 0(R25)
+ANDI	R2, R2, 255
+BNE	R2, R0, L__WIFI4_writeText292
+NOP	
+J	L_WIFI4_writeText212
+NOP	
+L__WIFI4_writeText292:
+;WIFI4_CLICK.c,207 :: 		hal_uartWrite(*txt++);
+SW	R25, 4(SP)
+LBU	R25, 0(R25)
+JAL	WIFI4_CLICK_hal_uartWrite+0
+NOP	
+LW	R25, 4(SP)
+ADDIU	R2, R25, 1
+MOVZ	R25, R2, R0
+;WIFI4_CLICK.c,208 :: 		}
+J	L_WIFI4_writeText211
+NOP	
+L_WIFI4_writeText212:
+;WIFI4_CLICK.c,209 :: 		hal_uartWrite(TERMINATION_CHAR);
+SW	R25, 4(SP)
+ORI	R25, R0, 13
+JAL	WIFI4_CLICK_hal_uartWrite+0
+NOP	
+LW	R25, 4(SP)
+;WIFI4_CLICK.c,210 :: 		}
+L_end_WIFI4_writeText2:
+LW	RA, 0(SP)
+ADDIU	SP, SP, 8
+JR	RA
+NOP	
+; end of _WIFI4_writeText2
 WIFI4_CLICK_searchLut:
-;WIFI4_CLICK.c,178 :: 		static uint8_t searchLut( char* pInput, char (*pLut)[ LUTS_WIDTH ], uint8_t lutSize, uint8_t flag )
+;WIFI4_CLICK.c,212 :: 		static uint8_t searchLut( char* pInput, char (*pLut)[ LUTS_WIDTH ], uint8_t lutSize, uint8_t flag )
 ADDIU	SP, SP, -16
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,180 :: 		uint8_t     inLen    = 0;
-;WIFI4_CLICK.c,181 :: 		uint8_t     inOff    = 0;
-;WIFI4_CLICK.c,182 :: 		uint8_t     lutLen   = 0;
-;WIFI4_CLICK.c,183 :: 		uint8_t     lutIdx   = 0;
-;WIFI4_CLICK.c,185 :: 		if (_WIFI4_CMD_MAXSIZE < (inLen = strlen(pInput)))
+;WIFI4_CLICK.c,214 :: 		uint8_t     inLen    = 0;
+;WIFI4_CLICK.c,215 :: 		uint8_t     inOff    = 0;
+;WIFI4_CLICK.c,216 :: 		uint8_t     lutLen   = 0;
+;WIFI4_CLICK.c,217 :: 		uint8_t     lutIdx   = 0;
+;WIFI4_CLICK.c,219 :: 		if (_WIFI4_CMD_MAXSIZE < (inLen = strlen(pInput)))
 JAL	_strlen+0
 NOP	
 ; inLen start address is: 12 (R3)
@@ -310,29 +348,29 @@ ANDI	R2, R2, 255
 SLTIU	R2, R2, 11
 BEQ	R2, R0, L_WIFI4_CLICK_searchLut94
 NOP	
-J	L_WIFI4_CLICK_searchLut70
+J	L_WIFI4_CLICK_searchLut68
 NOP	
 L_WIFI4_CLICK_searchLut94:
 ; inLen end address is: 12 (R3)
-;WIFI4_CLICK.c,187 :: 		inLen =_WIFI4_CMD_MAXSIZE;
+;WIFI4_CLICK.c,221 :: 		inLen =_WIFI4_CMD_MAXSIZE;
 ; inLen start address is: 24 (R6)
 ORI	R6, R0, 10
 ; inLen end address is: 24 (R6)
-;WIFI4_CLICK.c,188 :: 		}
-J	L_WIFI4_CLICK_searchLut11
+;WIFI4_CLICK.c,222 :: 		}
+J	L_WIFI4_CLICK_searchLut13
 NOP	
-L_WIFI4_CLICK_searchLut70:
-;WIFI4_CLICK.c,185 :: 		if (_WIFI4_CMD_MAXSIZE < (inLen = strlen(pInput)))
+L_WIFI4_CLICK_searchLut68:
+;WIFI4_CLICK.c,219 :: 		if (_WIFI4_CMD_MAXSIZE < (inLen = strlen(pInput)))
 ANDI	R6, R3, 255
-;WIFI4_CLICK.c,188 :: 		}
-L_WIFI4_CLICK_searchLut11:
-;WIFI4_CLICK.c,190 :: 		for (lutIdx = 1; lutIdx < lutSize; lutIdx++)
+;WIFI4_CLICK.c,222 :: 		}
+L_WIFI4_CLICK_searchLut13:
+;WIFI4_CLICK.c,224 :: 		for (lutIdx = 1; lutIdx < lutSize; lutIdx++)
 ; inLen start address is: 24 (R6)
 ; lutIdx start address is: 20 (R5)
 ORI	R5, R0, 1
 ; inLen end address is: 24 (R6)
 ; lutIdx end address is: 20 (R5)
-L_WIFI4_CLICK_searchLut12:
+L_WIFI4_CLICK_searchLut14:
 ; lutIdx start address is: 20 (R5)
 ; inLen start address is: 24 (R6)
 ANDI	R3, R5, 255
@@ -340,10 +378,10 @@ ANDI	R2, R27, 255
 SLTU	R2, R3, R2
 BNE	R2, R0, L_WIFI4_CLICK_searchLut95
 NOP	
-J	L_WIFI4_CLICK_searchLut13
+J	L_WIFI4_CLICK_searchLut15
 NOP	
 L_WIFI4_CLICK_searchLut95:
-;WIFI4_CLICK.c,192 :: 		lutLen = strlen(pLut[lutIdx]);
+;WIFI4_CLICK.c,226 :: 		lutLen = strlen(pLut[lutIdx]);
 ANDI	R2, R5, 255
 SLL	R2, R2, 1
 ADDU	R2, R26, R2
@@ -354,13 +392,13 @@ NOP
 LW	R25, 4(SP)
 ; lutLen start address is: 28 (R7)
 SEH	R7, R2
-;WIFI4_CLICK.c,194 :: 		for (inOff = 0; inOff < inLen; inOff++)
+;WIFI4_CLICK.c,228 :: 		for (inOff = 0; inOff < inLen; inOff++)
 ; inOff start address is: 32 (R8)
 MOVZ	R8, R0, R0
 ; inLen end address is: 24 (R6)
 ; inOff end address is: 32 (R8)
 ; lutIdx end address is: 20 (R5)
-L_WIFI4_CLICK_searchLut15:
+L_WIFI4_CLICK_searchLut17:
 ; inOff start address is: 32 (R8)
 ; lutLen start address is: 28 (R7)
 ; lutLen end address is: 28 (R7)
@@ -371,11 +409,11 @@ ANDI	R2, R6, 255
 SLTU	R2, R3, R2
 BNE	R2, R0, L_WIFI4_CLICK_searchLut96
 NOP	
-J	L_WIFI4_CLICK_searchLut16
+J	L_WIFI4_CLICK_searchLut18
 NOP	
 L_WIFI4_CLICK_searchLut96:
 ; lutLen end address is: 28 (R7)
-;WIFI4_CLICK.c,196 :: 		if (!strncmp(pLut[lutIdx], pInput + inOff, lutLen))
+;WIFI4_CLICK.c,230 :: 		if (!strncmp(pLut[lutIdx], pInput + inOff, lutLen))
 ; lutLen start address is: 28 (R7)
 ANDI	R2, R8, 255
 ADDU	R3, R25, R2
@@ -395,27 +433,27 @@ LW	R26, 8(SP)
 LBU	R27, 4(SP)
 BEQ	R2, R0, L_WIFI4_CLICK_searchLut97
 NOP	
-J	L_WIFI4_CLICK_searchLut18
+J	L_WIFI4_CLICK_searchLut20
 NOP	
 L_WIFI4_CLICK_searchLut97:
-;WIFI4_CLICK.c,198 :: 		if (SEARCH_IDX == flag)
+;WIFI4_CLICK.c,232 :: 		if (SEARCH_IDX == flag)
 ANDI	R2, R28, 255
 BEQ	R2, R0, L_WIFI4_CLICK_searchLut98
 NOP	
-J	L_WIFI4_CLICK_searchLut19
+J	L_WIFI4_CLICK_searchLut21
 NOP	
 L_WIFI4_CLICK_searchLut98:
 ; lutLen end address is: 28 (R7)
 ; inLen end address is: 24 (R6)
 ; inOff end address is: 32 (R8)
-;WIFI4_CLICK.c,200 :: 		return lutIdx;
+;WIFI4_CLICK.c,234 :: 		return lutIdx;
 ANDI	R2, R5, 255
 ; lutIdx end address is: 20 (R5)
 J	L_end_searchLut
 NOP	
-;WIFI4_CLICK.c,201 :: 		}
-L_WIFI4_CLICK_searchLut19:
-;WIFI4_CLICK.c,202 :: 		else if (SEARCH_OFFSET == flag)
+;WIFI4_CLICK.c,235 :: 		}
+L_WIFI4_CLICK_searchLut21:
+;WIFI4_CLICK.c,236 :: 		else if (SEARCH_OFFSET == flag)
 ; lutIdx start address is: 20 (R5)
 ; inOff start address is: 32 (R8)
 ; inLen start address is: 24 (R6)
@@ -424,46 +462,46 @@ ANDI	R3, R28, 255
 ORI	R2, R0, 1
 BEQ	R3, R2, L_WIFI4_CLICK_searchLut99
 NOP	
-J	L_WIFI4_CLICK_searchLut21
+J	L_WIFI4_CLICK_searchLut23
 NOP	
 L_WIFI4_CLICK_searchLut99:
 ; lutLen end address is: 28 (R7)
 ; inLen end address is: 24 (R6)
 ; lutIdx end address is: 20 (R5)
-;WIFI4_CLICK.c,204 :: 		return inOff;
+;WIFI4_CLICK.c,238 :: 		return inOff;
 ANDI	R2, R8, 255
 ; inOff end address is: 32 (R8)
 J	L_end_searchLut
 NOP	
-;WIFI4_CLICK.c,205 :: 		}
-L_WIFI4_CLICK_searchLut21:
-;WIFI4_CLICK.c,206 :: 		}
+;WIFI4_CLICK.c,239 :: 		}
+L_WIFI4_CLICK_searchLut23:
+;WIFI4_CLICK.c,240 :: 		}
 ; lutIdx start address is: 20 (R5)
 ; inOff start address is: 32 (R8)
 ; inLen start address is: 24 (R6)
 ; lutLen start address is: 28 (R7)
-L_WIFI4_CLICK_searchLut18:
-;WIFI4_CLICK.c,194 :: 		for (inOff = 0; inOff < inLen; inOff++)
+L_WIFI4_CLICK_searchLut20:
+;WIFI4_CLICK.c,228 :: 		for (inOff = 0; inOff < inLen; inOff++)
 ADDIU	R2, R8, 1
 ANDI	R8, R2, 255
-;WIFI4_CLICK.c,207 :: 		}
+;WIFI4_CLICK.c,241 :: 		}
 ; lutLen end address is: 28 (R7)
 ; inOff end address is: 32 (R8)
-J	L_WIFI4_CLICK_searchLut15
+J	L_WIFI4_CLICK_searchLut17
 NOP	
-L_WIFI4_CLICK_searchLut16:
-;WIFI4_CLICK.c,190 :: 		for (lutIdx = 1; lutIdx < lutSize; lutIdx++)
+L_WIFI4_CLICK_searchLut18:
+;WIFI4_CLICK.c,224 :: 		for (lutIdx = 1; lutIdx < lutSize; lutIdx++)
 ADDIU	R2, R5, 1
 ANDI	R5, R2, 255
-;WIFI4_CLICK.c,208 :: 		}
+;WIFI4_CLICK.c,242 :: 		}
 ; inLen end address is: 24 (R6)
 ; lutIdx end address is: 20 (R5)
-J	L_WIFI4_CLICK_searchLut12
+J	L_WIFI4_CLICK_searchLut14
 NOP	
-L_WIFI4_CLICK_searchLut13:
-;WIFI4_CLICK.c,209 :: 		return 0;
+L_WIFI4_CLICK_searchLut15:
+;WIFI4_CLICK.c,243 :: 		return 0;
 MOVZ	R2, R0, R0
-;WIFI4_CLICK.c,210 :: 		}
+;WIFI4_CLICK.c,244 :: 		}
 L_end_searchLut:
 LW	RA, 0(SP)
 ADDIU	SP, SP, 16
@@ -471,46 +509,48 @@ JR	RA
 NOP	
 ; end of WIFI4_CLICK_searchLut
 WIFI4_CLICK_createEvent:
-;WIFI4_CLICK.c,211 :: 		static void createEvent( char *pInput, T_CORE_event *pEvent )
+;WIFI4_CLICK.c,245 :: 		static void createEvent( char *pInput, T_CORE_event *pEvent )
 ADDIU	SP, SP, -36
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,213 :: 		uint8_t hIdx     = 0;
+;WIFI4_CLICK.c,247 :: 		uint8_t hIdx     = 0;
 SW	R25, 4(SP)
 SW	R27, 8(SP)
 SW	R28, 12(SP)
-;WIFI4_CLICK.c,214 :: 		uint8_t startIdx = 0;
-;WIFI4_CLICK.c,215 :: 		uint8_t startOff = 0;
-;WIFI4_CLICK.c,216 :: 		uint8_t endIdx   = 0;
-;WIFI4_CLICK.c,217 :: 		uint8_t endOff   = 0;
-;WIFI4_CLICK.c,219 :: 		char tmp[_WIFI4_CMD_MAXSIZE + 1] = { 0 };
+;WIFI4_CLICK.c,248 :: 		uint8_t startIdx = 0;
+;WIFI4_CLICK.c,249 :: 		uint8_t startOff = 0;
+;WIFI4_CLICK.c,250 :: 		uint8_t endIdx   = 0;
+;WIFI4_CLICK.c,251 :: 		uint8_t endOff   = 0;
+;WIFI4_CLICK.c,253 :: 		char tmp[_WIFI4_CMD_MAXSIZE + 1] = { 0 };
 ADDIU	R23, SP, 24
 ADDIU	R22, R23, 11
 LUI	R24, hi_addr(?ICSWIFI4_CLICK_createEvent_tmp_L0+0)
 ORI	R24, R24, lo_addr(?ICSWIFI4_CLICK_createEvent_tmp_L0+0)
 JAL	___CC2DW+0
 NOP	
-;WIFI4_CLICK.c,222 :: 		startIdx = searchLut(pInput, LUT_START, LUT_SIZE, SEARCH_IDX);
+;WIFI4_CLICK.c,256 :: 		startIdx = searchLut(pInput, LUT_START, LUT_SIZE, SEARCH_IDX);
 SW	R26, 16(SP)
 SW	R25, 20(SP)
 MOVZ	R28, R0, R0
-ORI	R27, R0, 3
+ORI	R27, R0, 4
 LUI	R26, hi_addr(WIFI4_CLICK_LUT_START+0)
 ORI	R26, R26, lo_addr(WIFI4_CLICK_LUT_START+0)
 JAL	WIFI4_CLICK_searchLut+0
 NOP	
 LW	R25, 20(SP)
-;WIFI4_CLICK.c,223 :: 		startOff = searchLut(pInput, LUT_START, LUT_SIZE, SEARCH_OFFSET);
+; startIdx start address is: 36 (R9)
+ANDI	R9, R2, 255
+;WIFI4_CLICK.c,257 :: 		startOff = searchLut(pInput, LUT_START, LUT_SIZE, SEARCH_OFFSET);
 SW	R25, 20(SP)
 ORI	R28, R0, 1
-ORI	R27, R0, 3
+ORI	R27, R0, 4
 LUI	R26, hi_addr(WIFI4_CLICK_LUT_START+0)
 ORI	R26, R26, lo_addr(WIFI4_CLICK_LUT_START+0)
 JAL	WIFI4_CLICK_searchLut+0
 NOP	
 LW	R25, 20(SP)
-; startOff start address is: 36 (R9)
-ANDI	R9, R2, 255
-;WIFI4_CLICK.c,224 :: 		endIdx = searchLut(pInput, LUT_END, LUT_SIZE_END, SEARCH_IDX);
+; startOff start address is: 44 (R11)
+ANDI	R11, R2, 255
+;WIFI4_CLICK.c,258 :: 		endIdx = searchLut(pInput, LUT_END, LUT_SIZE_END, SEARCH_IDX);
 SW	R25, 20(SP)
 MOVZ	R28, R0, R0
 ORI	R27, R0, 4
@@ -519,7 +559,9 @@ ORI	R26, R26, lo_addr(WIFI4_CLICK_LUT_END+0)
 JAL	WIFI4_CLICK_searchLut+0
 NOP	
 LW	R25, 20(SP)
-;WIFI4_CLICK.c,225 :: 		endOff = searchLut(pInput, LUT_END, LUT_SIZE_END, SEARCH_OFFSET);
+; endIdx start address is: 40 (R10)
+ANDI	R10, R2, 255
+;WIFI4_CLICK.c,259 :: 		endOff = searchLut(pInput, LUT_END, LUT_SIZE_END, SEARCH_OFFSET);
 SW	R25, 20(SP)
 ORI	R28, R0, 1
 ORI	R27, R0, 4
@@ -531,34 +573,34 @@ LW	R25, 20(SP)
 LW	R26, 16(SP)
 ; endOff start address is: 12 (R3)
 ANDI	R3, R2, 255
-;WIFI4_CLICK.c,227 :: 		if (0 == endOff)
+;WIFI4_CLICK.c,261 :: 		if (0 == endOff)
 ANDI	R2, R2, 255
 BEQ	R2, R0, L_WIFI4_CLICK_createEvent101
 NOP	
-J	L_WIFI4_CLICK_createEvent71
+J	L_WIFI4_CLICK_createEvent69
 NOP	
 L_WIFI4_CLICK_createEvent101:
 ; endOff end address is: 12 (R3)
-;WIFI4_CLICK.c,229 :: 		endOff = _WIFI4_CMD_MAXSIZE;
+;WIFI4_CLICK.c,263 :: 		endOff = _WIFI4_CMD_MAXSIZE;
 ; endOff start address is: 16 (R4)
 ORI	R4, R0, 10
 ; endOff end address is: 16 (R4)
-;WIFI4_CLICK.c,230 :: 		}
-J	L_WIFI4_CLICK_createEvent22
+;WIFI4_CLICK.c,264 :: 		}
+J	L_WIFI4_CLICK_createEvent24
 NOP	
-L_WIFI4_CLICK_createEvent71:
-;WIFI4_CLICK.c,227 :: 		if (0 == endOff)
+L_WIFI4_CLICK_createEvent69:
+;WIFI4_CLICK.c,261 :: 		if (0 == endOff)
 ANDI	R4, R3, 255
-;WIFI4_CLICK.c,230 :: 		}
-L_WIFI4_CLICK_createEvent22:
-;WIFI4_CLICK.c,233 :: 		strncpy(tmp, pInput + startOff, endOff - startOff);
+;WIFI4_CLICK.c,264 :: 		}
+L_WIFI4_CLICK_createEvent24:
+;WIFI4_CLICK.c,267 :: 		strncpy(tmp, pInput + startOff, endOff - startOff);
 ; endOff start address is: 16 (R4)
-ANDI	R3, R9, 255
+ANDI	R3, R11, 255
 ANDI	R2, R4, 255
 ; endOff end address is: 16 (R4)
 SUBU	R4, R2, R3
-ANDI	R2, R9, 255
-; startOff end address is: 36 (R9)
+ANDI	R2, R11, 255
+; startOff end address is: 44 (R11)
 ADDU	R3, R25, R2
 ADDIU	R2, SP, 24
 SW	R26, 16(SP)
@@ -568,14 +610,14 @@ MOVZ	R25, R2, R0
 JAL	_strncpy+0
 NOP	
 LW	R26, 16(SP)
-;WIFI4_CLICK.c,234 :: 		hIdx                         = locateHandler(tmp);
+;WIFI4_CLICK.c,268 :: 		hIdx                         = locateHandler(tmp);
 ADDIU	R2, SP, 24
 MOVZ	R25, R2, R0
 JAL	WIFI4_CLICK_locateHandler+0
 NOP	
 ; hIdx start address is: 20 (R5)
 ANDI	R5, R2, 65535
-;WIFI4_CLICK.c,235 :: 		pEvent->fpHdl                = hdB.storage[hIdx].handler;
+;WIFI4_CLICK.c,269 :: 		pEvent->fpHdl                = hdB.storage[hIdx].handler;
 ANDI	R2, R2, 255
 SLL	R3, R2, 4
 LUI	R2, hi_addr(WIFI4_CLICK_hdB+4)
@@ -584,7 +626,7 @@ ADDU	R2, R2, R3
 ADDIU	R2, R2, 12
 LW	R2, 0(R2)
 SW	R2, 0(R26)
-;WIFI4_CLICK.c,236 :: 		pEvent->wDogLimit            = hdB.storage[hIdx].timeout;
+;WIFI4_CLICK.c,270 :: 		pEvent->wDogLimit            = hdB.storage[hIdx].timeout;
 ADDIU	R4, R26, 4
 ANDI	R2, R5, 255
 ; hIdx end address is: 20 (R5)
@@ -595,7 +637,16 @@ ADDU	R2, R2, R3
 ADDIU	R2, R2, 8
 LW	R2, 0(R2)
 SW	R2, 0(R4)
-;WIFI4_CLICK.c,239 :: 		}
+;WIFI4_CLICK.c,271 :: 		pEvent->evArg[_WIFI4_EVARG_START_T]  = startIdx;
+ADDIU	R2, R26, 8
+SB	R9, 0(R2)
+; startIdx end address is: 36 (R9)
+;WIFI4_CLICK.c,272 :: 		pEvent->evArg[_WIFI4_EVARG_END_T]    = endIdx;
+ADDIU	R2, R26, 8
+ADDIU	R2, R2, 1
+SB	R10, 0(R2)
+; endIdx end address is: 40 (R10)
+;WIFI4_CLICK.c,273 :: 		}
 L_end_createEvent:
 LW	R28, 12(SP)
 LW	R27, 8(SP)
@@ -605,36 +656,167 @@ ADDIU	SP, SP, 36
 JR	RA
 NOP	
 ; end of WIFI4_CLICK_createEvent
+WIFI4_CLICK_cmdSingle:
+;WIFI4_CLICK.c,276 :: 		static void cmdSingle(char* command,char *param,uint16_t wTime,uint8_t f_cpyResp){
+ADDIU	SP, SP, -76
+SW	RA, 0(SP)
+;WIFI4_CLICK.c,278 :: 		strcpy(tmp,command);
+SW	R25, 4(SP)
+SW	R26, 8(SP)
+ADDIU	R2, SP, 24
+SW	R26, 12(SP)
+MOVZ	R26, R25, R0
+MOVZ	R25, R2, R0
+JAL	_strcpy+0
+NOP	
+LW	R26, 12(SP)
+;WIFI4_CLICK.c,279 :: 		strcat(tmp,param);
+ADDIU	R2, SP, 24
+MOVZ	R25, R2, R0
+JAL	_strcat+0
+NOP	
+;WIFI4_CLICK.c,280 :: 		strcpy(txBuff,tmp);
+ADDIU	R2, SP, 24
+MOVZ	R26, R2, R0
+LUI	R25, hi_addr(WIFI4_CLICK_txBuff+0)
+ORI	R25, R25, lo_addr(WIFI4_CLICK_txBuff+0)
+JAL	_strcpy+0
+NOP	
+;WIFI4_CLICK.c,282 :: 		while(0 != flag_cmdEx)
+L_WIFI4_CLICK_cmdSingle25:
+LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
+BNE	R2, R0, L_WIFI4_CLICK_cmdSingle104
+NOP	
+J	L_WIFI4_CLICK_cmdSingle26
+NOP	
+L_WIFI4_CLICK_cmdSingle104:
+;WIFI4_CLICK.c,284 :: 		WIFI4_process();
+SB	R28, 12(SP)
+SH	R27, 14(SP)
+SW	R26, 16(SP)
+SW	R25, 20(SP)
+JAL	_WIFI4_process+0
+NOP	
+LW	R25, 20(SP)
+LW	R26, 16(SP)
+LHU	R27, 14(SP)
+LBU	R28, 12(SP)
+;WIFI4_CLICK.c,285 :: 		}
+J	L_WIFI4_CLICK_cmdSingle25
+NOP	
+L_WIFI4_CLICK_cmdSingle26:
+;WIFI4_CLICK.c,286 :: 		createEvent(tmp,&currentEv);
+ADDIU	R2, SP, 24
+SH	R27, 12(SP)
+SW	R26, 16(SP)
+SW	R25, 20(SP)
+LUI	R26, hi_addr(WIFI4_CLICK_currentEv+0)
+ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)
+MOVZ	R25, R2, R0
+JAL	WIFI4_CLICK_createEvent+0
+NOP	
+LW	R25, 20(SP)
+LW	R26, 16(SP)
+LHU	R27, 12(SP)
+;WIFI4_CLICK.c,287 :: 		WIFI4_writeText2(tmp);
+ADDIU	R2, SP, 24
+SB	R28, 12(SP)
+SH	R27, 14(SP)
+SW	R26, 16(SP)
+SW	R25, 20(SP)
+MOVZ	R25, R2, R0
+JAL	_WIFI4_writeText2+0
+NOP	
+LW	R25, 20(SP)
+LW	R26, 16(SP)
+LHU	R27, 14(SP)
+LBU	R28, 12(SP)
+;WIFI4_CLICK.c,289 :: 		watchDogTime=0; //reset watchdog
+SH	R0, Offset(WIFI4_CLICK_watchDogTime+0)(GP)
+;WIFI4_CLICK.c,290 :: 		waitTime=wTime;
+SH	R27, Offset(WIFI4_CLICK_waitTime+0)(GP)
+;WIFI4_CLICK.c,291 :: 		f_wdogStart=1;
+ORI	R2, R0, 1
+SB	R2, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
+;WIFI4_CLICK.c,292 :: 		f_timerStart=1;
+ORI	R2, R0, 1
+SB	R2, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
+;WIFI4_CLICK.c,293 :: 		flag_cmdEx=1;
+ORI	R2, R0, 1
+SB	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
+;WIFI4_CLICK.c,294 :: 		f_cpyRXtoTmp=f_cpyResp;
+SB	R28, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
+;WIFI4_CLICK.c,296 :: 		while(0 != flag_cmdEx)
+L_WIFI4_CLICK_cmdSingle27:
+LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
+BNE	R2, R0, L_WIFI4_CLICK_cmdSingle106
+NOP	
+J	L_WIFI4_CLICK_cmdSingle28
+NOP	
+L_WIFI4_CLICK_cmdSingle106:
+;WIFI4_CLICK.c,298 :: 		WIFI4_process();
+SB	R28, 12(SP)
+SH	R27, 14(SP)
+SW	R26, 16(SP)
+SW	R25, 20(SP)
+JAL	_WIFI4_process+0
+NOP	
+LW	R25, 20(SP)
+LW	R26, 16(SP)
+LHU	R27, 14(SP)
+LBU	R28, 12(SP)
+;WIFI4_CLICK.c,299 :: 		}
+J	L_WIFI4_CLICK_cmdSingle27
+NOP	
+L_WIFI4_CLICK_cmdSingle28:
+;WIFI4_CLICK.c,300 :: 		waitTime=DEFAULT_WTIME;
+ORI	R2, R0, 5
+SH	R2, Offset(WIFI4_CLICK_waitTime+0)(GP)
+;WIFI4_CLICK.c,301 :: 		}
+L_end_cmdSingle:
+LW	R26, 8(SP)
+LW	R25, 4(SP)
+LW	RA, 0(SP)
+ADDIU	SP, SP, 76
+JR	RA
+NOP	
+; end of WIFI4_CLICK_cmdSingle
 _WIFI4_coreInit:
-;WIFI4_CLICK.c,253 :: 		void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog)
+;WIFI4_CLICK.c,302 :: 		void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog)
 ADDIU	SP, SP, -8
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,256 :: 		flag_cmdEx          = 0;
+;WIFI4_CLICK.c,305 :: 		flag_cmdEx          = 0;
 SW	R25, 4(SP)
 SB	R0, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-;WIFI4_CLICK.c,258 :: 		flag_timesUp=0;
+;WIFI4_CLICK.c,306 :: 		flag_timesUp=0;
 SB	R0, Offset(WIFI4_CLICK_flag_timesUp+0)(GP)
-;WIFI4_CLICK.c,259 :: 		flag_wdogOut=0;
+;WIFI4_CLICK.c,307 :: 		flag_wdogOut=0;
 SB	R0, Offset(WIFI4_CLICK_flag_wdogOut+0)(GP)
-;WIFI4_CLICK.c,261 :: 		waitTime=DEFAULT_WTIME;
+;WIFI4_CLICK.c,308 :: 		respTime=0;
+SW	R0, Offset(WIFI4_CLICK_respTime+0)(GP)
+;WIFI4_CLICK.c,309 :: 		rxB.buff[0]=0;
+SB	R0, Offset(WIFI4_CLICK_rxB+0)(GP)
+;WIFI4_CLICK.c,310 :: 		rxB.ind=0;
+SH	R0, Offset(WIFI4_CLICK_rxB+2500)(GP)
+;WIFI4_CLICK.c,311 :: 		waitTime=DEFAULT_WTIME;
 ORI	R2, R0, 5
-SW	R2, Offset(WIFI4_CLICK_waitTime+0)(GP)
-;WIFI4_CLICK.c,263 :: 		hdB.storage[0].handler = defaultHdl;
+SH	R2, Offset(WIFI4_CLICK_waitTime+0)(GP)
+;WIFI4_CLICK.c,313 :: 		hdB.storage[0].handler = defaultHdl;
 SW	R25, Offset(WIFI4_CLICK_hdB+16)(GP)
-;WIFI4_CLICK.c,264 :: 		hdB.storage[0].timeout = defaultWdog;
+;WIFI4_CLICK.c,314 :: 		hdB.storage[0].timeout = defaultWdog;
 SW	R26, Offset(WIFI4_CLICK_hdB+12)(GP)
-;WIFI4_CLICK.c,265 :: 		hdB.storage[0].hash    = generateHash("");
+;WIFI4_CLICK.c,315 :: 		hdB.storage[0].hash    = generateHash("");
 LUI	R25, hi_addr(?lstr1_WIFI4_CLICK+0)
 ORI	R25, R25, lo_addr(?lstr1_WIFI4_CLICK+0)
 JAL	WIFI4_CLICK_generateHash+0
 NOP	
 SW	R2, Offset(WIFI4_CLICK_hdB+8)(GP)
-;WIFI4_CLICK.c,266 :: 		hdB.storage[0].len     = 0;
+;WIFI4_CLICK.c,316 :: 		hdB.storage[0].len     = 0;
 SH	R0, Offset(WIFI4_CLICK_hdB+4)(GP)
-;WIFI4_CLICK.c,267 :: 		hdB.idx                = 1;
+;WIFI4_CLICK.c,317 :: 		hdB.idx                = 1;
 ORI	R2, R0, 1
 SH	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
-;WIFI4_CLICK.c,268 :: 		}
+;WIFI4_CLICK.c,318 :: 		}
 L_end_WIFI4_coreInit:
 LW	R25, 4(SP)
 LW	RA, 0(SP)
@@ -643,46 +825,46 @@ JR	RA
 NOP	
 ; end of _WIFI4_coreInit
 _WIFI4_setHandler:
-;WIFI4_CLICK.c,270 :: 		uint16_t WIFI4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler )
+;WIFI4_CLICK.c,320 :: 		uint16_t WIFI4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler )
 ADDIU	SP, SP, -12
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,273 :: 		if (_WIFI4_STORAGE_SIZE <= hdB.idx)
+;WIFI4_CLICK.c,323 :: 		if (_WIFI4_STORAGE_SIZE <= hdB.idx)
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
-SLTIU	R2, R2, 8
-BEQ	R2, R0, L__WIFI4_setHandler104
+SLTIU	R2, R2, 16
+BEQ	R2, R0, L__WIFI4_setHandler109
 NOP	
-J	L_WIFI4_setHandler23
+J	L_WIFI4_setHandler29
 NOP	
-L__WIFI4_setHandler104:
-;WIFI4_CLICK.c,275 :: 		return 0;
+L__WIFI4_setHandler109:
+;WIFI4_CLICK.c,325 :: 		return 0;
 MOVZ	R2, R0, R0
 J	L_end_WIFI4_setHandler
 NOP	
-;WIFI4_CLICK.c,276 :: 		}
-L_WIFI4_setHandler23:
-;WIFI4_CLICK.c,277 :: 		if (locateHandler(pCmd)) //ako vec postoji handler za komandu
+;WIFI4_CLICK.c,326 :: 		}
+L_WIFI4_setHandler29:
+;WIFI4_CLICK.c,327 :: 		if (locateHandler(pCmd)) //ako vec postoji handler za komandu
 SW	R25, 4(SP)
 JAL	WIFI4_CLICK_locateHandler+0
 NOP	
 LW	R25, 4(SP)
-BNE	R2, R0, L__WIFI4_setHandler106
+BNE	R2, R0, L__WIFI4_setHandler111
 NOP	
-J	L_WIFI4_setHandler24
+J	L_WIFI4_setHandler30
 NOP	
-L__WIFI4_setHandler106:
-;WIFI4_CLICK.c,279 :: 		return 0;
+L__WIFI4_setHandler111:
+;WIFI4_CLICK.c,329 :: 		return 0;
 MOVZ	R2, R0, R0
 J	L_end_WIFI4_setHandler
 NOP	
-;WIFI4_CLICK.c,280 :: 		}
-L_WIFI4_setHandler24:
-;WIFI4_CLICK.c,283 :: 		if (0 == pHandler)
-BEQ	R27, R0, L__WIFI4_setHandler107
+;WIFI4_CLICK.c,330 :: 		}
+L_WIFI4_setHandler30:
+;WIFI4_CLICK.c,333 :: 		if (0 == pHandler)
+BEQ	R27, R0, L__WIFI4_setHandler112
 NOP	
-J	L_WIFI4_setHandler25
+J	L_WIFI4_setHandler31
 NOP	
-L__WIFI4_setHandler107:
-;WIFI4_CLICK.c,285 :: 		hdB.storage[hdB.idx].handler = hdB.storage[0].handler;
+L__WIFI4_setHandler112:
+;WIFI4_CLICK.c,335 :: 		hdB.storage[hdB.idx].handler = hdB.storage[0].handler;
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
 SLL	R3, R2, 4
 LUI	R2, hi_addr(WIFI4_CLICK_hdB+4)
@@ -691,11 +873,11 @@ ADDU	R2, R2, R3
 ADDIU	R3, R2, 12
 LW	R2, Offset(WIFI4_CLICK_hdB+16)(GP)
 SW	R2, 0(R3)
-;WIFI4_CLICK.c,286 :: 		}
-J	L_WIFI4_setHandler26
+;WIFI4_CLICK.c,336 :: 		}
+J	L_WIFI4_setHandler32
 NOP	
-L_WIFI4_setHandler25:
-;WIFI4_CLICK.c,289 :: 		hdB.storage[hdB.idx].handler = pHandler;
+L_WIFI4_setHandler31:
+;WIFI4_CLICK.c,339 :: 		hdB.storage[hdB.idx].handler = pHandler;
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
 SLL	R3, R2, 4
 LUI	R2, hi_addr(WIFI4_CLICK_hdB+4)
@@ -703,15 +885,15 @@ ORI	R2, R2, lo_addr(WIFI4_CLICK_hdB+4)
 ADDU	R2, R2, R3
 ADDIU	R2, R2, 12
 SW	R27, 0(R2)
-;WIFI4_CLICK.c,290 :: 		}
-L_WIFI4_setHandler26:
-;WIFI4_CLICK.c,291 :: 		if (0 == timeout)
-BEQ	R26, R0, L__WIFI4_setHandler108
+;WIFI4_CLICK.c,340 :: 		}
+L_WIFI4_setHandler32:
+;WIFI4_CLICK.c,341 :: 		if (0 == timeout)
+BEQ	R26, R0, L__WIFI4_setHandler113
 NOP	
-J	L_WIFI4_setHandler27
+J	L_WIFI4_setHandler33
 NOP	
-L__WIFI4_setHandler108:
-;WIFI4_CLICK.c,293 :: 		hdB.storage[hdB.idx].timeout =hdB.storage[0].timeout;
+L__WIFI4_setHandler113:
+;WIFI4_CLICK.c,343 :: 		hdB.storage[hdB.idx].timeout =hdB.storage[0].timeout;
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
 SLL	R3, R2, 4
 LUI	R2, hi_addr(WIFI4_CLICK_hdB+4)
@@ -720,11 +902,11 @@ ADDU	R2, R2, R3
 ADDIU	R3, R2, 8
 LW	R2, Offset(WIFI4_CLICK_hdB+12)(GP)
 SW	R2, 0(R3)
-;WIFI4_CLICK.c,294 :: 		}
-J	L_WIFI4_setHandler28
+;WIFI4_CLICK.c,344 :: 		}
+J	L_WIFI4_setHandler34
 NOP	
-L_WIFI4_setHandler27:
-;WIFI4_CLICK.c,297 :: 		hdB.storage[hdB.idx].timeout = timeout;
+L_WIFI4_setHandler33:
+;WIFI4_CLICK.c,347 :: 		hdB.storage[hdB.idx].timeout = timeout;
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
 SLL	R3, R2, 4
 LUI	R2, hi_addr(WIFI4_CLICK_hdB+4)
@@ -732,9 +914,9 @@ ORI	R2, R2, lo_addr(WIFI4_CLICK_hdB+4)
 ADDU	R2, R2, R3
 ADDIU	R2, R2, 8
 SW	R26, 0(R2)
-;WIFI4_CLICK.c,298 :: 		}
-L_WIFI4_setHandler28:
-;WIFI4_CLICK.c,300 :: 		hdB.storage[hdB.idx].len  = strlen(pCmd);
+;WIFI4_CLICK.c,348 :: 		}
+L_WIFI4_setHandler34:
+;WIFI4_CLICK.c,350 :: 		hdB.storage[hdB.idx].len  = strlen(pCmd);
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
 SLL	R3, R2, 4
 LUI	R2, hi_addr(WIFI4_CLICK_hdB+4)
@@ -745,7 +927,7 @@ JAL	_strlen+0
 NOP	
 LW	R3, 8(SP)
 SH	R2, 0(R3)
-;WIFI4_CLICK.c,301 :: 		hdB.storage[hdB.idx].hash = generateHash(pCmd);
+;WIFI4_CLICK.c,351 :: 		hdB.storage[hdB.idx].hash = generateHash(pCmd);
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
 SLL	R3, R2, 4
 LUI	R2, hi_addr(WIFI4_CLICK_hdB+4)
@@ -757,94 +939,25 @@ JAL	WIFI4_CLICK_generateHash+0
 NOP	
 LW	R3, 8(SP)
 SW	R2, 0(R3)
-;WIFI4_CLICK.c,302 :: 		hdB.idx++;
+;WIFI4_CLICK.c,352 :: 		hdB.idx++;
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
 ADDIU	R2, R2, 1
 SH	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
-;WIFI4_CLICK.c,304 :: 		return hdB.idx-1; //return index in handler storage
+;WIFI4_CLICK.c,354 :: 		return hdB.idx-1; //return index in handler storage
 LHU	R2, Offset(WIFI4_CLICK_hdB+0)(GP)
 ADDIU	R2, R2, -1
-;WIFI4_CLICK.c,305 :: 		}
+;WIFI4_CLICK.c,355 :: 		}
 L_end_WIFI4_setHandler:
 LW	RA, 0(SP)
 ADDIU	SP, SP, 12
 JR	RA
 NOP	
 ; end of _WIFI4_setHandler
-_WIFI4_responseRec:
-;WIFI4_CLICK.c,310 :: 		void WIFI4_responseRec(uint16_t timeW)
-;WIFI4_CLICK.c,315 :: 		uint8_t flag1=0,endFLag=0;
-; endFLag start address is: 16 (R4)
-MOVZ	R4, R0, R0
-;WIFI4_CLICK.c,317 :: 		cnt=0;
-; cnt start address is: 8 (R2)
-MOVZ	R2, R0, R0
-; cnt end address is: 8 (R2)
-; endFLag end address is: 16 (R4)
-;WIFI4_CLICK.c,318 :: 		while( 1 != endFlag && rxB.ind<BUFF_MAXSIZE)
-L_WIFI4_responseRec29:
-; endFLag start address is: 16 (R4)
-ANDI	R3, R4, 255
-ORI	R2, R0, 1
-BNE	R3, R2, L__WIFI4_responseRec111
-NOP	
-J	L__WIFI4_responseRec74
-NOP	
-L__WIFI4_responseRec111:
-LHU	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
-SLTIU	R2, R2, 2500
-BNE	R2, R0, L__WIFI4_responseRec112
-NOP	
-J	L__WIFI4_responseRec73
-NOP	
-L__WIFI4_responseRec112:
-L__WIFI4_responseRec72:
-;WIFI4_CLICK.c,321 :: 		if(respTime>timeW) //ako nema odgovra vise od 5ms!
-ANDI	R3, R25, 65535
-LW	R2, Offset(WIFI4_CLICK_respTime+0)(GP)
-SLTU	R2, R3, R2
-BNE	R2, R0, L__WIFI4_responseRec113
-NOP	
-J	L__WIFI4_responseRec75
-NOP	
-L__WIFI4_responseRec113:
-; endFLag end address is: 16 (R4)
-;WIFI4_CLICK.c,323 :: 		endFlag=1; // kraj responsa
-; endFLag start address is: 8 (R2)
-ORI	R2, R0, 1
-; endFLag end address is: 8 (R2)
-ANDI	R4, R2, 255
-;WIFI4_CLICK.c,324 :: 		}
-J	L_WIFI4_responseRec33
-NOP	
-L__WIFI4_responseRec75:
-;WIFI4_CLICK.c,321 :: 		if(respTime>timeW) //ako nema odgovra vise od 5ms!
-;WIFI4_CLICK.c,324 :: 		}
-L_WIFI4_responseRec33:
-;WIFI4_CLICK.c,325 :: 		}
-; endFLag start address is: 16 (R4)
-; endFLag end address is: 16 (R4)
-J	L_WIFI4_responseRec29
-NOP	
-;WIFI4_CLICK.c,318 :: 		while( 1 != endFlag && rxB.ind<BUFF_MAXSIZE)
-L__WIFI4_responseRec74:
-L__WIFI4_responseRec73:
-;WIFI4_CLICK.c,327 :: 		rxB.buff[rxB.ind]='\0';
-LHU	R3, Offset(WIFI4_CLICK_rxB+2500)(GP)
-LUI	R2, hi_addr(WIFI4_CLICK_rxB+0)
-ORI	R2, R2, lo_addr(WIFI4_CLICK_rxB+0)
-ADDU	R2, R2, R3
-SB	R0, 0(R2)
-;WIFI4_CLICK.c,328 :: 		}
-L_end_WIFI4_responseRec:
-JR	RA
-NOP	
-; end of _WIFI4_responseRec
 _StrToHex:
-;WIFI4_CLICK.c,329 :: 		void StrToHex(uint8_t *string,uint8_t *output)
+;WIFI4_CLICK.c,358 :: 		void StrToHex(uint8_t *string,uint8_t *output)
 ADDIU	SP, SP, -96
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,334 :: 		strcpy(hex,"");
+;WIFI4_CLICK.c,363 :: 		strcpy(hex,"");
 ADDIU	R2, SP, 15
 SW	R26, 4(SP)
 SW	R25, 8(SP)
@@ -855,11 +968,11 @@ JAL	_strcpy+0
 NOP	
 LW	R25, 8(SP)
 LW	R26, 4(SP)
-;WIFI4_CLICK.c,336 :: 		for(i=0;i<strlen(string)-1;i++)
+;WIFI4_CLICK.c,365 :: 		for(i=0;i<strlen(string)-1;i++)
 ; i start address is: 24 (R6)
 MOVZ	R6, R0, R0
 ; i end address is: 24 (R6)
-L_StrToHex34:
+L_StrToHex35:
 ; i start address is: 24 (R6)
 JAL	_strlen+0
 NOP	
@@ -869,10 +982,10 @@ SEH	R2, R2
 SLT	R2, R3, R2
 BNE	R2, R0, L__StrToHex115
 NOP	
-J	L_StrToHex35
+J	L_StrToHex36
 NOP	
 L__StrToHex115:
-;WIFI4_CLICK.c,338 :: 		ByteToHex(string[i],tmp);
+;WIFI4_CLICK.c,367 :: 		ByteToHex(string[i],tmp);
 ADDIU	R3, SP, 12
 ANDI	R2, R6, 255
 ADDU	R2, R25, R2
@@ -883,7 +996,7 @@ MOVZ	R26, R3, R0
 ANDI	R25, R2, 255
 JAL	_ByteToHex+0
 NOP	
-;WIFI4_CLICK.c,339 :: 		strcat(hex,tmp);
+;WIFI4_CLICK.c,368 :: 		strcat(hex,tmp);
 ADDIU	R3, SP, 12
 ADDIU	R2, SP, 15
 MOVZ	R26, R3, R0
@@ -892,15 +1005,15 @@ JAL	_strcat+0
 NOP	
 LW	R25, 8(SP)
 LW	R26, 4(SP)
-;WIFI4_CLICK.c,336 :: 		for(i=0;i<strlen(string)-1;i++)
+;WIFI4_CLICK.c,365 :: 		for(i=0;i<strlen(string)-1;i++)
 ADDIU	R2, R6, 1
 ANDI	R6, R2, 255
-;WIFI4_CLICK.c,340 :: 		}
+;WIFI4_CLICK.c,369 :: 		}
 ; i end address is: 24 (R6)
-J	L_StrToHex34
+J	L_StrToHex35
 NOP	
-L_StrToHex35:
-;WIFI4_CLICK.c,341 :: 		strcpy(output,hex);
+L_StrToHex36:
+;WIFI4_CLICK.c,370 :: 		strcpy(output,hex);
 ADDIU	R2, SP, 15
 SW	R26, 4(SP)
 SW	R25, 8(SP)
@@ -910,7 +1023,7 @@ JAL	_strcpy+0
 NOP	
 LW	R25, 8(SP)
 LW	R26, 4(SP)
-;WIFI4_CLICK.c,342 :: 		}
+;WIFI4_CLICK.c,371 :: 		}
 L_end_StrToHex:
 LW	RA, 0(SP)
 ADDIU	SP, SP, 96
@@ -918,24 +1031,24 @@ JR	RA
 NOP	
 ; end of _StrToHex
 _WIFI4_writeText:
-;WIFI4_CLICK.c,344 :: 		void WIFI4_writeText(uint8_t *txt,uint8_t nBytes)
+;WIFI4_CLICK.c,377 :: 		void WIFI4_writeText(uint8_t *txt,uint8_t nBytes)
 ADDIU	SP, SP, -12
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,347 :: 		for(i=0;i<nBytes;i++)
+;WIFI4_CLICK.c,380 :: 		for(i=0;i<nBytes;i++)
 ; i start address is: 16 (R4)
 MOVZ	R4, R0, R0
 ; i end address is: 16 (R4)
-L_WIFI4_writeText37:
+L_WIFI4_writeText38:
 ; i start address is: 16 (R4)
 ANDI	R3, R4, 255
 ANDI	R2, R26, 255
 SLTU	R2, R3, R2
 BNE	R2, R0, L__WIFI4_writeText117
 NOP	
-J	L_WIFI4_writeText38
+J	L_WIFI4_writeText39
 NOP	
 L__WIFI4_writeText117:
-;WIFI4_CLICK.c,349 :: 		hal_uartWrite(txt[i]);
+;WIFI4_CLICK.c,382 :: 		hal_uartWrite(txt[i]);
 ANDI	R2, R4, 255
 ADDU	R2, R25, R2
 SB	R4, 4(SP)
@@ -947,15 +1060,15 @@ NOP
 LW	R25, 8(SP)
 LBU	R26, 5(SP)
 LBU	R4, 4(SP)
-;WIFI4_CLICK.c,347 :: 		for(i=0;i<nBytes;i++)
+;WIFI4_CLICK.c,380 :: 		for(i=0;i<nBytes;i++)
 ADDIU	R2, R4, 1
 ANDI	R4, R2, 255
-;WIFI4_CLICK.c,350 :: 		}
+;WIFI4_CLICK.c,383 :: 		}
 ; i end address is: 16 (R4)
-J	L_WIFI4_writeText37
+J	L_WIFI4_writeText38
 NOP	
-L_WIFI4_writeText38:
-;WIFI4_CLICK.c,351 :: 		hal_uartWrite(TERMINATION_CHAR);
+L_WIFI4_writeText39:
+;WIFI4_CLICK.c,384 :: 		hal_uartWrite(TERMINATION_CHAR);
 SB	R26, 4(SP)
 SW	R25, 8(SP)
 ORI	R25, R0, 13
@@ -963,80 +1076,42 @@ JAL	WIFI4_CLICK_hal_uartWrite+0
 NOP	
 LW	R25, 8(SP)
 LBU	R26, 4(SP)
-;WIFI4_CLICK.c,352 :: 		}
+;WIFI4_CLICK.c,385 :: 		}
 L_end_WIFI4_writeText:
 LW	RA, 0(SP)
 ADDIU	SP, SP, 12
 JR	RA
 NOP	
 ; end of _WIFI4_writeText
-_WIFI4_writeText2:
-;WIFI4_CLICK.c,356 :: 		void WIFI4_writeText2(uint8_t *txt)
-ADDIU	SP, SP, -8
-SW	RA, 0(SP)
-;WIFI4_CLICK.c,359 :: 		while(0 != *txt)
-L_WIFI4_writeText240:
-LBU	R2, 0(R25)
-ANDI	R2, R2, 255
-BNE	R2, R0, L__WIFI4_writeText2120
-NOP	
-J	L_WIFI4_writeText241
-NOP	
-L__WIFI4_writeText2120:
-;WIFI4_CLICK.c,361 :: 		hal_uartWrite(*txt++);
-SW	R25, 4(SP)
-LBU	R25, 0(R25)
-JAL	WIFI4_CLICK_hal_uartWrite+0
-NOP	
-LW	R25, 4(SP)
-ADDIU	R2, R25, 1
-MOVZ	R25, R2, R0
-;WIFI4_CLICK.c,362 :: 		}
-J	L_WIFI4_writeText240
-NOP	
-L_WIFI4_writeText241:
-;WIFI4_CLICK.c,363 :: 		hal_uartWrite(TERMINATION_CHAR);
-SW	R25, 4(SP)
-ORI	R25, R0, 13
-JAL	WIFI4_CLICK_hal_uartWrite+0
-NOP	
-LW	R25, 4(SP)
-;WIFI4_CLICK.c,364 :: 		}
-L_end_WIFI4_writeText2:
-LW	RA, 0(SP)
-ADDIU	SP, SP, 8
-JR	RA
-NOP	
-; end of _WIFI4_writeText2
 _WIFI4_modulePower:
-;WIFI4_CLICK.c,366 :: 		void WIFI4_modulePower( uint8_t powerState )
+;WIFI4_CLICK.c,392 :: 		void WIFI4_modulePower( uint8_t powerState )
 ADDIU	SP, SP, -8
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,368 :: 		if (0 != powerState)
+;WIFI4_CLICK.c,394 :: 		if (0 != powerState)
 SW	R25, 4(SP)
 ANDI	R2, R25, 255
-BNE	R2, R0, L__WIFI4_modulePower123
+BNE	R2, R0, L__WIFI4_modulePower120
 NOP	
-J	L_WIFI4_modulePower42
+J	L_WIFI4_modulePower41
 NOP	
-L__WIFI4_modulePower123:
-;WIFI4_CLICK.c,371 :: 		hal_gpio_rstSet(1);
+L__WIFI4_modulePower120:
+;WIFI4_CLICK.c,397 :: 		hal_gpio_rstSet(1);
 ORI	R25, R0, 1
 LW	R30, Offset(WIFI4_CLICK_hal_gpio_rstSet+0)(GP)
 JALR	RA, R30
 NOP	
-;WIFI4_CLICK.c,373 :: 		}
-J	L_WIFI4_modulePower43
+;WIFI4_CLICK.c,399 :: 		}
+J	L_WIFI4_modulePower42
 NOP	
-L_WIFI4_modulePower42:
-;WIFI4_CLICK.c,377 :: 		hal_gpio_rstSet(0);
+L_WIFI4_modulePower41:
+;WIFI4_CLICK.c,403 :: 		hal_gpio_rstSet(0);
 MOVZ	R25, R0, R0
 LW	R30, Offset(WIFI4_CLICK_hal_gpio_rstSet+0)(GP)
 JALR	RA, R30
 NOP	
-;WIFI4_CLICK.c,378 :: 		}
-L_WIFI4_modulePower43:
-;WIFI4_CLICK.c,379 :: 		}
+;WIFI4_CLICK.c,404 :: 		}
+L_WIFI4_modulePower42:
+;WIFI4_CLICK.c,405 :: 		}
 L_end_WIFI4_modulePower:
 LW	R25, 4(SP)
 LW	RA, 0(SP)
@@ -1045,31 +1120,23 @@ JR	RA
 NOP	
 ; end of _WIFI4_modulePower
 _WIFI4_uartDriverInit:
-;WIFI4_CLICK.c,381 :: 		void WIFI4_uartDriverInit(T_WIFI4_P gpio,T_WIFI4_P uart)
+;WIFI4_CLICK.c,407 :: 		void WIFI4_uartDriverInit(T_WIFI4_P gpio,T_WIFI4_P uart)
 ADDIU	SP, SP, -8
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,383 :: 		hal_gpioMap((T_HAL_P)gpio);
+;WIFI4_CLICK.c,409 :: 		hal_gpioMap((T_HAL_P)gpio);
 SW	R25, 4(SP)
 JAL	WIFI4_CLICK_hal_gpioMap+0
 NOP	
-;WIFI4_CLICK.c,384 :: 		hal_uartMap((T_HAL_P)uart);
+;WIFI4_CLICK.c,410 :: 		hal_uartMap((T_HAL_P)uart);
 MOVZ	R25, R26, R0
 JAL	WIFI4_CLICK_hal_uartMap+0
 NOP	
-;WIFI4_CLICK.c,385 :: 		rxB.ind=0;
-SH	R0, Offset(WIFI4_CLICK_rxB+2500)(GP)
-;WIFI4_CLICK.c,386 :: 		respTime=0;
-SW	R0, Offset(WIFI4_CLICK_respTime+0)(GP)
-;WIFI4_CLICK.c,387 :: 		rxB.buff[0]=0;
-SB	R0, Offset(WIFI4_CLICK_rxB+0)(GP)
-;WIFI4_CLICK.c,388 :: 		rxB.ind=0;
-SH	R0, Offset(WIFI4_CLICK_rxB+2500)(GP)
-;WIFI4_CLICK.c,389 :: 		hal_gpio_rstSet(1);
+;WIFI4_CLICK.c,413 :: 		hal_gpio_rstSet(1);
 ORI	R25, R0, 1
 LW	R30, Offset(WIFI4_CLICK_hal_gpio_rstSet+0)(GP)
 JALR	RA, R30
 NOP	
-;WIFI4_CLICK.c,390 :: 		}
+;WIFI4_CLICK.c,414 :: 		}
 L_end_WIFI4_uartDriverInit:
 LW	R25, 4(SP)
 LW	RA, 0(SP)
@@ -1078,10 +1145,10 @@ JR	RA
 NOP	
 ; end of _WIFI4_uartDriverInit
 _WIFI4_setSSID:
-;WIFI4_CLICK.c,395 :: 		void WIFI4_setSSID(uint8_t *ssid)
+;WIFI4_CLICK.c,417 :: 		void WIFI4_setSSID(uint8_t *ssid)
 ADDIU	SP, SP, -44
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,397 :: 		char comm[30]="AT+S.SSIDTXT=";
+;WIFI4_CLICK.c,419 :: 		char comm[30]="AT+S.SSIDTXT=";
 SW	R25, 4(SP)
 SW	R26, 8(SP)
 ADDIU	R23, SP, 12
@@ -1090,18 +1157,18 @@ LUI	R24, hi_addr(?ICSWIFI4_setSSID_comm_L0+0)
 ORI	R24, R24, lo_addr(?ICSWIFI4_setSSID_comm_L0+0)
 JAL	___CC2DW+0
 NOP	
-;WIFI4_CLICK.c,398 :: 		strcat(comm,ssid);
+;WIFI4_CLICK.c,420 :: 		strcat(comm,ssid);
 ADDIU	R2, SP, 12
 MOVZ	R26, R25, R0
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,399 :: 		WIFI4_writeText2(comm);
+;WIFI4_CLICK.c,421 :: 		WIFI4_writeText2(comm);
 ADDIU	R2, SP, 12
 MOVZ	R25, R2, R0
 JAL	_WIFI4_writeText2+0
 NOP	
-;WIFI4_CLICK.c,400 :: 		}
+;WIFI4_CLICK.c,422 :: 		}
 L_end_WIFI4_setSSID:
 LW	R26, 8(SP)
 LW	R25, 4(SP)
@@ -1110,289 +1177,110 @@ ADDIU	SP, SP, 44
 JR	RA
 NOP	
 ; end of _WIFI4_setSSID
-_WIFI4_getSSID:
-;WIFI4_CLICK.c,401 :: 		void WIFI4_getSSID()
+_WIFI4_cmdSingle:
+;WIFI4_CLICK.c,425 :: 		void WIFI4_cmdSingle(char* command,char *param){
 ADDIU	SP, SP, -12
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,404 :: 		WIFI4_cmdSingle(comm,"");
-SW	R25, 4(SP)
-SW	R26, 8(SP)
-LUI	R26, hi_addr(?lstr3_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr3_WIFI4_CLICK+0)
-LUI	R25, hi_addr(WIFI4_getSSID_comm_L0+0)
-ORI	R25, R25, lo_addr(WIFI4_getSSID_comm_L0+0)
-JAL	_WIFI4_cmdSingle+0
+;WIFI4_CLICK.c,426 :: 		cmdSingle(command,param,DEFAULT_WTIME,0);
+SW	R27, 4(SP)
+SW	R28, 8(SP)
+MOVZ	R28, R0, R0
+ORI	R27, R0, 5
+JAL	WIFI4_CLICK_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,405 :: 		}
-L_end_WIFI4_getSSID:
-LW	R26, 8(SP)
-LW	R25, 4(SP)
+;WIFI4_CLICK.c,427 :: 		}
+L_end_WIFI4_cmdSingle:
+LW	R28, 8(SP)
+LW	R27, 4(SP)
 LW	RA, 0(SP)
 ADDIU	SP, SP, 12
 JR	RA
 NOP	
-; end of _WIFI4_getSSID
-_WIFI4_cmdSingle:
-;WIFI4_CLICK.c,407 :: 		void WIFI4_cmdSingle(char* command,char *param){
-ADDIU	SP, SP, -72
-SW	RA, 0(SP)
-;WIFI4_CLICK.c,409 :: 		strcpy(tmp,command);
-SW	R25, 4(SP)
-SW	R26, 8(SP)
-ADDIU	R2, SP, 20
-SW	R26, 12(SP)
-MOVZ	R26, R25, R0
-MOVZ	R25, R2, R0
-JAL	_strcpy+0
-NOP	
-LW	R26, 12(SP)
-;WIFI4_CLICK.c,410 :: 		strcat(tmp,param);
-ADDIU	R2, SP, 20
-MOVZ	R25, R2, R0
-JAL	_strcat+0
-NOP	
-;WIFI4_CLICK.c,411 :: 		strcpy(txBuff,tmp);
-ADDIU	R2, SP, 20
-MOVZ	R26, R2, R0
-LUI	R25, hi_addr(WIFI4_CLICK_txBuff+0)
-ORI	R25, R25, lo_addr(WIFI4_CLICK_txBuff+0)
-JAL	_strcpy+0
-NOP	
-;WIFI4_CLICK.c,413 :: 		while(0 != flag_cmdEx)
-L_WIFI4_cmdSingle44:
-LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-BNE	R2, R0, L__WIFI4_cmdSingle129
-NOP	
-J	L_WIFI4_cmdSingle45
-NOP	
-L__WIFI4_cmdSingle129:
-;WIFI4_CLICK.c,415 :: 		WIFI4_process();
-SW	R26, 12(SP)
-SW	R25, 16(SP)
-JAL	_WIFI4_process+0
-NOP	
-LW	R25, 16(SP)
-LW	R26, 12(SP)
-;WIFI4_CLICK.c,416 :: 		}
-J	L_WIFI4_cmdSingle44
-NOP	
-L_WIFI4_cmdSingle45:
-;WIFI4_CLICK.c,417 :: 		createEvent(tmp,&currentEv);
-ADDIU	R2, SP, 20
-SW	R26, 12(SP)
-SW	R25, 16(SP)
-LUI	R26, hi_addr(WIFI4_CLICK_currentEv+0)
-ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)
-MOVZ	R25, R2, R0
-JAL	WIFI4_CLICK_createEvent+0
-NOP	
-;WIFI4_CLICK.c,418 :: 		WIFI4_writeText2(tmp);
-ADDIU	R2, SP, 20
-MOVZ	R25, R2, R0
-JAL	_WIFI4_writeText2+0
-NOP	
-LW	R25, 16(SP)
-LW	R26, 12(SP)
-;WIFI4_CLICK.c,420 :: 		watchDogTime=0; //reset watchdog
-SH	R0, Offset(WIFI4_CLICK_watchDogTime+0)(GP)
-;WIFI4_CLICK.c,421 :: 		waitTime=DEFAULT_WTIME;
-ORI	R2, R0, 5
-SW	R2, Offset(WIFI4_CLICK_waitTime+0)(GP)
-;WIFI4_CLICK.c,422 :: 		f_wdogStart=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
-;WIFI4_CLICK.c,423 :: 		f_timerStart=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-;WIFI4_CLICK.c,424 :: 		flag_cmdEx=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-;WIFI4_CLICK.c,426 :: 		while(0 != flag_cmdEx)
-L_WIFI4_cmdSingle46:
-LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-BNE	R2, R0, L__WIFI4_cmdSingle131
-NOP	
-J	L_WIFI4_cmdSingle47
-NOP	
-L__WIFI4_cmdSingle131:
-;WIFI4_CLICK.c,428 :: 		WIFI4_process();
-SW	R26, 12(SP)
-SW	R25, 16(SP)
-JAL	_WIFI4_process+0
-NOP	
-LW	R25, 16(SP)
-LW	R26, 12(SP)
-;WIFI4_CLICK.c,429 :: 		}
-J	L_WIFI4_cmdSingle46
-NOP	
-L_WIFI4_cmdSingle47:
-;WIFI4_CLICK.c,430 :: 		}
-L_end_WIFI4_cmdSingle:
-LW	R26, 8(SP)
-LW	R25, 4(SP)
-LW	RA, 0(SP)
-ADDIU	SP, SP, 72
-JR	RA
-NOP	
 ; end of _WIFI4_cmdSingle
 _WIFI4_ping:
-;WIFI4_CLICK.c,432 :: 		void WIFI4_ping(uint8_t *ipAddr)
-ADDIU	SP, SP, -68
+;WIFI4_CLICK.c,429 :: 		void WIFI4_ping(uint8_t *ipAddr)
+ADDIU	SP, SP, -20
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,435 :: 		strcpy(tmp,"AT+S.PING=");
+;WIFI4_CLICK.c,431 :: 		cmdSingle("AT+S.PING=",ipAddr,2000,0);
 SW	R25, 4(SP)
 SW	R26, 8(SP)
-ADDIU	R2, SP, 16
-SW	R25, 12(SP)
-LUI	R26, hi_addr(?lstr4_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr4_WIFI4_CLICK+0)
-MOVZ	R25, R2, R0
-JAL	_strcpy+0
-NOP	
-LW	R25, 12(SP)
-;WIFI4_CLICK.c,436 :: 		strcat(tmp,ipAddr);
-ADDIU	R2, SP, 16
+SW	R27, 12(SP)
+SW	R28, 16(SP)
+MOVZ	R28, R0, R0
+ORI	R27, R0, 2000
 MOVZ	R26, R25, R0
-MOVZ	R25, R2, R0
-JAL	_strcat+0
+LUI	R25, hi_addr(?lstr3_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr3_WIFI4_CLICK+0)
+JAL	WIFI4_CLICK_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,437 :: 		while(0 != flag_cmdEx)
-L_WIFI4_ping48:
-LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-BNE	R2, R0, L__WIFI4_ping134
-NOP	
-J	L_WIFI4_ping49
-NOP	
-L__WIFI4_ping134:
-;WIFI4_CLICK.c,439 :: 		WIFI4_process();
-SW	R25, 12(SP)
-JAL	_WIFI4_process+0
-NOP	
-LW	R25, 12(SP)
-;WIFI4_CLICK.c,440 :: 		}
-J	L_WIFI4_ping48
-NOP	
-L_WIFI4_ping49:
-;WIFI4_CLICK.c,441 :: 		createEvent(tmp,&currentEv);
-ADDIU	R2, SP, 16
-SW	R25, 12(SP)
-LUI	R26, hi_addr(WIFI4_CLICK_currentEv+0)
-ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)
-MOVZ	R25, R2, R0
-JAL	WIFI4_CLICK_createEvent+0
-NOP	
-;WIFI4_CLICK.c,442 :: 		currentEv.wDogLimit=3*currentEv.wDogLimit;
-LW	R3, Offset(WIFI4_CLICK_currentEv+4)(GP)
-ORI	R2, R0, 3
-MULTU	R2, R3
-MFLO	R2
-SW	R2, Offset(WIFI4_CLICK_currentEv+4)(GP)
-;WIFI4_CLICK.c,444 :: 		waitTime=2000; //wait 1s
-ORI	R2, R0, 2000
-SW	R2, Offset(WIFI4_CLICK_waitTime+0)(GP)
-;WIFI4_CLICK.c,445 :: 		WIFI4_writeText2(tmp);
-ADDIU	R2, SP, 16
-MOVZ	R25, R2, R0
-JAL	_WIFI4_writeText2+0
-NOP	
-LW	R25, 12(SP)
-;WIFI4_CLICK.c,446 :: 		watchDogTime=0; //reset watchdog
-SH	R0, Offset(WIFI4_CLICK_watchDogTime+0)(GP)
-;WIFI4_CLICK.c,447 :: 		f_wdogStart=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
-;WIFI4_CLICK.c,448 :: 		f_timerStart=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-;WIFI4_CLICK.c,449 :: 		flag_cmdEx=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-;WIFI4_CLICK.c,451 :: 		while(0 != flag_cmdEx)
-L_WIFI4_ping50:
-LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-BNE	R2, R0, L__WIFI4_ping136
-NOP	
-J	L_WIFI4_ping51
-NOP	
-L__WIFI4_ping136:
-;WIFI4_CLICK.c,453 :: 		WIFI4_process();
-SW	R25, 12(SP)
-JAL	_WIFI4_process+0
-NOP	
-LW	R25, 12(SP)
-;WIFI4_CLICK.c,454 :: 		}
-J	L_WIFI4_ping50
-NOP	
-L_WIFI4_ping51:
-;WIFI4_CLICK.c,455 :: 		waitTime=DEFAULT_WTIME;
-ORI	R2, R0, 5
-SW	R2, Offset(WIFI4_CLICK_waitTime+0)(GP)
-;WIFI4_CLICK.c,457 :: 		}
+;WIFI4_CLICK.c,434 :: 		}
 L_end_WIFI4_ping:
+LW	R28, 16(SP)
+LW	R27, 12(SP)
 LW	R26, 8(SP)
 LW	R25, 4(SP)
 LW	RA, 0(SP)
-ADDIU	SP, SP, 68
+ADDIU	SP, SP, 20
 JR	RA
 NOP	
 ; end of _WIFI4_ping
 _WIFI4_connectToAP:
-;WIFI4_CLICK.c,458 :: 		void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
+;WIFI4_CLICK.c,435 :: 		void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
 ADDIU	SP, SP, -100
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,461 :: 		WIFI4_cmdSingle("AT+S.SCFG=","wifi_priv_mode,2");
+;WIFI4_CLICK.c,438 :: 		WIFI4_cmdSingle("AT+S.SCFG=","wifi_priv_mode,2");
 SW	R25, 4(SP)
 SW	R26, 8(SP)
 SW	R26, 12(SP)
 SW	R25, 16(SP)
-LUI	R26, hi_addr(?lstr6_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr6_WIFI4_CLICK+0)
-LUI	R25, hi_addr(?lstr5_WIFI4_CLICK+0)
-ORI	R25, R25, lo_addr(?lstr5_WIFI4_CLICK+0)
+LUI	R26, hi_addr(?lstr5_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr5_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr4_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr4_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,462 :: 		WIFI4_cmdSingle("AT+S.SCFG=","wifi_mode,1");
-LUI	R26, hi_addr(?lstr8_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr8_WIFI4_CLICK+0)
-LUI	R25, hi_addr(?lstr7_WIFI4_CLICK+0)
-ORI	R25, R25, lo_addr(?lstr7_WIFI4_CLICK+0)
+;WIFI4_CLICK.c,439 :: 		WIFI4_cmdSingle("AT+S.SCFG=","wifi_mode,1");
+LUI	R26, hi_addr(?lstr7_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr7_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr6_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr6_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,463 :: 		WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
-LUI	R26, hi_addr(?lstr10_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr10_WIFI4_CLICK+0)
-LUI	R25, hi_addr(?lstr9_WIFI4_CLICK+0)
-ORI	R25, R25, lo_addr(?lstr9_WIFI4_CLICK+0)
+;WIFI4_CLICK.c,440 :: 		WIFI4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
+LUI	R26, hi_addr(?lstr9_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr9_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr8_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr8_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
 LW	R25, 16(SP)
-;WIFI4_CLICK.c,465 :: 		WIFI4_cmdSingle("AT+S.SSIDTXT=",ssid);
+;WIFI4_CLICK.c,442 :: 		WIFI4_cmdSingle("AT+S.SSIDTXT=",ssid);
 MOVZ	R26, R25, R0
-LUI	R25, hi_addr(?lstr11_WIFI4_CLICK+0)
-ORI	R25, R25, lo_addr(?lstr11_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr10_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr10_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,468 :: 		strcpy(newPass,"wifi_wpa_psk_text,");
+;WIFI4_CLICK.c,445 :: 		strcpy(newPass,"wifi_wpa_psk_text,");
 ADDIU	R2, SP, 20
-LUI	R26, hi_addr(?lstr12_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr12_WIFI4_CLICK+0)
+LUI	R26, hi_addr(?lstr11_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr11_WIFI4_CLICK+0)
 MOVZ	R25, R2, R0
 JAL	_strcpy+0
 NOP	
 LW	R26, 12(SP)
-;WIFI4_CLICK.c,469 :: 		strcat(newPass,pass);
+;WIFI4_CLICK.c,446 :: 		strcat(newPass,pass);
 ADDIU	R2, SP, 20
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,470 :: 		WIFI4_cmdSingle("AT+S.SCFG=",newPass);
+;WIFI4_CLICK.c,447 :: 		WIFI4_cmdSingle("AT+S.SCFG=",newPass);
 ADDIU	R2, SP, 20
 MOVZ	R26, R2, R0
-LUI	R25, hi_addr(?lstr13_WIFI4_CLICK+0)
-ORI	R25, R25, lo_addr(?lstr13_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr12_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr12_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,471 :: 		}
+;WIFI4_CLICK.c,448 :: 		}
 L_end_WIFI4_connectToAP:
 LW	R26, 8(SP)
 LW	R25, 4(SP)
@@ -1402,16 +1290,16 @@ JR	RA
 NOP	
 ; end of _WIFI4_connectToAP
 _WIFI4_putc:
-;WIFI4_CLICK.c,473 :: 		void WIFI4_putc(char c)
-;WIFI4_CLICK.c,475 :: 		flag_cmdEx=1;
+;WIFI4_CLICK.c,450 :: 		void WIFI4_putc(char c)
+;WIFI4_CLICK.c,452 :: 		flag_cmdEx=1;
 ORI	R2, R0, 1
 SB	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-;WIFI4_CLICK.c,476 :: 		f_timerStart=1;
+;WIFI4_CLICK.c,453 :: 		f_timerStart=1;
 ORI	R2, R0, 1
 SB	R2, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-;WIFI4_CLICK.c,477 :: 		respTime=0;
+;WIFI4_CLICK.c,454 :: 		respTime=0;
 SW	R0, Offset(WIFI4_CLICK_respTime+0)(GP)
-;WIFI4_CLICK.c,478 :: 		rxB.buff[rxB.ind++]=c;
+;WIFI4_CLICK.c,455 :: 		rxB.buff[rxB.ind++]=c;
 LHU	R3, Offset(WIFI4_CLICK_rxB+2500)(GP)
 LUI	R2, hi_addr(WIFI4_CLICK_rxB+0)
 ORI	R2, R2, lo_addr(WIFI4_CLICK_rxB+0)
@@ -1420,99 +1308,99 @@ SB	R25, 0(R2)
 LHU	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
 ADDIU	R2, R2, 1
 SH	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
-;WIFI4_CLICK.c,480 :: 		}
+;WIFI4_CLICK.c,457 :: 		}
 L_end_WIFI4_putc:
 JR	RA
 NOP	
 ; end of _WIFI4_putc
 _WIFI4_tick:
-;WIFI4_CLICK.c,482 :: 		void WIFI4_tick()
-;WIFI4_CLICK.c,484 :: 		if(f_timerStart){
+;WIFI4_CLICK.c,459 :: 		void WIFI4_tick()
+;WIFI4_CLICK.c,461 :: 		if(f_timerStart){
 LBU	R2, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-BNE	R2, R0, L__WIFI4_tick141
+BNE	R2, R0, L__WIFI4_tick129
 NOP	
-J	L_WIFI4_tick52
+J	L_WIFI4_tick43
 NOP	
-L__WIFI4_tick141:
-;WIFI4_CLICK.c,485 :: 		if((++respTime) > waitTime)
+L__WIFI4_tick129:
+;WIFI4_CLICK.c,462 :: 		if((++respTime) > waitTime)
 LW	R2, Offset(WIFI4_CLICK_respTime+0)(GP)
 ADDIU	R2, R2, 1
 SW	R2, Offset(WIFI4_CLICK_respTime+0)(GP)
-LW	R3, Offset(WIFI4_CLICK_waitTime+0)(GP)
+LHU	R3, Offset(WIFI4_CLICK_waitTime+0)(GP)
 LW	R2, Offset(WIFI4_CLICK_respTime+0)(GP)
 SLTU	R2, R3, R2
-BNE	R2, R0, L__WIFI4_tick142
+BNE	R2, R0, L__WIFI4_tick130
 NOP	
-J	L_WIFI4_tick53
+J	L_WIFI4_tick44
 NOP	
-L__WIFI4_tick142:
-;WIFI4_CLICK.c,487 :: 		flag_timesUp=1;
+L__WIFI4_tick130:
+;WIFI4_CLICK.c,464 :: 		flag_timesUp=1;
 ORI	R2, R0, 1
 SB	R2, Offset(WIFI4_CLICK_flag_timesUp+0)(GP)
-;WIFI4_CLICK.c,489 :: 		}
-L_WIFI4_tick53:
-;WIFI4_CLICK.c,490 :: 		}
-L_WIFI4_tick52:
-;WIFI4_CLICK.c,491 :: 		if(f_wdogStart){
+;WIFI4_CLICK.c,466 :: 		}
+L_WIFI4_tick44:
+;WIFI4_CLICK.c,467 :: 		}
+L_WIFI4_tick43:
+;WIFI4_CLICK.c,468 :: 		if(f_wdogStart){
 LBU	R2, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
-BNE	R2, R0, L__WIFI4_tick144
+BNE	R2, R0, L__WIFI4_tick132
 NOP	
-J	L_WIFI4_tick54
+J	L_WIFI4_tick45
 NOP	
-L__WIFI4_tick144:
-;WIFI4_CLICK.c,492 :: 		if((++watchDogTime) > currentEv.wDogLimit)
+L__WIFI4_tick132:
+;WIFI4_CLICK.c,469 :: 		if((++watchDogTime) > currentEv.wDogLimit)
 LHU	R2, Offset(WIFI4_CLICK_watchDogTime+0)(GP)
 ADDIU	R2, R2, 1
 SH	R2, Offset(WIFI4_CLICK_watchDogTime+0)(GP)
 LW	R3, Offset(WIFI4_CLICK_currentEv+4)(GP)
 LHU	R2, Offset(WIFI4_CLICK_watchDogTime+0)(GP)
 SLTU	R2, R3, R2
-BNE	R2, R0, L__WIFI4_tick145
+BNE	R2, R0, L__WIFI4_tick133
 NOP	
-J	L_WIFI4_tick55
+J	L_WIFI4_tick46
 NOP	
-L__WIFI4_tick145:
-;WIFI4_CLICK.c,494 :: 		flag_wdogOut=1;
+L__WIFI4_tick133:
+;WIFI4_CLICK.c,471 :: 		flag_wdogOut=1;
 ORI	R2, R0, 1
 SB	R2, Offset(WIFI4_CLICK_flag_wdogOut+0)(GP)
-;WIFI4_CLICK.c,496 :: 		}
-L_WIFI4_tick55:
-;WIFI4_CLICK.c,497 :: 		}
-L_WIFI4_tick54:
-;WIFI4_CLICK.c,498 :: 		}
+;WIFI4_CLICK.c,473 :: 		}
+L_WIFI4_tick46:
+;WIFI4_CLICK.c,474 :: 		}
+L_WIFI4_tick45:
+;WIFI4_CLICK.c,475 :: 		}
 L_end_WIFI4_tick:
 JR	RA
 NOP	
 ; end of _WIFI4_tick
 _WIFI4_process:
-;WIFI4_CLICK.c,502 :: 		void WIFI4_process()
+;WIFI4_CLICK.c,479 :: 		void WIFI4_process()
 ADDIU	SP, SP, -12
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,505 :: 		if(f_wDogStart){
+;WIFI4_CLICK.c,482 :: 		if(f_wDogStart){
 SW	R25, 4(SP)
 SW	R26, 8(SP)
 LBU	R2, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
-BNE	R2, R0, L__WIFI4_process148
+BNE	R2, R0, L__WIFI4_process136
 NOP	
-J	L_WIFI4_process56
+J	L_WIFI4_process47
 NOP	
-L__WIFI4_process148:
-;WIFI4_CLICK.c,506 :: 		if(flag_wdogOut)
+L__WIFI4_process136:
+;WIFI4_CLICK.c,483 :: 		if(flag_wdogOut)
 LBU	R2, Offset(WIFI4_CLICK_flag_wdogOut+0)(GP)
-BNE	R2, R0, L__WIFI4_process150
+BNE	R2, R0, L__WIFI4_process138
 NOP	
-J	L_WIFI4_process57
+J	L_WIFI4_process48
 NOP	
-L__WIFI4_process150:
-;WIFI4_CLICK.c,508 :: 		DTE_setState(0);
+L__WIFI4_process138:
+;WIFI4_CLICK.c,485 :: 		DTE_setState(0);
 MOVZ	R25, R0, R0
 JAL	WIFI4_CLICK_DTE_setState+0
 NOP	
-;WIFI4_CLICK.c,510 :: 		f_wdogStart=0;
+;WIFI4_CLICK.c,487 :: 		f_wdogStart=0;
 SB	R0, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
-;WIFI4_CLICK.c,511 :: 		f_timerStart=0;
+;WIFI4_CLICK.c,488 :: 		f_timerStart=0;
 SB	R0, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-;WIFI4_CLICK.c,512 :: 		rxB.buff[rxB.ind++]='\0';
+;WIFI4_CLICK.c,489 :: 		rxB.buff[rxB.ind++]='\0';
 LHU	R3, Offset(WIFI4_CLICK_rxB+2500)(GP)
 LUI	R2, hi_addr(WIFI4_CLICK_rxB+0)
 ORI	R2, R2, lo_addr(WIFI4_CLICK_rxB+0)
@@ -1521,35 +1409,36 @@ SB	R0, 0(R2)
 LHU	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
 ADDIU	R2, R2, 1
 SH	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
-;WIFI4_CLICK.c,513 :: 		createEvent(rxB.buff, &currentEv);
-LUI	R26, hi_addr(WIFI4_CLICK_currentEv+0)
-ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)
-LUI	R25, hi_addr(WIFI4_CLICK_rxB+0)
-ORI	R25, R25, lo_addr(WIFI4_CLICK_rxB+0)
-JAL	WIFI4_CLICK_createEvent+0
+;WIFI4_CLICK.c,490 :: 		if(f_cpyRXtoTmp == 1)
+LBU	R3, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
+ORI	R2, R0, 1
+BEQ	R3, R2, L__WIFI4_process139
 NOP	
-;WIFI4_CLICK.c,514 :: 		if(f_cpyRXtoTmp)
-LBU	R2, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
-BNE	R2, R0, L__WIFI4_process152
+J	L_WIFI4_process49
 NOP	
-J	L_WIFI4_process58
-NOP	
-L__WIFI4_process152:
-;WIFI4_CLICK.c,516 :: 		strcpy(tmpB.buff,rxB.buff);
+L__WIFI4_process139:
+;WIFI4_CLICK.c,492 :: 		strcpy(tmpB.buff,rxB.buff);
 LUI	R26, hi_addr(WIFI4_CLICK_rxB+0)
 ORI	R26, R26, lo_addr(WIFI4_CLICK_rxB+0)
 LUI	R25, hi_addr(WIFI4_CLICK_tmpB+0)
 ORI	R25, R25, lo_addr(WIFI4_CLICK_tmpB+0)
 JAL	_strcpy+0
 NOP	
-;WIFI4_CLICK.c,517 :: 		tmpB.ind=rxB.ind;
+;WIFI4_CLICK.c,493 :: 		tmpB.ind=rxB.ind;
 LHU	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
 SH	R2, Offset(WIFI4_CLICK_tmpB+2500)(GP)
-;WIFI4_CLICK.c,518 :: 		f_cpyRXtoTmp=0;
+;WIFI4_CLICK.c,494 :: 		f_cpyRXtoTmp=0;
 SB	R0, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
-;WIFI4_CLICK.c,519 :: 		}
-L_WIFI4_process58:
-;WIFI4_CLICK.c,520 :: 		EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
+;WIFI4_CLICK.c,495 :: 		}
+L_WIFI4_process49:
+;WIFI4_CLICK.c,496 :: 		createEvent(rxB.buff, &currentEv);
+LUI	R26, hi_addr(WIFI4_CLICK_currentEv+0)
+ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)
+LUI	R25, hi_addr(WIFI4_CLICK_rxB+0)
+ORI	R25, R25, lo_addr(WIFI4_CLICK_rxB+0)
+JAL	WIFI4_CLICK_createEvent+0
+NOP	
+;WIFI4_CLICK.c,498 :: 		EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
 SB	R0, Offset(WIFI4_CLICK_currentEv+10)(GP)
 LUI	R26, hi_addr(WIFI4_CLICK_currentEv+8)
 ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+8)
@@ -1558,45 +1447,45 @@ ORI	R25, R25, lo_addr(WIFI4_CLICK_rxB+0)
 LW	R30, Offset(WIFI4_CLICK_currentEv+0)(GP)
 JALR	RA, R30
 NOP	
-;WIFI4_CLICK.c,521 :: 		rxB.buff[0]=0;
+;WIFI4_CLICK.c,500 :: 		rxB.buff[0]=0;
 SB	R0, Offset(WIFI4_CLICK_rxB+0)(GP)
-;WIFI4_CLICK.c,522 :: 		rxB.ind=0;
+;WIFI4_CLICK.c,501 :: 		rxB.ind=0;
 SH	R0, Offset(WIFI4_CLICK_rxB+2500)(GP)
-;WIFI4_CLICK.c,523 :: 		flag_wdogOut=0;
+;WIFI4_CLICK.c,502 :: 		flag_wdogOut=0;
 SB	R0, Offset(WIFI4_CLICK_flag_wdogOut+0)(GP)
-;WIFI4_CLICK.c,524 :: 		flag_cmdEx=0;
+;WIFI4_CLICK.c,503 :: 		flag_cmdEx=0;
 SB	R0, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-;WIFI4_CLICK.c,526 :: 		DTE_setState(1);
+;WIFI4_CLICK.c,505 :: 		DTE_setState(1);
 ORI	R25, R0, 1
 JAL	WIFI4_CLICK_DTE_setState+0
 NOP	
-;WIFI4_CLICK.c,528 :: 		}
-L_WIFI4_process57:
-;WIFI4_CLICK.c,529 :: 		}
-L_WIFI4_process56:
-;WIFI4_CLICK.c,530 :: 		if(f_TimerStart){
+;WIFI4_CLICK.c,507 :: 		}
+L_WIFI4_process48:
+;WIFI4_CLICK.c,508 :: 		}
+L_WIFI4_process47:
+;WIFI4_CLICK.c,509 :: 		if(f_TimerStart){
 LBU	R2, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-BNE	R2, R0, L__WIFI4_process154
+BNE	R2, R0, L__WIFI4_process141
 NOP	
-J	L_WIFI4_process59
+J	L_WIFI4_process50
 NOP	
-L__WIFI4_process154:
-;WIFI4_CLICK.c,531 :: 		if(flag_timesUp)
+L__WIFI4_process141:
+;WIFI4_CLICK.c,510 :: 		if(flag_timesUp)
 LBU	R2, Offset(WIFI4_CLICK_flag_timesUp+0)(GP)
-BNE	R2, R0, L__WIFI4_process156
+BNE	R2, R0, L__WIFI4_process143
 NOP	
-J	L_WIFI4_process60
+J	L_WIFI4_process51
 NOP	
-L__WIFI4_process156:
-;WIFI4_CLICK.c,533 :: 		DTE_setState(0);
+L__WIFI4_process143:
+;WIFI4_CLICK.c,512 :: 		DTE_setState(0);
 MOVZ	R25, R0, R0
 JAL	WIFI4_CLICK_DTE_setState+0
 NOP	
-;WIFI4_CLICK.c,534 :: 		f_wdogStart=0;
+;WIFI4_CLICK.c,513 :: 		f_wdogStart=0;
 SB	R0, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
-;WIFI4_CLICK.c,535 :: 		f_timerStart=0;
+;WIFI4_CLICK.c,514 :: 		f_timerStart=0;
 SB	R0, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-;WIFI4_CLICK.c,536 :: 		rxB.buff[rxB.ind++]='\0';
+;WIFI4_CLICK.c,515 :: 		rxB.buff[rxB.ind++]='\0';
 LHU	R3, Offset(WIFI4_CLICK_rxB+2500)(GP)
 LUI	R2, hi_addr(WIFI4_CLICK_rxB+0)
 ORI	R2, R2, lo_addr(WIFI4_CLICK_rxB+0)
@@ -1605,14 +1494,36 @@ SB	R0, 0(R2)
 LHU	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
 ADDIU	R2, R2, 1
 SH	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
-;WIFI4_CLICK.c,537 :: 		createEvent(rxB.buff, &currentEv);
+;WIFI4_CLICK.c,516 :: 		if(f_cpyRXtoTmp == 1)
+LBU	R3, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
+ORI	R2, R0, 1
+BEQ	R3, R2, L__WIFI4_process144
+NOP	
+J	L_WIFI4_process52
+NOP	
+L__WIFI4_process144:
+;WIFI4_CLICK.c,518 :: 		strcpy(tmpB.buff,rxB.buff);
+LUI	R26, hi_addr(WIFI4_CLICK_rxB+0)
+ORI	R26, R26, lo_addr(WIFI4_CLICK_rxB+0)
+LUI	R25, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R25, R25, lo_addr(WIFI4_CLICK_tmpB+0)
+JAL	_strcpy+0
+NOP	
+;WIFI4_CLICK.c,519 :: 		tmpB.ind=rxB.ind;
+LHU	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
+SH	R2, Offset(WIFI4_CLICK_tmpB+2500)(GP)
+;WIFI4_CLICK.c,520 :: 		f_cpyRXtoTmp=0;
+SB	R0, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
+;WIFI4_CLICK.c,521 :: 		}
+L_WIFI4_process52:
+;WIFI4_CLICK.c,522 :: 		createEvent(rxB.buff, &currentEv);
 LUI	R26, hi_addr(WIFI4_CLICK_currentEv+0)
 ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)
 LUI	R25, hi_addr(WIFI4_CLICK_rxB+0)
 ORI	R25, R25, lo_addr(WIFI4_CLICK_rxB+0)
 JAL	WIFI4_CLICK_createEvent+0
 NOP	
-;WIFI4_CLICK.c,538 :: 		EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
+;WIFI4_CLICK.c,523 :: 		EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
 SB	R0, Offset(WIFI4_CLICK_currentEv+10)(GP)
 LUI	R26, hi_addr(WIFI4_CLICK_currentEv+8)
 ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+8)
@@ -1621,44 +1532,23 @@ ORI	R25, R25, lo_addr(WIFI4_CLICK_rxB+0)
 LW	R30, Offset(WIFI4_CLICK_currentEv+0)(GP)
 JALR	RA, R30
 NOP	
-;WIFI4_CLICK.c,539 :: 		if(f_cpyRXtoTmp)
-LBU	R2, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
-BNE	R2, R0, L__WIFI4_process158
-NOP	
-J	L_WIFI4_process61
-NOP	
-L__WIFI4_process158:
-;WIFI4_CLICK.c,541 :: 		strcpy(tmpB.buff,rxB.buff);
-LUI	R26, hi_addr(WIFI4_CLICK_rxB+0)
-ORI	R26, R26, lo_addr(WIFI4_CLICK_rxB+0)
-LUI	R25, hi_addr(WIFI4_CLICK_tmpB+0)
-ORI	R25, R25, lo_addr(WIFI4_CLICK_tmpB+0)
-JAL	_strcpy+0
-NOP	
-;WIFI4_CLICK.c,542 :: 		tmpB.ind=rxB.ind;
-LHU	R2, Offset(WIFI4_CLICK_rxB+2500)(GP)
-SH	R2, Offset(WIFI4_CLICK_tmpB+2500)(GP)
-;WIFI4_CLICK.c,543 :: 		f_cpyRXtoTmp=0;
-SB	R0, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
-;WIFI4_CLICK.c,544 :: 		}
-L_WIFI4_process61:
-;WIFI4_CLICK.c,545 :: 		rxB.buff[0]=0;
+;WIFI4_CLICK.c,525 :: 		rxB.buff[0]=0;
 SB	R0, Offset(WIFI4_CLICK_rxB+0)(GP)
-;WIFI4_CLICK.c,546 :: 		rxB.ind=0;
+;WIFI4_CLICK.c,526 :: 		rxB.ind=0;
 SH	R0, Offset(WIFI4_CLICK_rxB+2500)(GP)
-;WIFI4_CLICK.c,547 :: 		flag_timesUp=0;
+;WIFI4_CLICK.c,527 :: 		flag_timesUp=0;
 SB	R0, Offset(WIFI4_CLICK_flag_timesUp+0)(GP)
-;WIFI4_CLICK.c,548 :: 		flag_cmdEx=0;
+;WIFI4_CLICK.c,528 :: 		flag_cmdEx=0;
 SB	R0, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-;WIFI4_CLICK.c,549 :: 		DTE_setState(1);
+;WIFI4_CLICK.c,529 :: 		DTE_setState(1);
 ORI	R25, R0, 1
 JAL	WIFI4_CLICK_DTE_setState+0
 NOP	
-;WIFI4_CLICK.c,550 :: 		}
-L_WIFI4_process60:
-;WIFI4_CLICK.c,551 :: 		}
-L_WIFI4_process59:
-;WIFI4_CLICK.c,552 :: 		}
+;WIFI4_CLICK.c,530 :: 		}
+L_WIFI4_process51:
+;WIFI4_CLICK.c,531 :: 		}
+L_WIFI4_process50:
+;WIFI4_CLICK.c,532 :: 		}
 L_end_WIFI4_process:
 LW	R26, 8(SP)
 LW	R25, 4(SP)
@@ -1668,10 +1558,10 @@ JR	RA
 NOP	
 ; end of _WIFI4_process
 _WIFI4_createFile:
-;WIFI4_CLICK.c,554 :: 		void WIFI4_createFile(uint8_t *name,uint16_t len)
+;WIFI4_CLICK.c,534 :: 		void WIFI4_createFile(uint8_t *name,uint16_t len)
 ADDIU	SP, SP, -64
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,557 :: 		strcpy(params,name);
+;WIFI4_CLICK.c,537 :: 		strcpy(params,name);
 SW	R25, 4(SP)
 SW	R26, 8(SP)
 ADDIU	R2, SP, 14
@@ -1680,28 +1570,28 @@ MOVZ	R26, R25, R0
 MOVZ	R25, R2, R0
 JAL	_strcpy+0
 NOP	
-;WIFI4_CLICK.c,558 :: 		strcat(params,",");
+;WIFI4_CLICK.c,538 :: 		strcat(params,",");
 ADDIU	R2, SP, 14
-LUI	R26, hi_addr(?lstr14_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr14_WIFI4_CLICK+0)
+LUI	R26, hi_addr(?lstr13_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr13_WIFI4_CLICK+0)
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
 LHU	R26, 12(SP)
-;WIFI4_CLICK.c,559 :: 		strcat(params,len);
+;WIFI4_CLICK.c,539 :: 		strcat(params,len);
 ADDIU	R2, SP, 14
 ANDI	R26, R26, 65535
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,560 :: 		WIFI4_cmdSingle("AT+S.FSC=",params);
+;WIFI4_CLICK.c,540 :: 		WIFI4_cmdSingle("AT+S.FSC=",params);
 ADDIU	R2, SP, 14
 MOVZ	R26, R2, R0
-LUI	R25, hi_addr(?lstr15_WIFI4_CLICK+0)
-ORI	R25, R25, lo_addr(?lstr15_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr14_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr14_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,561 :: 		}
+;WIFI4_CLICK.c,541 :: 		}
 L_end_WIFI4_createFile:
 LW	R26, 8(SP)
 LW	R25, 4(SP)
@@ -1710,172 +1600,366 @@ ADDIU	SP, SP, 64
 JR	RA
 NOP	
 ; end of _WIFI4_createFile
-_WIFI4_socketOpen:
-;WIFI4_CLICK.c,572 :: 		uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
-ADDIU	SP, SP, -112
+_WIFI4_getIPAddress:
+;WIFI4_CLICK.c,549 :: 		void WIFI4_getIPAddress(uint8_t *ip)
+ADDIU	SP, SP, -32
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,577 :: 		IntToStr(port,sPort);
+;WIFI4_CLICK.c,552 :: 		uint8_t ind=0;
+SW	R26, 4(SP)
+SW	R27, 8(SP)
+SW	R28, 12(SP)
+; ind start address is: 28 (R7)
+MOVZ	R7, R0, R0
+;WIFI4_CLICK.c,554 :: 		cmdSingle("AT+S.STS=","ip_ipaddr",DEFAULT_WTIME,0);
+SB	R7, 16(SP)
+SW	R25, 20(SP)
+MOVZ	R28, R0, R0
+ORI	R27, R0, 5
+LUI	R26, hi_addr(?lstr16_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr16_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr15_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr15_WIFI4_CLICK+0)
+JAL	WIFI4_CLICK_cmdSingle+0
+NOP	
+; ind end address is: 28 (R7)
+LW	R25, 20(SP)
+LBU	R7, 16(SP)
+;WIFI4_CLICK.c,555 :: 		while(tmpB.buff[ind] != '=' && ind<tmpB.ind)
+L_WIFI4_getIPAddress53:
+; ind start address is: 28 (R7)
+ANDI	R3, R7, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+LBU	R2, 0(R2)
+ANDI	R3, R2, 255
+ORI	R2, R0, 61
+BNE	R3, R2, L__WIFI4_getIPAddress148
+NOP	
+J	L__WIFI4_getIPAddress72
+NOP	
+L__WIFI4_getIPAddress148:
+ANDI	R3, R7, 255
+LHU	R2, Offset(WIFI4_CLICK_tmpB+2500)(GP)
+SLTU	R2, R3, R2
+BNE	R2, R0, L__WIFI4_getIPAddress149
+NOP	
+J	L__WIFI4_getIPAddress71
+NOP	
+L__WIFI4_getIPAddress149:
+L__WIFI4_getIPAddress70:
+;WIFI4_CLICK.c,557 :: 		ind++;
+ADDIU	R2, R7, 1
+ANDI	R7, R2, 255
+;WIFI4_CLICK.c,558 :: 		}
+J	L_WIFI4_getIPAddress53
+NOP	
+;WIFI4_CLICK.c,555 :: 		while(tmpB.buff[ind] != '=' && ind<tmpB.ind)
+L__WIFI4_getIPAddress72:
+L__WIFI4_getIPAddress71:
+;WIFI4_CLICK.c,559 :: 		if( tmpB.buff[ind] != '\0') //RESPONSE OK
+ANDI	R3, R7, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+LBU	R2, 0(R2)
+ANDI	R2, R2, 255
+BNE	R2, R0, L__WIFI4_getIPAddress151
+NOP	
+J	L_WIFI4_getIPAddress57
+NOP	
+L__WIFI4_getIPAddress151:
+;WIFI4_CLICK.c,561 :: 		strcpy(str,tmpB.buff[++ind]);
+ADDIU	R2, R7, 1
+ANDI	R7, R2, 255
+ANDI	R3, R2, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+LBU	R3, 0(R2)
+ADDIU	R2, SP, 24
+SW	R25, 16(SP)
+ANDI	R26, R3, 255
+MOVZ	R25, R2, R0
+JAL	_strcpy+0
+NOP	
+LW	R25, 16(SP)
+;WIFI4_CLICK.c,562 :: 		ip[0]=atoi(str);
+MOVZ	R2, R25, R0
+SW	R2, 28(SP)
+ADDIU	R2, SP, 24
+SW	R25, 16(SP)
+MOVZ	R25, R2, R0
+JAL	_atoi+0
+NOP	
+LW	R25, 16(SP)
+LW	R3, 28(SP)
+SB	R2, 0(R3)
+; ind end address is: 28 (R7)
+;WIFI4_CLICK.c,563 :: 		while(tmpB.buff[ind]!='.')
+L_WIFI4_getIPAddress58:
+; ind start address is: 28 (R7)
+ANDI	R3, R7, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+LBU	R2, 0(R2)
+ANDI	R3, R2, 255
+ORI	R2, R0, 46
+BNE	R3, R2, L__WIFI4_getIPAddress153
+NOP	
+J	L_WIFI4_getIPAddress59
+NOP	
+L__WIFI4_getIPAddress153:
+;WIFI4_CLICK.c,565 :: 		ind++;
+ADDIU	R2, R7, 1
+ANDI	R7, R2, 255
+;WIFI4_CLICK.c,566 :: 		}
+J	L_WIFI4_getIPAddress58
+NOP	
+L_WIFI4_getIPAddress59:
+;WIFI4_CLICK.c,567 :: 		strcpy(str,tmpB.buff[++ind]);
+ADDIU	R2, R7, 1
+ANDI	R7, R2, 255
+ANDI	R3, R2, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+LBU	R3, 0(R2)
+ADDIU	R2, SP, 24
+SW	R25, 16(SP)
+ANDI	R26, R3, 255
+MOVZ	R25, R2, R0
+JAL	_strcpy+0
+NOP	
+LW	R25, 16(SP)
+;WIFI4_CLICK.c,568 :: 		ip[1]=atoi(str);
+ADDIU	R2, R25, 1
+SW	R2, 28(SP)
+ADDIU	R2, SP, 24
+SW	R25, 16(SP)
+MOVZ	R25, R2, R0
+JAL	_atoi+0
+NOP	
+LW	R25, 16(SP)
+LW	R3, 28(SP)
+SB	R2, 0(R3)
+; ind end address is: 28 (R7)
+;WIFI4_CLICK.c,569 :: 		while(tmpB.buff[ind]!='.')
+L_WIFI4_getIPAddress60:
+; ind start address is: 28 (R7)
+ANDI	R3, R7, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+LBU	R2, 0(R2)
+ANDI	R3, R2, 255
+ORI	R2, R0, 46
+BNE	R3, R2, L__WIFI4_getIPAddress155
+NOP	
+J	L_WIFI4_getIPAddress61
+NOP	
+L__WIFI4_getIPAddress155:
+;WIFI4_CLICK.c,571 :: 		ind++;
+ADDIU	R2, R7, 1
+ANDI	R7, R2, 255
+;WIFI4_CLICK.c,572 :: 		}
+J	L_WIFI4_getIPAddress60
+NOP	
+L_WIFI4_getIPAddress61:
+;WIFI4_CLICK.c,573 :: 		strcpy(str,tmpB.buff[++ind]);
+ADDIU	R2, R7, 1
+ANDI	R7, R2, 255
+ANDI	R3, R2, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+LBU	R3, 0(R2)
+ADDIU	R2, SP, 24
+SW	R25, 16(SP)
+ANDI	R26, R3, 255
+MOVZ	R25, R2, R0
+JAL	_strcpy+0
+NOP	
+LW	R25, 16(SP)
+;WIFI4_CLICK.c,574 :: 		ip[2]=atoi(str);
+ADDIU	R2, R25, 2
+SW	R2, 28(SP)
+ADDIU	R2, SP, 24
+SW	R25, 16(SP)
+MOVZ	R25, R2, R0
+JAL	_atoi+0
+NOP	
+LW	R25, 16(SP)
+LW	R3, 28(SP)
+SB	R2, 0(R3)
+; ind end address is: 28 (R7)
+;WIFI4_CLICK.c,575 :: 		while(tmpB.buff[ind]!='.')
+L_WIFI4_getIPAddress62:
+; ind start address is: 28 (R7)
+ANDI	R3, R7, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+LBU	R2, 0(R2)
+ANDI	R3, R2, 255
+ORI	R2, R0, 46
+BNE	R3, R2, L__WIFI4_getIPAddress157
+NOP	
+J	L_WIFI4_getIPAddress63
+NOP	
+L__WIFI4_getIPAddress157:
+;WIFI4_CLICK.c,577 :: 		ind++;
+ADDIU	R2, R7, 1
+ANDI	R7, R2, 255
+;WIFI4_CLICK.c,578 :: 		}
+J	L_WIFI4_getIPAddress62
+NOP	
+L_WIFI4_getIPAddress63:
+;WIFI4_CLICK.c,579 :: 		strcpy(str,tmpB.buff[++ind]);
+ADDIU	R2, R7, 1
+; ind end address is: 28 (R7)
+ANDI	R3, R2, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+LBU	R3, 0(R2)
+ADDIU	R2, SP, 24
+SW	R25, 16(SP)
+ANDI	R26, R3, 255
+MOVZ	R25, R2, R0
+JAL	_strcpy+0
+NOP	
+LW	R25, 16(SP)
+;WIFI4_CLICK.c,580 :: 		ip[3]=atoi(str);
+ADDIU	R2, R25, 3
+SW	R2, 28(SP)
+ADDIU	R2, SP, 24
+SW	R25, 16(SP)
+MOVZ	R25, R2, R0
+JAL	_atoi+0
+NOP	
+LW	R25, 16(SP)
+LW	R3, 28(SP)
+SB	R2, 0(R3)
+;WIFI4_CLICK.c,581 :: 		}
+L_WIFI4_getIPAddress57:
+;WIFI4_CLICK.c,582 :: 		}
+L_end_WIFI4_getIPAddress:
+LW	R28, 12(SP)
+LW	R27, 8(SP)
+LW	R26, 4(SP)
+LW	RA, 0(SP)
+ADDIU	SP, SP, 32
+JR	RA
+NOP	
+; end of _WIFI4_getIPAddress
+_WIFI4_socketOpen:
+;WIFI4_CLICK.c,592 :: 		uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
+ADDIU	SP, SP, -60
+SW	RA, 0(SP)
+;WIFI4_CLICK.c,597 :: 		IntToStr(port,sPort);
 SW	R25, 4(SP)
 SW	R26, 8(SP)
-ADDIU	R2, SP, 104
-SW	R25, 12(SP)
+SW	R27, 12(SP)
+SW	R28, 16(SP)
+ADDIU	R2, SP, 54
+SW	R25, 20(SP)
 MOVZ	R25, R26, R0
 MOVZ	R26, R2, R0
 JAL	_IntToStr+0
 NOP	
-;WIFI4_CLICK.c,578 :: 		strcpy(tmp,"AT+S.SOCKON=");
+;WIFI4_CLICK.c,598 :: 		strcpy(tmp,"");
 ADDIU	R2, SP, 24
-LUI	R26, hi_addr(?lstr16_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr16_WIFI4_CLICK+0)
+LUI	R26, hi_addr(?lstr17_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr17_WIFI4_CLICK+0)
 MOVZ	R25, R2, R0
 JAL	_strcpy+0
 NOP	
-LW	R25, 12(SP)
-;WIFI4_CLICK.c,579 :: 		strcat(tmp,host);
+LW	R25, 20(SP)
+;WIFI4_CLICK.c,599 :: 		strcat(tmp,host);
 ADDIU	R2, SP, 24
 MOVZ	R26, R25, R0
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,580 :: 		strcat(tmp,",");
-ADDIU	R2, SP, 24
-LUI	R26, hi_addr(?lstr17_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr17_WIFI4_CLICK+0)
-MOVZ	R25, R2, R0
-JAL	_strcat+0
-NOP	
-;WIFI4_CLICK.c,581 :: 		strcat(tmp,sPort);
-ADDIU	R3, SP, 104
-ADDIU	R2, SP, 24
-MOVZ	R26, R3, R0
-MOVZ	R25, R2, R0
-JAL	_strcat+0
-NOP	
-;WIFI4_CLICK.c,582 :: 		strcat(tmp,",");
+;WIFI4_CLICK.c,600 :: 		strcat(tmp,",");
 ADDIU	R2, SP, 24
 LUI	R26, hi_addr(?lstr18_WIFI4_CLICK+0)
 ORI	R26, R26, lo_addr(?lstr18_WIFI4_CLICK+0)
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,583 :: 		ByteToStr(protocol,sPort);
-ADDIU	R2, SP, 104
-MOVZ	R26, R2, R0
-ANDI	R25, R27, 255
-JAL	_ByteToStr+0
-NOP	
-;WIFI4_CLICK.c,584 :: 		strcat(tmp,sPort);
-ADDIU	R3, SP, 104
+;WIFI4_CLICK.c,601 :: 		strcat(tmp,sPort);
+ADDIU	R3, SP, 54
 ADDIU	R2, SP, 24
 MOVZ	R26, R3, R0
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,586 :: 		while(0 != flag_cmdEx)
-L_WIFI4_socketOpen62:
-LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-BNE	R2, R0, L__WIFI4_socketOpen162
-NOP	
-J	L_WIFI4_socketOpen63
-NOP	
-L__WIFI4_socketOpen162:
-;WIFI4_CLICK.c,588 :: 		WIFI4_process();
-SB	R27, 12(SP)
-SW	R26, 16(SP)
-SW	R25, 20(SP)
-JAL	_WIFI4_process+0
-NOP	
-LW	R25, 20(SP)
-LW	R26, 16(SP)
-LBU	R27, 12(SP)
-;WIFI4_CLICK.c,589 :: 		}
-J	L_WIFI4_socketOpen62
-NOP	
-L_WIFI4_socketOpen63:
-;WIFI4_CLICK.c,591 :: 		createEvent(tmp,&currentEv);
+;WIFI4_CLICK.c,602 :: 		strcat(tmp,",");
 ADDIU	R2, SP, 24
-SB	R27, 12(SP)
-SW	R26, 16(SP)
-SW	R25, 20(SP)
-LUI	R26, hi_addr(WIFI4_CLICK_currentEv+0)
-ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)
+LUI	R26, hi_addr(?lstr19_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr19_WIFI4_CLICK+0)
 MOVZ	R25, R2, R0
-JAL	WIFI4_CLICK_createEvent+0
+JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,592 :: 		WIFI4_writeText2(tmp);
+;WIFI4_CLICK.c,603 :: 		ByteToStr(protocol,sPort);
+ADDIU	R2, SP, 54
+MOVZ	R26, R2, R0
+ANDI	R25, R27, 255
+JAL	_ByteToStr+0
+NOP	
+;WIFI4_CLICK.c,604 :: 		strcat(tmp,sPort);
+ADDIU	R3, SP, 54
 ADDIU	R2, SP, 24
+MOVZ	R26, R3, R0
 MOVZ	R25, R2, R0
-JAL	_WIFI4_writeText2+0
+JAL	_strcat+0
 NOP	
-LW	R25, 20(SP)
-LW	R26, 16(SP)
-LBU	R27, 12(SP)
-;WIFI4_CLICK.c,594 :: 		watchDogTime=0; //reset watchdog
-SH	R0, Offset(WIFI4_CLICK_watchDogTime+0)(GP)
-;WIFI4_CLICK.c,595 :: 		waitTime=200;
-ORI	R2, R0, 200
-SW	R2, Offset(WIFI4_CLICK_waitTime+0)(GP)
-;WIFI4_CLICK.c,596 :: 		f_wdogStart=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
-;WIFI4_CLICK.c,597 :: 		f_timerStart=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-;WIFI4_CLICK.c,598 :: 		flag_cmdEx=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-;WIFI4_CLICK.c,599 :: 		f_cpyRXtoTmp=1;
-ORI	R2, R0, 1
-SB	R2, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
-;WIFI4_CLICK.c,601 :: 		while(0 != flag_cmdEx)
-L_WIFI4_socketOpen64:
-LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-BNE	R2, R0, L__WIFI4_socketOpen164
+;WIFI4_CLICK.c,606 :: 		cmdSingle("AT+S.SOCKON=",tmp,1000,1);
+ADDIU	R2, SP, 24
+ORI	R28, R0, 1
+ORI	R27, R0, 1000
+MOVZ	R26, R2, R0
+LUI	R25, hi_addr(?lstr20_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr20_WIFI4_CLICK+0)
+JAL	WIFI4_CLICK_cmdSingle+0
 NOP	
-J	L_WIFI4_socketOpen65
-NOP	
-L__WIFI4_socketOpen164:
-;WIFI4_CLICK.c,603 :: 		WIFI4_process();
-SB	R27, 12(SP)
-SW	R26, 16(SP)
-SW	R25, 20(SP)
-JAL	_WIFI4_process+0
-NOP	
-LW	R25, 20(SP)
-LW	R26, 16(SP)
-LBU	R27, 12(SP)
-;WIFI4_CLICK.c,604 :: 		}
-J	L_WIFI4_socketOpen64
-NOP	
-L_WIFI4_socketOpen65:
-;WIFI4_CLICK.c,606 :: 		i=strchr(tmpB.buff,':');
-SW	R26, 12(SP)
-SW	R25, 16(SP)
+;WIFI4_CLICK.c,608 :: 		i=strchr(tmpB.buff,':');
 ORI	R26, R0, 58
 LUI	R25, hi_addr(WIFI4_CLICK_tmpB+0)
 ORI	R25, R25, lo_addr(WIFI4_CLICK_tmpB+0)
 JAL	_strchr+0
 NOP	
-LW	R25, 16(SP)
-LW	R26, 12(SP)
-;WIFI4_CLICK.c,608 :: 		return 0;
-MOVZ	R2, R0, R0
-;WIFI4_CLICK.c,609 :: 		}
-;WIFI4_CLICK.c,608 :: 		return 0;
-;WIFI4_CLICK.c,609 :: 		}
+;WIFI4_CLICK.c,609 :: 		ret=atoi(tmpB.buff+i+1);
+ANDI	R3, R2, 255
+LUI	R2, hi_addr(WIFI4_CLICK_tmpB+0)
+ORI	R2, R2, lo_addr(WIFI4_CLICK_tmpB+0)
+ADDU	R2, R2, R3
+ADDIU	R2, R2, 1
+MOVZ	R25, R2, R0
+JAL	_atoi+0
+NOP	
+;WIFI4_CLICK.c,610 :: 		return ret;
+;WIFI4_CLICK.c,611 :: 		}
+;WIFI4_CLICK.c,610 :: 		return ret;
+;WIFI4_CLICK.c,611 :: 		}
 L_end_WIFI4_socketOpen:
+LW	R28, 16(SP)
+LW	R27, 12(SP)
 LW	R26, 8(SP)
 LW	R25, 4(SP)
 LW	RA, 0(SP)
-ADDIU	SP, SP, 112
+ADDIU	SP, SP, 60
 JR	RA
 NOP	
 ; end of _WIFI4_socketOpen
 _WIFI4_socketWrite:
-;WIFI4_CLICK.c,611 :: 		void WIFI4_socketWrite(uint8_t id,uint8_t *wdata)
+;WIFI4_CLICK.c,618 :: 		void WIFI4_socketWrite(uint8_t id,uint8_t *wdata)
 ADDIU	SP, SP, -48
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,613 :: 		uint16_t len=strlen(wdata);
+;WIFI4_CLICK.c,620 :: 		uint16_t len=strlen(wdata);
 SW	R25, 4(SP)
 SB	R25, 8(SP)
 MOVZ	R25, R26, R0
@@ -1884,7 +1968,7 @@ NOP
 LBU	R25, 8(SP)
 ; len start address is: 24 (R6)
 SEH	R6, R2
-;WIFI4_CLICK.c,616 :: 		IntToStr(len,slen);
+;WIFI4_CLICK.c,623 :: 		IntToStr(len,slen);
 ADDIU	R3, SP, 13
 SW	R26, 8(SP)
 SB	R25, 12(SP)
@@ -1892,27 +1976,27 @@ MOVZ	R26, R3, R0
 ANDI	R25, R2, 65535
 JAL	_IntToStr+0
 NOP	
-;WIFI4_CLICK.c,618 :: 		strcpy(cmd,"AT+S.SOCKW=");
+;WIFI4_CLICK.c,625 :: 		strcpy(cmd,"AT+S.SOCKW=");
 ADDIU	R2, SP, 17
-LUI	R26, hi_addr(?lstr19_WIFI4_CLICK+0)
-ORI	R26, R26, lo_addr(?lstr19_WIFI4_CLICK+0)
+LUI	R26, hi_addr(?lstr21_WIFI4_CLICK+0)
+ORI	R26, R26, lo_addr(?lstr21_WIFI4_CLICK+0)
 MOVZ	R25, R2, R0
 JAL	_strcpy+0
 NOP	
 LBU	R25, 12(SP)
-;WIFI4_CLICK.c,619 :: 		strcat(cmd,id);
+;WIFI4_CLICK.c,626 :: 		strcat(cmd,id);
 ADDIU	R2, SP, 17
 ANDI	R26, R25, 255
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,620 :: 		strcat(cmd,',');
+;WIFI4_CLICK.c,627 :: 		strcat(cmd,',');
 ADDIU	R2, SP, 17
 ORI	R26, R0, 44
 MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
-;WIFI4_CLICK.c,621 :: 		strcat(cmd,len);
+;WIFI4_CLICK.c,628 :: 		strcat(cmd,len);
 ADDIU	R2, SP, 17
 ; len end address is: 24 (R6)
 ANDI	R26, R6, 65535
@@ -1920,26 +2004,26 @@ MOVZ	R25, R2, R0
 JAL	_strcat+0
 NOP	
 LW	R26, 8(SP)
-;WIFI4_CLICK.c,624 :: 		while(0 != flag_cmdEx)
-L_WIFI4_socketWrite66:
+;WIFI4_CLICK.c,631 :: 		while(0 != flag_cmdEx)
+L_WIFI4_socketWrite64:
 LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-BNE	R2, R0, L__WIFI4_socketWrite167
+BNE	R2, R0, L__WIFI4_socketWrite161
 NOP	
-J	L_WIFI4_socketWrite67
+J	L_WIFI4_socketWrite65
 NOP	
-L__WIFI4_socketWrite167:
-;WIFI4_CLICK.c,626 :: 		WIFI4_process();
+L__WIFI4_socketWrite161:
+;WIFI4_CLICK.c,633 :: 		WIFI4_process();
 SW	R26, 8(SP)
 SB	R25, 12(SP)
 JAL	_WIFI4_process+0
 NOP	
 LBU	R25, 12(SP)
 LW	R26, 8(SP)
-;WIFI4_CLICK.c,627 :: 		}
-J	L_WIFI4_socketWrite66
+;WIFI4_CLICK.c,634 :: 		}
+J	L_WIFI4_socketWrite64
 NOP	
-L_WIFI4_socketWrite67:
-;WIFI4_CLICK.c,628 :: 		createEvent(cmd,&currentEv);
+L_WIFI4_socketWrite65:
+;WIFI4_CLICK.c,635 :: 		createEvent(cmd,&currentEv);
 ADDIU	R2, SP, 17
 SW	R26, 8(SP)
 SB	R25, 12(SP)
@@ -1948,14 +2032,14 @@ ORI	R26, R26, lo_addr(WIFI4_CLICK_currentEv+0)
 MOVZ	R25, R2, R0
 JAL	WIFI4_CLICK_createEvent+0
 NOP	
-;WIFI4_CLICK.c,629 :: 		WIFI4_writeText2(cmd);
+;WIFI4_CLICK.c,636 :: 		WIFI4_writeText2(cmd);
 ADDIU	R2, SP, 17
 MOVZ	R25, R2, R0
 JAL	_WIFI4_writeText2+0
 NOP	
 LBU	R25, 12(SP)
 LW	R26, 8(SP)
-;WIFI4_CLICK.c,630 :: 		WIFI4_writeText2(wdata);
+;WIFI4_CLICK.c,637 :: 		WIFI4_writeText2(wdata);
 SW	R26, 8(SP)
 SB	R25, 12(SP)
 MOVZ	R25, R26, R0
@@ -1963,42 +2047,42 @@ JAL	_WIFI4_writeText2+0
 NOP	
 LBU	R25, 12(SP)
 LW	R26, 8(SP)
-;WIFI4_CLICK.c,632 :: 		watchDogTime=0; //reset watchdog
+;WIFI4_CLICK.c,639 :: 		watchDogTime=0; //reset watchdog
 SH	R0, Offset(WIFI4_CLICK_watchDogTime+0)(GP)
-;WIFI4_CLICK.c,633 :: 		waitTime=DEFAULT_WTIME;
+;WIFI4_CLICK.c,640 :: 		waitTime=DEFAULT_WTIME;
 ORI	R2, R0, 5
-SW	R2, Offset(WIFI4_CLICK_waitTime+0)(GP)
-;WIFI4_CLICK.c,634 :: 		f_wdogStart=1;
+SH	R2, Offset(WIFI4_CLICK_waitTime+0)(GP)
+;WIFI4_CLICK.c,641 :: 		f_wdogStart=1;
 ORI	R2, R0, 1
 SB	R2, Offset(WIFI4_CLICK_f_wdogStart+0)(GP)
-;WIFI4_CLICK.c,635 :: 		f_timerStart=1;
+;WIFI4_CLICK.c,642 :: 		f_timerStart=1;
 ORI	R2, R0, 1
 SB	R2, Offset(WIFI4_CLICK_f_timerStart+0)(GP)
-;WIFI4_CLICK.c,636 :: 		flag_cmdEx=1;
+;WIFI4_CLICK.c,643 :: 		flag_cmdEx=1;
 ORI	R2, R0, 1
 SB	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-;WIFI4_CLICK.c,637 :: 		f_cpyRXtoTmp=0;
+;WIFI4_CLICK.c,644 :: 		f_cpyRXtoTmp=0;
 SB	R0, Offset(WIFI4_CLICK_f_cpyRXtoTmp+0)(GP)
-;WIFI4_CLICK.c,639 :: 		while(0 != flag_cmdEx)
-L_WIFI4_socketWrite68:
+;WIFI4_CLICK.c,646 :: 		while(0 != flag_cmdEx)
+L_WIFI4_socketWrite66:
 LBU	R2, Offset(WIFI4_CLICK_flag_cmdEx+0)(GP)
-BNE	R2, R0, L__WIFI4_socketWrite169
+BNE	R2, R0, L__WIFI4_socketWrite163
 NOP	
-J	L_WIFI4_socketWrite69
+J	L_WIFI4_socketWrite67
 NOP	
-L__WIFI4_socketWrite169:
-;WIFI4_CLICK.c,641 :: 		WIFI4_process();
+L__WIFI4_socketWrite163:
+;WIFI4_CLICK.c,648 :: 		WIFI4_process();
 SW	R26, 8(SP)
 SB	R25, 12(SP)
 JAL	_WIFI4_process+0
 NOP	
 LBU	R25, 12(SP)
 LW	R26, 8(SP)
-;WIFI4_CLICK.c,642 :: 		}
-J	L_WIFI4_socketWrite68
+;WIFI4_CLICK.c,649 :: 		}
+J	L_WIFI4_socketWrite66
 NOP	
-L_WIFI4_socketWrite69:
-;WIFI4_CLICK.c,643 :: 		}
+L_WIFI4_socketWrite67:
+;WIFI4_CLICK.c,650 :: 		}
 L_end_WIFI4_socketWrite:
 LW	R25, 4(SP)
 LW	RA, 0(SP)
@@ -2007,24 +2091,24 @@ JR	RA
 NOP	
 ; end of _WIFI4_socketWrite
 _WIFI4_socketClose:
-;WIFI4_CLICK.c,644 :: 		void WIFI4_socketClose(uint8_t id)
+;WIFI4_CLICK.c,652 :: 		void WIFI4_socketClose(uint8_t id)
 ADDIU	SP, SP, -16
 SW	RA, 0(SP)
-;WIFI4_CLICK.c,647 :: 		ByteToStr(id,str);
+;WIFI4_CLICK.c,655 :: 		ByteToStr(id,str);
 SW	R25, 4(SP)
 SW	R26, 8(SP)
 ADDIU	R2, SP, 12
 MOVZ	R26, R2, R0
 JAL	_ByteToStr+0
 NOP	
-;WIFI4_CLICK.c,648 :: 		WIFI4_cmdSIngle("AT+S.SOCKC=",str);
+;WIFI4_CLICK.c,656 :: 		WIFI4_cmdSIngle("AT+S.SOCKC=",str);
 ADDIU	R2, SP, 12
 MOVZ	R26, R2, R0
-LUI	R25, hi_addr(?lstr20_WIFI4_CLICK+0)
-ORI	R25, R25, lo_addr(?lstr20_WIFI4_CLICK+0)
+LUI	R25, hi_addr(?lstr22_WIFI4_CLICK+0)
+ORI	R25, R25, lo_addr(?lstr22_WIFI4_CLICK+0)
 JAL	_WIFI4_cmdSingle+0
 NOP	
-;WIFI4_CLICK.c,650 :: 		}
+;WIFI4_CLICK.c,658 :: 		}
 L_end_WIFI4_socketClose:
 LW	R26, 8(SP)
 LW	R25, 4(SP)

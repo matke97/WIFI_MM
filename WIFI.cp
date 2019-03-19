@@ -59,10 +59,9 @@ void WIFI4_cmdSingle(char* command,char *param);
 void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass);
 
 void WIFI4_putc(char c);
-
+void WIFI4_writeText2(uint8_t *txt);
 void WIFI4_modulePower(uint8_t powerState );
 void WIFI4_setSSID(uint8_t *ssid);
-void WIFI4_getSSID();
 void WIFI4_tick();
 void WIFI4_process();
 void WIFI4_ping(uint8_t *ipAddr);
@@ -73,6 +72,7 @@ uint16_t WIFI4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHan
 uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
 void WIFI4_socketClose(uint8_t id);
 void WIFI4_socketWrite(uint8_t id,uint8_t *wdata);
+void WIFI4_getIPAddress(uint8_t *ip);
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 #line 2 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
@@ -148,23 +148,34 @@ void systemInit()
  mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_CS_PIN, _GPIO_INPUT );
  mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_INT_PIN, _GPIO_OUTPUT );
  mikrobus_uartInit(_MIKROBUS1,&_WIFI4_UART_CFG[0]);
-
  mikrobus_logInit(_LOG_USBUART_B,115200);
 }
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
  mikrobus_logWrite(resp,_LOG_LINE);
  }
+void stshandler(uint8_t *resp,uint8_t *args)
+{
 
-uint8_t socket;
+
+}
+
+void soketServer()
+{
+ WIFI4_cmdSingle("AT+S.SOCKD=","32000");
+ WIFI4_cmdSingle("AT+S.STS=ip_sockd_port","");
+
+
+}
+
+
 void appInit()
 {
  WIFI4_uartDriverInit(( const uint8_t* )&_MIKROBUS1_GPIO,( const uint8_t* )&_MIKROBUS1_UART);
  InitTimer1();
  uartInterrupt();
  WIFI4_coreInit(defaultHandler,1500);
-
-
+ WIFI4_setHandler("#  ip_ipaddr =",1500,stshandler);
  Delay_ms(500);
 
 
@@ -179,16 +190,31 @@ void appInit()
  nakacisena_gateway();
  WIFI4_cmdSingle("AT&V","");
  Delay_ms(3000);
- socket=WIFI4_socketOpen("10.101.22.202",85,'t');
- mikrobus_logWrite("POCETAK....",_LOG_LINE);
- Delay_ms(1500);
+ soketServer();
+ Delay_ms(3000);
+
 
 }
-
+uint8_t ipa[4];
+uint8_t pok=0;
 void appTask()
 {
 
-WIFI4_process();
+ WIFI4_process();
+
+ WIFI4_cmdSingle("AT+S.STS=","ip_ipaddr");
+ WIFI4_ping("mikroe.com");
+ while(pok++<50)
+ {
+ WIFI4_writeText2("TEST\n");
+ }
+ Delay_ms(10000);
+ if(pok>50 && pok<100)
+{
+ WIFI4_cmdSingle("AT+S","");
+ WIFI4_cmdSingle("AT+S.SOCKD=","0");
+ pok=100;
+}
  Delay_ms(4000);
 
 }

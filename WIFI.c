@@ -60,24 +60,35 @@ void systemInit()
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_CS_PIN, _GPIO_INPUT );
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_INT_PIN, _GPIO_OUTPUT );
     mikrobus_uartInit(_MIKROBUS1,&_WIFI4_UART_CFG[0]);
-
     mikrobus_logInit(_LOG_USBUART_B,115200);
 }
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
  mikrobus_logWrite(resp,_LOG_LINE);
  }
- 
-uint8_t socket;
+void stshandler(uint8_t *resp,uint8_t *args)
+{
+
+
+}
+
+void soketServer()
+{
+
+  WIFI4_cmdSingle("AT+S.STS=ip_sockd_port","");
+  
+
+}
+
+
 void appInit()
 {
-  WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
- InitTimer1();
- uartInterrupt();
- WIFI4_coreInit(defaultHandler,1500);
-
-
- Delay_ms(500);
+    WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
+    InitTimer1();
+     uartInterrupt();
+     WIFI4_coreInit(defaultHandler,1500);
+    WIFI4_setHandler("#  ip_ipaddr =",1500,stshandler);
+    Delay_ms(500);
  
  //reset device
  WIFI4_modulePower(0);
@@ -90,17 +101,26 @@ void appInit()
   WIFI4_cmdSingle("AT","");
   nakacisena_gateway();
   WIFI4_cmdSingle("AT&V","");
-    Delay_ms(3000);
-   socket=WIFI4_socketOpen("10.101.22.202",85,'t');
-   mikrobus_logWrite("POCETAK....",_LOG_LINE);
-  Delay_ms(1500);
+  Delay_ms(3000);
+  soketServer();
+  Delay_ms(3000);
+
 
 }
-
+uint8_t ipa[4];
+uint8_t pok=0;
 void appTask()
 {
 
-WIFI4_process();
+  WIFI4_process();
+ //WIFI4_getIpAddress(ipa);
+ WIFI4_cmdSingle("AT+S.STS=","ip_ipaddr");
+ WIFI4_ping("mikroe.com");
+ while(pok++<50)
+ {
+  WIFI4_writeText2("TEST\n");
+ }
+ Delay_ms(10000);
  Delay_ms(4000);
 
 }

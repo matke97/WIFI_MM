@@ -105,7 +105,7 @@ typedef struct
 static volatile T_WIFI4_rx_buff rxB;
 static volatile T_handler_storage hdB; // handler func buffer
 static volatile T_CORE_event currentEv; //trenutna komanda, dogadjaj za obradu
-
+static volatile T_WIFI4_rx_buff tmpB; //tmp baf
 
 static volatile uint8_t respEnd;// response ENDED
 static volatile uint32_t respTime;
@@ -237,14 +237,19 @@ static void createEvent( char *pInput, T_CORE_event *pEvent )
    // pEvent->evArg[_G2C_EVARG_START_T]  = startIdx;
     //pEvent->evArg[_G2C_EVARG_END_T]    = endIdx;
 }
+
+/*
+ Flag variables
+*/
 static volatile uint16_t watchDogTime;
 static volatile uint8_t flag_timesUp;
 static volatile uint8_t flag_wdogOut;
 static volatile uint8_t flag_cmdEx;
 static volatile uint8_t f_wdogStart;
 static volatile uint8_t f_timerStart;
-static volatile uint16_t waitTime; //set wait for ending of response->for ping
+static volatile uint32_t waitTime; //set wait for ending of response->for ping
 static volatile uint8_t f_cpyRXtoTmp;
+
 void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog)
 {
     // KASNIJE SETUJ
@@ -464,6 +469,7 @@ void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass)
    strcat(newPass,pass);
     WIFI4_cmdSingle("AT+S.SCFG=",newPass);
 }
+
 void WIFI4_putc(char c)
 {
  flag_cmdEx=1;
@@ -490,9 +496,9 @@ void WIFI4_tick()
  }
  }
 }
-T_WIFI4_rx_buff tmpB; //tmp baf
 
-//funkcija koja se poziva stalno u while petlji->
+
+
 void WIFI4_process()
 {
 //WATCHDOG TIMEOUT
@@ -553,25 +559,29 @@ void WIFI4_createFile(uint8_t *name,uint16_t len)
  strcat(params,len);
  WIFI4_cmdSingle("AT+S.FSC=",params);
 }
-/*
+
+//SOCKET FUNCTIONS
+
+/*****************************
   Open socket -> 
   host - ip address od DNS resolvable name
   port - TCP/UDP socket port
   protocol-t for TCP,u for UDP and s for secure protcol
   
-*/
-uint8_t WIFI4_socketOpen(uint8_t *host,uint16_t port,uint8_t protocol)
+******************************/
+uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 {
-     char tmp[50];
+     char tmp[80];
      uint8_t i,ret;
      uint8_t sPort[6];
      IntToStr(port,sPort);
      strcpy(tmp,"AT+S.SOCKON=");
      strcat(tmp,host);
-     strcat(tmp,',');
+     strcat(tmp,",");
      strcat(tmp,sPort);
-     strcat(tmp,',');
-     strcat(tmp,protocol);
+     strcat(tmp,",");
+     ByteToStr(protocol,sPort);
+     strcat(tmp,sPort);
 
       while(0 != flag_cmdEx)
        {
@@ -582,21 +592,22 @@ uint8_t WIFI4_socketOpen(uint8_t *host,uint16_t port,uint8_t protocol)
      WIFI4_writeText2(tmp);
 
      watchDogTime=0; //reset watchdog
-     waitTime=DEFAULT_WTIME;
+     waitTime=200;
      f_wdogStart=1;
      f_timerStart=1;
      flag_cmdEx=1;
-     f_cpyRXtoTmp=1;
+      f_cpyRXtoTmp=1;
      //sacekaj response
        while(0 != flag_cmdEx)
        {
          WIFI4_process();
        }
 
-      i=strchr(tmpB.buff,':');
-      ret=atoi(tmpB.buff+i+1);
-      return ret;
+     i=strchr(tmpB.buff,':');
+     // ret=atoi(tmpB.buff+i+1);
+      return 0;
 }
+
 void WIFI4_socketWrite(uint8_t id,uint8_t *wdata)
 {
   uint16_t len=strlen(wdata);

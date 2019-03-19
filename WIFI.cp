@@ -70,7 +70,7 @@ void WIFI4_createFile(uint8_t *name,uint16_t len);
 void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
 
 uint16_t WIFI4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
-uint8_t WIFI4_socketOpen(uint8_t *host,uint16_t port,uint8_t protocol);
+uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
 void WIFI4_socketClose(uint8_t id);
 void WIFI4_socketWrite(uint8_t id,uint8_t *wdata);
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
@@ -93,7 +93,7 @@ void Timer1Interrupt() iv IVT_TIMER_1 ilevel 7 ics ICS_SRS {
  T1IF_bit = 0;
  WIFI4_tick();
 }
-#line 8 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI.c"
+#line 9 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI.c"
 const uint32_t _WIFI4_UART_CFG[ 1 ] =
 {
  115200
@@ -156,9 +156,10 @@ void defaultHandler(uint8_t *resp,uint8_t *args)
  mikrobus_logWrite(resp,_LOG_LINE);
  }
 
- uint16_t socket;
+uint8_t socket;
 void appInit()
 {
+ WIFI4_uartDriverInit(( const uint8_t* )&_MIKROBUS1_GPIO,( const uint8_t* )&_MIKROBUS1_UART);
  InitTimer1();
  uartInterrupt();
  WIFI4_coreInit(defaultHandler,1500);
@@ -172,34 +173,22 @@ void appInit()
  WIFI4_modulePower(1);
  Delay_ms(1000);
 
- mikrobus_logWrite("POCETAK....",_LOG_LINE);
+
 
  WIFI4_cmdSingle("AT","");
  nakacisena_gateway();
  WIFI4_cmdSingle("AT&V","");
-
+ Delay_ms(3000);
+ socket=WIFI4_socketOpen("10.101.22.202",32000,'t');
+ mikrobus_logWrite("POCETAK....",_LOG_LINE);
  Delay_ms(1500);
 
 }
 
 void appTask()
 {
- uint8_t pok=0;
- uint8_t slanje[10];
+
 WIFI4_process();
-while(pok++<10)
-{
- mikrobus_logWrite("Saljem podatke na soket....",_LOG_TEXT);
- strcpy(slanje,"TEST");
- strcat(slanje,pok);
-
-
-}
-if(pok == 10)
-{
-
- pok++;
-}
  Delay_ms(4000);
 
 }

@@ -5,6 +5,7 @@
 */
 #include "WIFI4_CLICK.h"
 #include "WIFI4_timer.h"
+
 const uint32_t _WIFI4_UART_CFG[ 1 ] =
 {
         115200
@@ -67,9 +68,10 @@ void defaultHandler(uint8_t *resp,uint8_t *args)
  mikrobus_logWrite(resp,_LOG_LINE);
  }
  
- uint16_t socket;
+uint8_t socket;
 void appInit()
 {
+  WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
  InitTimer1();
  uartInterrupt();
  WIFI4_coreInit(defaultHandler,1500);
@@ -83,34 +85,22 @@ void appInit()
  WIFI4_modulePower(1);
  Delay_ms(1000);
 
-  mikrobus_logWrite("POCETAK....",_LOG_LINE);
+
 
   WIFI4_cmdSingle("AT","");
   nakacisena_gateway();
   WIFI4_cmdSingle("AT&V","");
-   //socket=WIFI4_socketOpen("10.101.22.202",32000,'t');
+    Delay_ms(3000);
+   socket=WIFI4_socketOpen("10.101.22.202",32000,'t');
+   mikrobus_logWrite("POCETAK....",_LOG_LINE);
   Delay_ms(1500);
 
 }
 
 void appTask()
 {
- uint8_t pok=0;
- uint8_t slanje[10];
+
 WIFI4_process();
-while(pok++<10)
-{
-  mikrobus_logWrite("Saljem podatke na soket....",_LOG_TEXT);
-  strcpy(slanje,"TEST");
-  strcat(slanje,pok);
-  //WIFI4_socketWrite(socket,slanje);
-  
-}
-if(pok == 10)
-{
-   //WIFI4_socketClose(socket);
-   pok++;
-}
  Delay_ms(4000);
 
 }

@@ -3284,7 +3284,6 @@ bufcnt6
 bufcnt6_bit
 bufcnt7
 bufcnt7_bit
-buff
 bufm
 bufm
 bufm
@@ -29178,7 +29177,6 @@ incm1
 incm1
 incm1
 incm1_bit
-ind
 inittimer1
 int0ep
 int0ep
@@ -46498,7 +46496,6 @@ tgate_t3con_bit
 tgate_t4con_bit
 tgate_t5con_bit
 timer1interrupt
-tmpb
 tmr1
 tmr10
 tmr10_bit

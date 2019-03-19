@@ -24,6 +24,33 @@ main
 			_log_initUartB
 				UART5_Init
 	appInit
+		WIFI4_uartDriverInit
+			hal_gpioMap
+			hal_uartMap
+			_setAN_1
+			_setRST_1
+			_setCS_1
+			_setSCK_1
+			_setMISO_1
+			_setMOSI_1
+			_setPWM_1
+			_setINT_1
+			_setRX_1
+			_setTX_1
+			_setSCL_1
+			_setSDA_1
+			_setAN_2
+			_setRST_2
+			_setCS_2
+			_setSCK_2
+			_setMISO_2
+			_setMOSI_2
+			_setPWM_2
+			_setINT_2
+			_setRX_2
+			_setTX_2
+			_setSCL_2
+			_setSDA_2
 		InitTimer1
 		uartInterrupt
 		WIFI4_coreInit
@@ -54,14 +81,6 @@ main
 			_setSCL_2
 			_setSDA_2
 		Delay_100ms
-		mikrobus_logWrite
-			_log_write
-				UART1_Write
-				UART2_Write
-				UART3_Write
-				UART4_Write
-				UART5_Write
-				UART6_Write
 		WIFI4_cmdSingle
 			strcpy
 			strcat
@@ -103,6 +122,13 @@ main
 				strcpy
 				defaultHandler
 					mikrobus_logWrite
+						_log_write
+							UART1_Write
+							UART2_Write
+							UART3_Write
+							UART4_Write
+							UART5_Write
+							UART6_Write
 			createEvent
 			WIFI4_writeText2
 				hal_uartWrite
@@ -118,12 +144,20 @@ main
 				WIFI4_cmdSingle
 				strcpy
 				strcat
+		WIFI4_socketOpen
+			IntToStr
+				WordToStr
+			strcpy
+			strcat
+			ByteToStr
+			WIFI4_process
+			createEvent
+			WIFI4_writeText2
+			strchr
+		mikrobus_logWrite
 	mikrobus_logWrite
 	appTask
 		WIFI4_process
-		mikrobus_logWrite
-		strcpy
-		strcat
 RX_ISR
 	UART2_Read
 	WIFI4_putc

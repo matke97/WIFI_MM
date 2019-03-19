@@ -29371,7 +29371,6 @@ intstatbits
 inttohex
 inttostr
 inttostrwithzeros
-ipa
 ipc0
 ipc0bits
 ipc0clr
@@ -35323,7 +35322,6 @@ pmstatinv
 pmstatinvbits
 pmstatset
 pmstatsetbits
-pok
 por
 por
 por
@@ -45643,7 +45641,6 @@ stsel_u3mode_bit
 stsel_u4mode_bit
 stsel_u5mode_bit
 stsel_u6mode_bit
-stshandler
 stxisel
 stxisel
 stxisel
@@ -58839,11 +58836,12 @@ wifi4_cmdsingle
 wifi4_connecttoap
 wifi4_coreinit
 wifi4_createfile
-wifi4_getipaddress
+wifi4_getssid
 wifi4_modulepower
 wifi4_ping
 wifi4_process
 wifi4_putc
+wifi4_responserec
 wifi4_sethandler
 wifi4_setssid
 wifi4_socketclose

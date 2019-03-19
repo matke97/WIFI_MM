@@ -60,26 +60,28 @@ void systemInit()
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_CS_PIN, _GPIO_INPUT );
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_INT_PIN, _GPIO_OUTPUT );
     mikrobus_uartInit(_MIKROBUS1,&_WIFI4_UART_CFG[0]);
+
     mikrobus_logInit(_LOG_USBUART_B,115200);
 }
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
  mikrobus_logWrite(resp,_LOG_LINE);
+ if(!strncmp(resp,"OOO",3))
+ {
+  mikrobus_logWrite("JEJJ",_LOG_LINE);
  }
-void stshandler(uint8_t *resp,uint8_t *args)
-{
-
-
-}
+ }
 void appInit()
 {
-    WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
-    InitTimer1();
-     uartInterrupt();
-     WIFI4_coreInit(defaultHandler,1500);
-    WIFI4_setHandler("#  ip_ipaddr =",1500,stshandler);
-    Delay_ms(500);
- 
+  WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
+ InitTimer1();
+ uartInterrupt();
+ WIFI4_coreInit(defaultHandler,1500);
+
+
+ Delay_ms(500);
+
+
  //reset device
  WIFI4_modulePower(0);
  Delay_100ms();
@@ -91,21 +93,22 @@ void appInit()
   WIFI4_cmdSingle("AT","");
   nakacisena_gateway();
   WIFI4_cmdSingle("AT&V","");
-  Delay_ms(3000);
-   WIFI4_socketServerOpen(32000);
-  Delay_ms(3000);
+
+
+
+    Delay_ms(3000);
+
+    WIFI4_socketServerOpen(32000);
+
+  Delay_ms(1500);
 
 
 }
-uint8_t ipa[4];
-uint8_t pok=0;
+
 void appTask()
 {
-
   WIFI4_process();
-
  Delay_ms(4000);
-
 }
 
 

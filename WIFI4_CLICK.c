@@ -8,9 +8,9 @@
 #define LF_CHAR 0x0A
  */
  //podrazumevano vreme cekanja sa poslednjeg prijema poruke sa uarta
-#define DEFAULT_WTIME 5
+#define DEFAULT_WTIME 3
 #define  LUTS_WIDTH 2
-#define LUT_SIZE 3
+#define LUT_SIZE 4
 #define LUT_SIZE_END 4
 #define _WIFI4_CMD_MAXSIZE 10
 
@@ -115,11 +115,12 @@ static volatile uint32_t respTime;
 /*
  * Look up table for START MARK string, must have "" as first member
  */
-static char LUT_START [3][2] =
+static char LUT_START [4][2] =
 {
  "", //default
  "+", //
- "&", //AT& -storing to flash mem or reset of device
+ "&",
+ "#"
 };
 /*
  * Look up table for END MARK string, must have "" as 0 member
@@ -597,7 +598,7 @@ void wifi4_createFile(uint8_t *name,uint16_t len)
   protocol-t for TCP,u for UDP and s for secure protcol
   
 ******************************/
-uint8_t wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
+void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 {
      char tmp[80];
      uint8_t i,ret;
@@ -606,10 +607,10 @@ uint8_t wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
      strcpy(tmp,"AT+S.SOCKON=");
      strcat(tmp,host);
      strcat(tmp,",");
-     strcat(tmp,sPort);
+     strcat(tmp,Ltrim(sPort));
      strcat(tmp,",");
      ByteToStr(protocol,sPort);
-     strcat(tmp,sPort);
+     strcat(tmp,Ltrim(sPort));
 
       while(0 != flag_cmdEx)
        {
@@ -631,9 +632,6 @@ uint8_t wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
          wifi4_process();
        }
       //ubaci ispitivanje id:
-     i=strchr(tmpB.buff,':');
-     ret=atoi(tmpB.buff+i+1);
-      return ret;
 }
 /****************
      Write data to socket
@@ -643,15 +641,17 @@ uint8_t wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 *****************/
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
 {
-  uint16_t len=strlen(wdata);
-  uint8_t slen[4];
-  uint8_t cmd[30];
+  uint16_t len=strlen(wdata)-1;
+  uint8_t slen[5];
+  uint8_t cmd[40];
+  uint8_t sid[4];
   IntToStr(len,slen);
 
   strcpy(cmd,"AT+S.SOCKW=");
-  strcat(cmd,id);
-  strcat(cmd,',');
-  strcat(cmd,len);
+  ByteToStr(id,sid);
+  strcat(cmd,Ltrim(sid));
+  strcat(cmd,",");
+  strcat(cmd,Ltrim(slen));
   
    //AKO JE NEKA DRUGA KOMANDA U TOKU,SACEKAJ
       while(0 != flag_cmdEx)
@@ -663,7 +663,7 @@ void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
   WIFI4_writeText2(wdata);
 
      watchDogTime=0; //reset watchdog
-     waitTime=DEFAULT_WTIME;
+     waitTime=3*DEFAULT_WTIME;
      f_wdogStart=1;
      f_timerStart=1;
      flag_cmdEx=1;

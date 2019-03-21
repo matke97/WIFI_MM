@@ -78,11 +78,11 @@ void ACThandler(uint8_t *resp,uint8_t *args)
   {
     strcpy(resp,resp+9);
 
-     if(resp[0] == '0')
+     if(resp[0] == 0x30)
      {
       read=0;
      }
-     else if(resp[0] == '1')
+     else if(resp[0] == 0x31)
      {
       read=1;
      }
@@ -144,14 +144,10 @@ void appInit()
   //connect to AP
  nakacisena_gateway();
  Delay_ms(3000);
-    
-    
 
-  wifi4_createFile("/proba.html",183);
-  Delay_ms(1000);
   wifi4_socketServerOpen(32000);
   Delay_ms(1500);
-
+  vidiipadresu();
   //relay default states config
   state=0;
   state2=0;
@@ -159,7 +155,7 @@ void appInit()
   oldstate2=0;
   relay_relay1Control(0);
   relay_relay2Control(0);
-  wifi4_cmdSingle("AT+S.FSL","");
+
 }
 
 void appTask()

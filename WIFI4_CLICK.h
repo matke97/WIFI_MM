@@ -98,7 +98,7 @@ void wifi4_createFile(uint8_t *name,uint16_t len);
 uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
 
 
-uint8_t wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
+void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
 void wifi4_socketClose(uint8_t id);
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata);
 

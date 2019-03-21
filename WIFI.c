@@ -48,7 +48,7 @@ void pisiWIFIstatus()
     WIFI4_cmdSingle("AT+S.STS=","wifi_state");
 
 }
-void ispitajACT(uint8_t *resp)
+void ACThandler(uint8_t *resp,uint8_t *args)
 {
  if(!strncmp(resp,"+ACT:",5))
  {
@@ -100,7 +100,6 @@ void ispitajACT(uint8_t *resp)
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
  mikrobus_logWrite(resp,_LOG_LINE);
- ispitajACT(resp);
 
  }
  
@@ -108,6 +107,7 @@ void windHandler(uint8_t *resp,uint8_t *args)
 {
    mikrobus_logWrite("AAAA",_LOG_LINE);
 }
+
 void systemInit()
 {
     //setting pins for WIFI4 click
@@ -133,6 +133,7 @@ void appInit()
  //core init WIFI4click
  WIFI4_coreInit(defaultHandler,1500);
  WIFI4_setHandler("+WIND",1500,windHandler);
+ WIFI4_setHandler("+ACT",1500,ACThandler);
  Delay_100ms();
 
  //reset device

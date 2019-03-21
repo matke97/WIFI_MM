@@ -135,11 +135,11 @@ main
 							UART4_Write
 							UART5_Write
 							UART6_Write
-					ispitajACT
-						strncmp
-						strcpy
 				windHandler
 					mikrobus_logWrite
+				ACThandler
+					strncmp
+					strcpy
 			createEvent
 			WIFI4_writeText2
 				hal_uartWrite

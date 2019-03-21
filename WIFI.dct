@@ -436,6 +436,7 @@ ackstat_i2c1stat_bit
 ackstat_i2c2stat_bit
 ackstat_i2c4stat_bit
 ackstat_i2c5stat_bit
+acthandler
 actvie
 actvie
 actvie
@@ -29602,7 +29603,6 @@ iscntrl
 isdigit
 isgraph
 islower
-ispitajact
 ispunct
 isspace
 isupper

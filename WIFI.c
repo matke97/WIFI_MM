@@ -5,7 +5,7 @@
 */
 #include "WIFI4_CLICK.h"
 #include "WIFI4_timer.h"
-
+#define T_RELAY_P uint8_t*
 const uint32_t _WIFI4_UART_CFG[ 1 ] =
 {
         115200
@@ -29,6 +29,7 @@ void RX_ISR()iv IVT_UART_2 ilevel 7 ics ICS_SRS
       U2RXIF_bit = 0;
     }
 }
+uint8_t state,oldstate,state2,oldstate2;
 void nakacisena_gateway()
 {
     mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
@@ -53,27 +54,76 @@ void pisiWIFIstatus()
     WIFI4_cmdSingle("AT+S.STS=","wifi_state");
 
 }
+void defaultHandler(uint8_t *resp,uint8_t *args)
+{
+ mikrobus_logWrite(resp,_LOG_LINE);
+ if(!strncmp(resp,"+ACT:",5))
+ {
+  uint8_t read;
+  // act signal
+  strcpy(resp,resp+5);
+  if(!strncmp(resp,"RELAY_R1",8))
+  {
+    strcpy(resp,resp+9);
+  if(resp[0] == 0x30)
+     {
+      read=0;
+     }
+     else  if(resp[0] == 0x31)
+     {
+      read=1;
+     }
+     if(0 != read)
+     {
+      state=1;
+     }else
+     {
+      state=0;
+     }
+  }else {
+  if(!strncmp(resp,"RELAY_R2",8))
+  {
+    strcpy(resp,resp+9);
+
+     if(resp[0] == '0')
+     {
+      read=0;
+     }
+     else if(resp[0] == '1')
+     {
+      read=1;
+     }
+     if(0 != read)
+     {
+      state2=1;
+     }else
+     {
+      state2=0;
+     }
+  }
+  }
+ }
+ }
 void systemInit()
 {
-
+    //setting pins for WIFI4 click
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_RST_PIN, _GPIO_OUTPUT );
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_CS_PIN, _GPIO_INPUT );
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_INT_PIN, _GPIO_OUTPUT );
     mikrobus_uartInit(_MIKROBUS1,&_WIFI4_UART_CFG[0]);
 
     mikrobus_logInit(_LOG_USBUART_B,115200);
+    
+    //setting pins for RELAY click
+    mikrobus_gpioInit( _MIKROBUS2, _MIKROBUS_CS_PIN, _GPIO_OUTPUT );
+    mikrobus_gpioInit( _MIKROBUS2, _MIKROBUS_PWM_PIN, _GPIO_OUTPUT );
 }
-void defaultHandler(uint8_t *resp,uint8_t *args)
-{
- mikrobus_logWrite(resp,_LOG_LINE);
- if(!strncmp(resp,"OOO",3))
- {
-  mikrobus_logWrite("JEJJ",_LOG_LINE);
- }
- }
+
 void appInit()
 {
-  WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
+ WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
+ relay_gpioDriverInit((T_RELAY_P)&_MIKROBUS2_GPIO);
+ //init interrupts
  InitTimer1();
  uartInterrupt();
  WIFI4_coreInit(defaultHandler,1500);
@@ -94,21 +144,48 @@ void appInit()
   nakacisena_gateway();
   WIFI4_cmdSingle("AT&V","");
 
-
-
-    Delay_ms(3000);
-
-    WIFI4_socketServerOpen(32000);
-
+  Delay_ms(3000);
+  WIFI4_socketServerOpen(32000);
   Delay_ms(1500);
 
-
+  state=0;
+  state2=0;
+  oldstate=0;
+  oldstate2=0;
+  relay_relay1Control(0);
+  relay_relay2Control(0);
 }
 
 void appTask()
 {
   WIFI4_process();
- Delay_ms(4000);
+  
+  //RELAY ACT
+  if(state == 1 && oldstate == 0)
+  {
+   oldstate=1;
+   relay_relay1Control(1);
+   WIFI4_writeText2("REL1 ON\n");
+  }
+   if(state == 0 && oldstate == 1)
+  {
+   oldstate=0;
+   relay_relay1Control(0);
+   WIFI4_writeText2("REL1 OFF\n");
+  }
+   if(state2 == 1 && oldstate2 == 0)
+  {
+   oldstate2=1;
+   relay_relay2Control(1);
+   WIFI4_writeText2("REL2 ON\n");
+  }
+   if(state2 == 0 && oldstate2 == 1)
+  {
+   oldstate2=0;
+   relay_relay2Control(0);
+   WIFI4_writeText2("REL2 OFF\n");
+  }
+  Delay_100ms();
 }
 
 

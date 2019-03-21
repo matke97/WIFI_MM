@@ -51,6 +51,8 @@ main
 			_setTX_2
 			_setSCL_2
 			_setSDA_2
+		relay_gpioDriverInit
+			hal_gpioMap
 		InitTimer1
 		uartInterrupt
 		WIFI4_coreInit
@@ -130,6 +132,7 @@ main
 							UART5_Write
 							UART6_Write
 					strncmp
+					strcpy
 			createEvent
 			WIFI4_writeText2
 				hal_uartWrite
@@ -150,9 +153,63 @@ main
 				WordToStr
 			Ltrim
 			WIFI4_cmdSingle
+		relay_relay1Control
+			_setAN_1
+			_setRST_1
+			_setCS_1
+			_setSCK_1
+			_setMISO_1
+			_setMOSI_1
+			_setPWM_1
+			_setINT_1
+			_setRX_1
+			_setTX_1
+			_setSCL_1
+			_setSDA_1
+			_setAN_2
+			_setRST_2
+			_setCS_2
+			_setSCK_2
+			_setMISO_2
+			_setMOSI_2
+			_setPWM_2
+			_setINT_2
+			_setRX_2
+			_setTX_2
+			_setSCL_2
+			_setSDA_2
+		relay_relay2Control
+			_setAN_1
+			_setRST_1
+			_setCS_1
+			_setSCK_1
+			_setMISO_1
+			_setMOSI_1
+			_setPWM_1
+			_setINT_1
+			_setRX_1
+			_setTX_1
+			_setSCL_1
+			_setSDA_1
+			_setAN_2
+			_setRST_2
+			_setCS_2
+			_setSCK_2
+			_setMISO_2
+			_setMOSI_2
+			_setPWM_2
+			_setINT_2
+			_setRX_2
+			_setTX_2
+			_setSCL_2
+			_setSDA_2
 	mikrobus_logWrite
 	appTask
 		WIFI4_process
+		relay_relay1Control
+		WIFI4_writeText2
+		relay_relay2Control
+		Delay_100ms
 RX_ISR
 	UART2_Read
 	WIFI4_putc

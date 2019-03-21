@@ -33896,6 +33896,8 @@ offcal
 offcal
 offcal
 offcal_bit
+oldstate
+oldstate2
 on
 on
 on
@@ -36569,6 +36571,9 @@ regaddr3
 regaddr3_bit
 regaddr4
 regaddr4_bit
+relay_gpiodriverinit
+relay_relay1control
+relay_relay2control
 reqop
 reqop
 reqop
@@ -45396,6 +45401,8 @@ stallif
 stallif
 stallif
 stallif_bit
+state
+state2
 stnaddr1
 stnaddr1
 stnaddr1

@@ -38,10 +38,12 @@ Count=0
 Count=0
 [SEARCH_PATH]
 Path0=..\mikroBUS Board Definition API\Uses\
-Count=1
+Path1=..\RELAY Click\Uses\
+Count=2
 [HEADER_PATH]
 Path0=..\mikroBUS Board Definition API\Uses\
-Count=1
+Path1=..\RELAY Click\Uses\
+Count=2
 [HEADERS]
 File0=WIFI4_CLICK.h
 File1=WIFI4_timer.h
@@ -56,7 +58,8 @@ File2=Conversions
 File3=C_String
 File4=C_Stdlib
 File5=C_Type
-Count=6
+File6=RELAY_P32MX
+Count=7
 [INTERRUPT_DEFS]
 EBASE=9FC01000
 VECTOR_SPACEING=32

@@ -59,7 +59,7 @@ void WIFI4_cmdSingle(char* command,char *param);
 void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass);
 
 void WIFI4_putc(char c);
-
+void WIFI4_writeText2(uint8_t *txt);
 void WIFI4_modulePower(uint8_t powerState );
 void WIFI4_setSSID(uint8_t *ssid);
 void WIFI4_getSSID();
@@ -118,6 +118,7 @@ void RX_ISR()iv IVT_UART_2 ilevel 7 ics ICS_SRS
  U2RXIF_bit = 0;
  }
 }
+uint8_t state,oldstate,state2,oldstate2;
 void nakacisena_gateway()
 {
  mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
@@ -142,6 +143,56 @@ void pisiWIFIstatus()
  WIFI4_cmdSingle("AT+S.STS=","wifi_state");
 
 }
+void defaultHandler(uint8_t *resp,uint8_t *args)
+{
+ mikrobus_logWrite(resp,_LOG_LINE);
+ if(!strncmp(resp,"+ACT:",5))
+ {
+ uint8_t read;
+
+ strcpy(resp,resp+5);
+ if(!strncmp(resp,"RELAY_R1",8))
+ {
+ strcpy(resp,resp+9);
+ if(resp[0] == 0x30)
+ {
+ read=0;
+ }
+ else if(resp[0] == 0x31)
+ {
+ read=1;
+ }
+ if(0 != read)
+ {
+ state=1;
+ }else
+ {
+ state=0;
+ }
+ }else {
+ if(!strncmp(resp,"RELAY_R2",8))
+ {
+ strcpy(resp,resp+9);
+
+ if(resp[0] == '0')
+ {
+ read=0;
+ }
+ else if(resp[0] == '1')
+ {
+ read=1;
+ }
+ if(0 != read)
+ {
+ state2=1;
+ }else
+ {
+ state2=0;
+ }
+ }
+ }
+ }
+ }
 void systemInit()
 {
 
@@ -151,18 +202,17 @@ void systemInit()
  mikrobus_uartInit(_MIKROBUS1,&_WIFI4_UART_CFG[0]);
 
  mikrobus_logInit(_LOG_USBUART_B,115200);
+
+
+ mikrobus_gpioInit( _MIKROBUS2, _MIKROBUS_CS_PIN, _GPIO_OUTPUT );
+ mikrobus_gpioInit( _MIKROBUS2, _MIKROBUS_PWM_PIN, _GPIO_OUTPUT );
 }
-void defaultHandler(uint8_t *resp,uint8_t *args)
-{
- mikrobus_logWrite(resp,_LOG_LINE);
- if(!strncmp(resp,"OOO",3))
- {
- mikrobus_logWrite("JEJJ",_LOG_LINE);
- }
- }
+
 void appInit()
 {
  WIFI4_uartDriverInit(( const uint8_t* )&_MIKROBUS1_GPIO,( const uint8_t* )&_MIKROBUS1_UART);
+ relay_gpioDriverInit(( uint8_t* )&_MIKROBUS2_GPIO);
+
  InitTimer1();
  uartInterrupt();
  WIFI4_coreInit(defaultHandler,1500);
@@ -183,21 +233,48 @@ void appInit()
  nakacisena_gateway();
  WIFI4_cmdSingle("AT&V","");
 
-
-
  Delay_ms(3000);
-
  WIFI4_socketServerOpen(32000);
- WIFI4_socketServerOpen(32001);
  Delay_ms(1500);
 
-
+ state=0;
+ state2=0;
+ oldstate=0;
+ oldstate2=0;
+ relay_relay1Control(0);
+ relay_relay2Control(0);
 }
 
 void appTask()
 {
  WIFI4_process();
- Delay_ms(4000);
+
+
+ if(state == 1 && oldstate == 0)
+ {
+ oldstate=1;
+ relay_relay1Control(1);
+ WIFI4_writeText2("REL1 ON\n");
+ }
+ if(state == 0 && oldstate == 1)
+ {
+ oldstate=0;
+ relay_relay1Control(0);
+ WIFI4_writeText2("REL1 OFF\n");
+ }
+ if(state2 == 1 && oldstate2 == 0)
+ {
+ oldstate2=1;
+ relay_relay2Control(1);
+ WIFI4_writeText2("REL2 ON\n");
+ }
+ if(state2 == 0 && oldstate2 == 1)
+ {
+ oldstate2=0;
+ relay_relay2Control(0);
+ WIFI4_writeText2("REL2 OFF\n");
+ }
+ Delay_100ms();
 }
 
 

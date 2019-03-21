@@ -59,7 +59,7 @@ void WIFI4_cmdSingle(char* command,char *param);
 void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass);
 
 void WIFI4_putc(char c);
-
+void WIFI4_writeText2(uint8_t *txt);
 void WIFI4_modulePower(uint8_t powerState );
 void WIFI4_setSSID(uint8_t *ssid);
 void WIFI4_getSSID();

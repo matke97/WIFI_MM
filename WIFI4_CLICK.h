@@ -17,7 +17,7 @@ typedef void ( *T_WIFI4_handler )( char *buffer, uint8_t *evArgs );
  *
  * Default UART driver intializaton function.
  */
-void WIFI4_uartDriverInit(T_WIFI4_P gpio,T_WIFI4_P uart);
+void wifi4_uartDriverInit(T_WIFI4_P gpio,T_WIFI4_P uart);
 /**
  * @brief Core Initialization
  *
@@ -28,7 +28,7 @@ void WIFI4_uartDriverInit(T_WIFI4_P gpio,T_WIFI4_P uart);
  * execute this function later inside the application to reset AT Engine to
  * the default state.
  */
-void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
+void wifi4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
 
 
 //void WIFI4_writeText(uint8_t *txt,uint8_t nBytes);
@@ -40,7 +40,7 @@ void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
  * Function should be used in case of simple AT commands which have no
  * additional arguments expected. Most of the AT Commands uses this function.
  */
-void WIFI4_cmdSingle(char* command,char *param);
+void wifi4_cmdSingle(char* command,char *param);
 /**
   @brief Connecting to AP
   *
@@ -51,9 +51,9 @@ void WIFI4_cmdSingle(char* command,char *param);
   *communication to internet throw other AP device.
   *
 */
-void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass);
+void wifi4_connectToAP(uint8_t* ssid,uint8_t *pass);
 //void WIFI4_enabled(bool state);
-void WIFI4_putc(char c);
+void wifi4_putc(char c);
 /**
  * @brief Enables or disables module power
  *
@@ -61,24 +61,24 @@ void WIFI4_putc(char c);
  *
  * Turn ON or OFF the module.
  */
-void WIFI4_modulePower(uint8_t  powerState );
+void wifi4_modulePower(uint8_t  powerState );
 
-void WIFI4_setSSID(uint8_t *ssid);
-void WIFI4_getSSID();
+void wifi4_setSSID(uint8_t *ssid);
+void wifi4_getSSID();
 /**
  * @brief Engine Tick
  *
  * Function must be placed inside the Timer ISR function which will be called
  * every one millisecond.
  */
-void WIFI4_tick();
+void wifi4_tick();
 
 /**
  * @brief AT Engine State Machine
  *
  * This function should be placed inside the infinite while loop.
  */
-void WIFI4_process();
+void wifi4_process();
 
 /**
  * @brief Ping command
@@ -87,20 +87,20 @@ void WIFI4_process();
  * Function should be used as test for internet connection.
  * Exaple: WIFI4_ping("8.8.8.8") - ping google.com
 */
-void WIFI4_ping(uint8_t *ipAddr);
-void WIFI4_createFile(uint8_t *name,uint16_t len);
+void wifi4_ping(uint8_t *ipAddr);
+void wifi4_createFile(uint8_t *name,uint16_t len);
 
 /**
  * @brief AT Engine State Machine
  *
  * This function should be placed inside the infinite while loop.
  */
-uint16_t WIFI4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
+uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
 
 
-uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
-void WIFI4_socketClose(uint8_t id);
-void WIFI4_socketWrite(uint8_t id,uint8_t *wdata);
+uint8_t wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
+void wifi4_socketClose(uint8_t id);
+void wifi4_socketWrite(uint8_t id,uint8_t *wdata);
 
 /**
   * @brief Opens socket on defined port.Wifi4 will be server
@@ -108,16 +108,16 @@ void WIFI4_socketWrite(uint8_t id,uint8_t *wdata);
   *
   *
 */
-void WIFI4_socketServerOpen(uint32_t port);
+void wifi4_socketServerOpen(uint32_t port);
 /**
   * @brief Write text to client on socket
   * @param[in] txt       text to send
 */
-void WIFI4_socketServerWrite(uint8_t *txt);
+void wifi4_socketServerWrite(uint8_t *txt);
 
 /**
   * @brief Socket closing
   *
 */
-void WIFI4_socketServerClose();
+void wifi4_socketServerClose();
 #endif

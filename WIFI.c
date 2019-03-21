@@ -33,19 +33,19 @@ uint8_t state,oldstate,state2,oldstate2;
 void nakacisena_gateway()
 {
     mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
-    WIFI4_connectToAP("MikroE Public","mikroe.guest") ;
+    wifi4_connectToAP("MikroE Public","mikroe.guest") ;
     Delay_ms(4000);
 
     mikrobus_logWrite( "GOTOVO", _LOG_LINE );
 }
 void vidiipadresu()
 {
-    WIFI4_cmdSingle("AT+S.STS=","ip_ipaddr");
+    wifi4_cmdSingle("AT+S.STS=","ip_ipaddr");
 
 }
 void pisiWIFIstatus()
 {
-    WIFI4_cmdSingle("AT+S.STS=","wifi_state");
+    wifi4_cmdSingle("AT+S.STS=","wifi_state");
 
 }
 void ACThandler(uint8_t *resp,uint8_t *args)
@@ -100,7 +100,6 @@ void ACThandler(uint8_t *resp,uint8_t *args)
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
  mikrobus_logWrite(resp,_LOG_LINE);
-
  }
  
 void windHandler(uint8_t *resp,uint8_t *args)
@@ -125,23 +124,23 @@ void systemInit()
 
 void appInit()
 {
- WIFI4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
+ wifi4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
  relay_gpioDriverInit((T_RELAY_P)&_MIKROBUS2_GPIO);
  //init interrupts
  InitTimer1();
  uartInterrupt();
  //core init WIFI4click
- WIFI4_coreInit(defaultHandler,1500);
- WIFI4_setHandler("+WIND",1500,windHandler);
- WIFI4_setHandler("+ACT",1500,ACThandler);
+ wifi4_coreInit(defaultHandler,1500);
+ wifi4_setHandler("+WIND",1500,windHandler);
+ wifi4_setHandler("+ACT",1500,ACThandler);
  Delay_100ms();
 
  //reset device
- WIFI4_modulePower(0);
+ wifi4_modulePower(0);
  Delay_100ms();
- WIFI4_modulePower(1);
+ wifi4_modulePower(1);
  Delay_ms(500);
- WIFI4_cmdSingle("AT","");
+ wifi4_cmdSingle("AT","");
   //connect to AP
  nakacisena_gateway();
  Delay_ms(3000);
@@ -149,9 +148,9 @@ void appInit()
     
 
 
-  WIFI4_cmdSingle("AT&V","");
+  wifi4_cmdSingle("AT&V","");
   Delay_ms(1000);
-  WIFI4_socketServerOpen(32000);
+  wifi4_socketServerOpen(32000);
   Delay_ms(1500);
 
   //relay default states config
@@ -165,32 +164,32 @@ void appInit()
 
 void appTask()
 {
-  WIFI4_process();
+  wifi4_process();
   
   //RELAY ACT
   if(state == 1 && oldstate == 0)
   {
    oldstate=1;
    relay_relay1Control(1);
-   WIFI4_socketServerWrite("REL1 ON\n");
+   wifi4_socketServerWrite("REL1 ON\n");
   }
    if(state == 0 && oldstate == 1)
   {
    oldstate=0;
    relay_relay1Control(0);
-   WIFI4_socketServerWrite("REL1 OFF\n");
+   wifi4_socketServerWrite("REL1 OFF\n");
   }
    if(state2 == 1 && oldstate2 == 0)
   {
    oldstate2=1;
    relay_relay2Control(1);
-   WIFI4_socketServerWrite("REL2 ON\n");
+   wifi4_socketServerWrite("REL2 ON\n");
   }
    if(state2 == 0 && oldstate2 == 1)
   {
    oldstate2=0;
    relay_relay2Control(0);
-   WIFI4_socketServerWrite("REL2 OFF\n");
+   wifi4_socketServerWrite("REL2 OFF\n");
   }
   Delay_100ms();
 }
@@ -205,7 +204,4 @@ void main()
   {
    appTask();
   }
-
-
-
 }

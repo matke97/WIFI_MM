@@ -24,7 +24,7 @@ main
 			_log_initUartB
 				UART5_Init
 	appInit
-		WIFI4_uartDriverInit
+		wifi4_uartDriverInit
 			hal_gpioMap
 			hal_uartMap
 			_setAN_1
@@ -55,16 +55,16 @@ main
 			hal_gpioMap
 		InitTimer1
 		uartInterrupt
-		WIFI4_coreInit
+		wifi4_coreInit
 			generateHash
-		WIFI4_setHandler
+		wifi4_setHandler
 			locateHandler
 				strlen
 				generateHash
 			strlen
 			generateHash
 		Delay_100ms
-		WIFI4_modulePower
+		wifi4_modulePower
 			_setAN_1
 			_setRST_1
 			_setCS_1
@@ -89,10 +89,10 @@ main
 			_setTX_2
 			_setSCL_2
 			_setSDA_2
-		WIFI4_cmdSingle
+		wifi4_cmdSingle
 			strcpy
 			strcat
-			WIFI4_process
+			wifi4_process
 				DTE_setState
 					_setAN_1
 					_setRST_1
@@ -141,7 +141,7 @@ main
 					strncmp
 					strcpy
 			createEvent
-			WIFI4_writeText2
+			wifi4_writeText2
 				hal_uartWrite
 					UART1_Write
 					UART2_Write
@@ -151,15 +151,15 @@ main
 					UART6_Write
 		nakacisena_gateway
 			mikrobus_logWrite
-			WIFI4_connectToAP
-				WIFI4_cmdSingle
+			wifi4_connectToAP
+				wifi4_cmdSingle
 				strcpy
 				strcat
-		WIFI4_socketServerOpen
+		wifi4_socketServerOpen
 			IntToStr
 				WordToStr
 			Ltrim
-			WIFI4_cmdSingle
+			wifi4_cmdSingle
 		relay_relay1Control
 			_setAN_1
 			_setRST_1
@@ -212,14 +212,14 @@ main
 			_setSDA_2
 	mikrobus_logWrite
 	appTask
-		WIFI4_process
+		wifi4_process
 		relay_relay1Control
-		WIFI4_socketServerWrite
-			WIFI4_writeText2
+		wifi4_socketServerWrite
+			wifi4_writeText2
 		relay_relay2Control
 		Delay_100ms
 RX_ISR
 	UART2_Read
-	WIFI4_putc
+	wifi4_putc
 Timer1Interrupt
-	WIFI4_tick
+	wifi4_tick

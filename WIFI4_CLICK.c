@@ -112,14 +112,18 @@ static volatile uint32_t respTime;
 
 //HELP FUNCTIONS
 
-
-//LOOK UP TABLE
+/*
+ * Look up table for START MARK string, must have "" as first member
+ */
 static char LUT_START [3][2] =
 {
  "", //default
  "+", //
  "&", //AT& -storing to flash mem or reset of device
 };
+/*
+ * Look up table for END MARK string, must have "" as 0 member
+ */
 static char LUT_END[4][2] =
 {
   "", //default
@@ -146,8 +150,11 @@ static uint32_t generateHash( char *pCmd )
     return hash;
 }
 /*
-  locira handler
-*/
+ * Search handler storage for provided command
+ *
+ * Function search the storage based on sting length and hash code.
+ * If function returns zero command does not exists in storage area.
+ */
 static uint16_t locateHandler( char* pCmd )
 {
     uint8_t     len;
@@ -174,7 +181,15 @@ static uint16_t locateHandler( char* pCmd )
 
 const uint8_t SEARCH_IDX         = 0;
 const uint8_t SEARCH_OFFSET      = 1;
-
+/*
+ * Search input for strings from LUT table.
+ * LUT table must be 2 dimensional char array.
+ *
+ * Depend of flag returned value is :
+ * - index of found string at LUT
+ * - found string offset inside input
+ * - (-1) no match
+ */
 static uint8_t searchLut( char* pInput, char (*pLut)[ LUTS_WIDTH ], uint8_t lutSize, uint8_t flag )
 {
     uint8_t     inLen    = 0;
@@ -208,6 +223,17 @@ static uint8_t searchLut( char* pInput, char (*pLut)[ LUTS_WIDTH ], uint8_t lutS
     }
     return 0;
 }
+/*
+ * Parsing and Event Creation
+ *
+ * @param[in] char* input - AT Command
+ * @param[out] at_cmd_cb* cb - handler pointer for the particular command
+ * @param[out] uint32_t* timeout - timeout for the particular command
+ *
+ * Function parses provided raw command string and returns previously saved
+ * handler and timeout for the particular command. If command is not found
+ * the default handler and default timeout will be returned.
+ */
 static void createEvent( char *pInput, T_CORE_event *pEvent )
 {
     uint8_t hIdx     = 0;
@@ -672,4 +698,7 @@ void WIFI4_socketServerClose()
     WIFI4_cmdSingle("AT+S","");
     WIFI4_cmdSingle("AT+S.SOCKD=","0");
 }
-
+void WIFI4_socketServerWrite(uint8_t *txt)
+{
+     WIFI4_writeText2(txt);
+}

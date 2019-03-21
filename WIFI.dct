@@ -29602,6 +29602,7 @@ iscntrl
 isdigit
 isgraph
 islower
+ispitajact
 ispunct
 isspace
 isupper
@@ -58855,11 +58856,13 @@ wifi4_socketclose
 wifi4_socketopen
 wifi4_socketserverclose
 wifi4_socketserveropen
+wifi4_socketserverwrite
 wifi4_socketwrite
 wifi4_tick
 wifi4_uartdriverinit
 wifi4_writetext
 wifi4_writetext2
+windhandler
 wordtohex
 wordtostr
 wordtostrwithzeros

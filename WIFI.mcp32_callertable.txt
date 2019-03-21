@@ -57,6 +57,13 @@ main
 		uartInterrupt
 		WIFI4_coreInit
 			generateHash
+		WIFI4_setHandler
+			locateHandler
+				strlen
+				generateHash
+			strlen
+			generateHash
+		Delay_100ms
 		WIFI4_modulePower
 			_setAN_1
 			_setRST_1
@@ -82,7 +89,6 @@ main
 			_setTX_2
 			_setSCL_2
 			_setSDA_2
-		Delay_100ms
 		WIFI4_cmdSingle
 			strcpy
 			strcat
@@ -119,8 +125,6 @@ main
 						strncmp
 					strncpy
 					locateHandler
-						strlen
-						generateHash
 				strcpy
 				defaultHandler
 					mikrobus_logWrite
@@ -131,8 +135,11 @@ main
 							UART4_Write
 							UART5_Write
 							UART6_Write
-					strncmp
-					strcpy
+					ispitajACT
+						strncmp
+						strcpy
+				windHandler
+					mikrobus_logWrite
 			createEvent
 			WIFI4_writeText2
 				hal_uartWrite
@@ -207,7 +214,8 @@ main
 	appTask
 		WIFI4_process
 		relay_relay1Control
-		WIFI4_writeText2
+		WIFI4_socketServerWrite
+			WIFI4_writeText2
 		relay_relay2Control
 		Delay_100ms
 RX_ISR

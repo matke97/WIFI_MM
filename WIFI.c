@@ -33,13 +33,7 @@ uint8_t state,oldstate,state2,oldstate2;
 void nakacisena_gateway()
 {
     mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
-
-      
-
     WIFI4_connectToAP("MikroE Public","mikroe.guest") ;
-
-
-
     Delay_ms(4000);
 
     mikrobus_logWrite( "GOTOVO", _LOG_LINE );
@@ -54,9 +48,8 @@ void pisiWIFIstatus()
     WIFI4_cmdSingle("AT+S.STS=","wifi_state");
 
 }
-void defaultHandler(uint8_t *resp,uint8_t *args)
+void ispitajACT(uint8_t *resp)
 {
- mikrobus_logWrite(resp,_LOG_LINE);
  if(!strncmp(resp,"+ACT:",5))
  {
   uint8_t read;
@@ -103,7 +96,18 @@ void defaultHandler(uint8_t *resp,uint8_t *args)
   }
   }
  }
+}
+void defaultHandler(uint8_t *resp,uint8_t *args)
+{
+ mikrobus_logWrite(resp,_LOG_LINE);
+ ispitajACT(resp);
+
  }
+ 
+void windHandler(uint8_t *resp,uint8_t *args)
+{
+   mikrobus_logWrite("AAAA",_LOG_LINE);
+}
 void systemInit()
 {
     //setting pins for WIFI4 click
@@ -126,28 +130,30 @@ void appInit()
  //init interrupts
  InitTimer1();
  uartInterrupt();
+ //core init WIFI4click
  WIFI4_coreInit(defaultHandler,1500);
-
-
- Delay_ms(500);
-
+ WIFI4_setHandler("+WIND",1500,windHandler);
+ Delay_100ms();
 
  //reset device
  WIFI4_modulePower(0);
  Delay_100ms();
  WIFI4_modulePower(1);
- Delay_ms(1000);
+ Delay_ms(500);
+ WIFI4_cmdSingle("AT","");
+  //connect to AP
+ nakacisena_gateway();
+ Delay_ms(3000);
+    
+    
 
 
-
-  WIFI4_cmdSingle("AT","");
-  nakacisena_gateway();
   WIFI4_cmdSingle("AT&V","");
-
-  Delay_ms(3000);
+  Delay_ms(1000);
   WIFI4_socketServerOpen(32000);
   Delay_ms(1500);
 
+  //relay default states config
   state=0;
   state2=0;
   oldstate=0;
@@ -165,34 +171,34 @@ void appTask()
   {
    oldstate=1;
    relay_relay1Control(1);
-   WIFI4_writeText2("REL1 ON\n");
+   WIFI4_socketServerWrite("REL1 ON\n");
   }
    if(state == 0 && oldstate == 1)
   {
    oldstate=0;
    relay_relay1Control(0);
-   WIFI4_writeText2("REL1 OFF\n");
+   WIFI4_socketServerWrite("REL1 OFF\n");
   }
    if(state2 == 1 && oldstate2 == 0)
   {
    oldstate2=1;
    relay_relay2Control(1);
-   WIFI4_writeText2("REL2 ON\n");
+   WIFI4_socketServerWrite("REL2 ON\n");
   }
    if(state2 == 0 && oldstate2 == 1)
   {
    oldstate2=0;
    relay_relay2Control(0);
-   WIFI4_writeText2("REL2 OFF\n");
+   WIFI4_socketServerWrite("REL2 OFF\n");
   }
   Delay_100ms();
 }
 
 
-void main() {
+void main() 
+{
  systemInit();
  appInit();
-
  mikrobus_logWrite("PROBA",_LOG_LINE);
   while(1)
   {

@@ -50,30 +50,41 @@ typedef signed long long intmax_t;
 typedef unsigned long long uintmax_t;
 #line 8 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 typedef void ( *T_WIFI4_handler )( char *buffer, uint8_t *evArgs );
-
-
+#line 20 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void WIFI4_uartDriverInit( const uint8_t*  gpio, const uint8_t*  uart);
-void WIFI4_writeText(uint8_t *txt,uint8_t nBytes);
+#line 31 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
+#line 43 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void WIFI4_cmdSingle(char* command,char *param);
-
+#line 54 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void WIFI4_connectToAP(uint8_t* ssid,uint8_t *pass);
 
 void WIFI4_putc(char c);
-void WIFI4_writeText2(uint8_t *txt);
+#line 64 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void WIFI4_modulePower(uint8_t powerState );
+
 void WIFI4_setSSID(uint8_t *ssid);
 void WIFI4_getSSID();
+#line 74 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void WIFI4_tick();
+#line 81 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void WIFI4_process();
+#line 90 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void WIFI4_ping(uint8_t *ipAddr);
 void WIFI4_createFile(uint8_t *name,uint16_t len);
-void WIFI4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
-
+#line 98 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 uint16_t WIFI4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
+
+
 uint8_t WIFI4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
 void WIFI4_socketClose(uint8_t id);
 void WIFI4_socketWrite(uint8_t id,uint8_t *wdata);
+#line 111 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void WIFI4_socketServerOpen(uint32_t port);
+#line 116 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+void WIFI4_socketServerWrite(uint8_t *txt);
+#line 122 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+void WIFI4_socketServerClose();
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 #line 2 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
@@ -122,13 +133,7 @@ uint8_t state,oldstate,state2,oldstate2;
 void nakacisena_gateway()
 {
  mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
-
-
-
  WIFI4_connectToAP("MikroE Public","mikroe.guest") ;
-
-
-
  Delay_ms(4000);
 
  mikrobus_logWrite( "GOTOVO", _LOG_LINE );
@@ -143,9 +148,8 @@ void pisiWIFIstatus()
  WIFI4_cmdSingle("AT+S.STS=","wifi_state");
 
 }
-void defaultHandler(uint8_t *resp,uint8_t *args)
+void ispitajACT(uint8_t *resp)
 {
- mikrobus_logWrite(resp,_LOG_LINE);
  if(!strncmp(resp,"+ACT:",5))
  {
  uint8_t read;
@@ -192,7 +196,18 @@ void defaultHandler(uint8_t *resp,uint8_t *args)
  }
  }
  }
+}
+void defaultHandler(uint8_t *resp,uint8_t *args)
+{
+ mikrobus_logWrite(resp,_LOG_LINE);
+ ispitajACT(resp);
+
  }
+
+void windHandler(uint8_t *resp,uint8_t *args)
+{
+ mikrobus_logWrite("AAAA",_LOG_LINE);
+}
 void systemInit()
 {
 
@@ -215,27 +230,29 @@ void appInit()
 
  InitTimer1();
  uartInterrupt();
+
  WIFI4_coreInit(defaultHandler,1500);
-
-
- Delay_ms(500);
-
+ WIFI4_setHandler("+WIND",1500,windHandler);
+ Delay_100ms();
 
 
  WIFI4_modulePower(0);
  Delay_100ms();
  WIFI4_modulePower(1);
- Delay_ms(1000);
-
-
-
+ Delay_ms(500);
  WIFI4_cmdSingle("AT","");
- nakacisena_gateway();
- WIFI4_cmdSingle("AT&V","");
 
+ nakacisena_gateway();
  Delay_ms(3000);
+
+
+
+
+ WIFI4_cmdSingle("AT&V","");
+ Delay_ms(1000);
  WIFI4_socketServerOpen(32000);
  Delay_ms(1500);
+
 
  state=0;
  state2=0;
@@ -254,34 +271,34 @@ void appTask()
  {
  oldstate=1;
  relay_relay1Control(1);
- WIFI4_writeText2("REL1 ON\n");
+ WIFI4_socketServerWrite("REL1 ON\n");
  }
  if(state == 0 && oldstate == 1)
  {
  oldstate=0;
  relay_relay1Control(0);
- WIFI4_writeText2("REL1 OFF\n");
+ WIFI4_socketServerWrite("REL1 OFF\n");
  }
  if(state2 == 1 && oldstate2 == 0)
  {
  oldstate2=1;
  relay_relay2Control(1);
- WIFI4_writeText2("REL2 ON\n");
+ WIFI4_socketServerWrite("REL2 ON\n");
  }
  if(state2 == 0 && oldstate2 == 1)
  {
  oldstate2=0;
  relay_relay2Control(0);
- WIFI4_writeText2("REL2 OFF\n");
+ WIFI4_socketServerWrite("REL2 OFF\n");
  }
  Delay_100ms();
 }
 
 
-void main() {
+void main()
+{
  systemInit();
  appInit();
-
  mikrobus_logWrite("PROBA",_LOG_LINE);
  while(1)
  {

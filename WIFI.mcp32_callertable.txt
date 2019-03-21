@@ -155,9 +155,15 @@ main
 				wifi4_cmdSingle
 				strcpy
 				strcat
-		wifi4_socketServerOpen
+		wifi4_createFile
+			strcpy
+			strcat
 			IntToStr
 				WordToStr
+			Ltrim
+			wifi4_cmdSingle
+		wifi4_socketServerOpen
+			IntToStr
 			Ltrim
 			wifi4_cmdSingle
 		relay_relay1Control

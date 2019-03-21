@@ -580,9 +580,11 @@ void wifi4_process()
 void wifi4_createFile(uint8_t *name,uint16_t len)
 {
  uint8_t params[50];
+ uint8_t sLen[6];
  strcpy(params,name);
  strcat(params,",");
- strcat(params,len);
+ IntToStr(len,sLen);
+ strcat(params,Ltrim(sLen));
  wifi4_cmdSingle("AT+S.FSC=",params);
 }
 

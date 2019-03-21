@@ -247,8 +247,7 @@ void appInit()
 
 
 
-
- wifi4_cmdSingle("AT&V","");
+ wifi4_createFile("/proba.html",183);
  Delay_ms(1000);
  wifi4_socketServerOpen(32000);
  Delay_ms(1500);
@@ -260,6 +259,7 @@ void appInit()
  oldstate2=0;
  relay_relay1Control(0);
  relay_relay2Control(0);
+ wifi4_cmdSingle("AT+S.FSL","");
 }
 
 void appTask()

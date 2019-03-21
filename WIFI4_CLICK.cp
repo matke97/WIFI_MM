@@ -679,12 +679,14 @@ void wifi4_process()
 void wifi4_createFile(uint8_t *name,uint16_t len)
 {
  uint8_t params[50];
+ uint8_t sLen[6];
  strcpy(params,name);
  strcat(params,",");
- strcat(params,len);
+ IntToStr(len,sLen);
+ strcat(params,Ltrim(sLen));
  wifi4_cmdSingle("AT+S.FSC=",params);
 }
-#line 598 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 600 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 uint8_t wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 {
  char tmp[80];
@@ -723,7 +725,7 @@ uint8_t wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
  ret=atoi(tmpB.buff+i+1);
  return ret;
 }
-#line 642 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 644 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
 {
  uint16_t len=strlen(wdata);
@@ -764,7 +766,7 @@ void wifi4_socketClose(uint8_t id)
  wifi4_cmdSIngle("AT+S.SOCKC=",str);
 
 }
-#line 688 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 690 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketServerOpen(uint32_t port)
 {
  uint8_t sPort[6];

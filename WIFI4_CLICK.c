@@ -641,7 +641,7 @@ void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 *****************/
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
 {
-  uint16_t len=strlen(wdata)-1;
+  uint16_t len=strlen(wdata);
   uint8_t slen[5];
   uint8_t cmd[40];
   uint8_t sid[4];
@@ -649,7 +649,7 @@ void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
 
   strcpy(cmd,"AT+S.SOCKW=");
   ByteToStr(id,sid);
-  strcat(cmd,Ltrim(sid));
+  strcat(cmd,"00");
   strcat(cmd,",");
   strcat(cmd,Ltrim(slen));
   
@@ -660,10 +660,11 @@ void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
        }
   createEvent(cmd,&currentEv);
   WIFI4_writeText2(cmd);
+  Delay_1ms();
   WIFI4_writeText2(wdata);
 
      watchDogTime=0; //reset watchdog
-     waitTime=3*DEFAULT_WTIME;
+     waitTime=DEFAULT_WTIME;
      f_wdogStart=1;
      f_timerStart=1;
      flag_cmdEx=1;
@@ -681,6 +682,8 @@ void wifi4_socketClose(uint8_t id)
   wifi4_cmdSIngle("AT+S.SOCKC=",str);
 
 }
+
+
 /*******************************
 FUNCTIONS FOR SERVER SOCKET
 -> WIFI4 AS SERVER

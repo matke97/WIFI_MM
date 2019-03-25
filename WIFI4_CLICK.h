@@ -96,8 +96,14 @@ void wifi4_createFile(uint8_t *name,uint16_t len);
  * This function should be placed inside the infinite while loop.
  */
 uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
-
-
+/**
+  * @brief connect to network socket
+  * @param[in] host   ip address of socket or DNS resovalble host
+  * @param[in] port   port
+  * @param[in] protcol    newtwork protcol to be used in communication.
+  *            t for TCP socket, u for UDP socket, s for secure socket.
+  *
+*/
 void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
 void wifi4_socketClose(uint8_t id);
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata);

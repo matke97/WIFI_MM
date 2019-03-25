@@ -131,7 +131,6 @@ void appInit()
  uartInterrupt();
  //core init WIFI4click
  wifi4_coreInit(defaultHandler,1500);
- wifi4_setHandler("+WIND",1500,windHandler);
  wifi4_setHandler("+ACT",1500,ACThandler);
  Delay_100ms();
 
@@ -142,12 +141,13 @@ void appInit()
  Delay_ms(500);
  wifi4_cmdSingle("AT","");
   //connect to AP
+  
  nakacisena_gateway();
- Delay_ms(3000);
 
-  wifi4_socketServerOpen(32000);
+ wifi4_socketServerOpen(32000);
   Delay_ms(1500);
   vidiipadresu();
+  
   //relay default states config
   state=0;
   state2=0;
@@ -161,7 +161,7 @@ void appInit()
 void appTask()
 {
   wifi4_process();
-  
+
   //RELAY ACT
   if(state == 1 && oldstate == 0)
   {

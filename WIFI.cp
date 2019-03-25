@@ -231,7 +231,6 @@ void appInit()
  uartInterrupt();
 
  wifi4_coreInit(defaultHandler,1500);
- wifi4_setHandler("+WIND",1500,windHandler);
  wifi4_setHandler("+ACT",1500,ACThandler);
  Delay_100ms();
 
@@ -242,12 +241,13 @@ void appInit()
  Delay_ms(500);
  wifi4_cmdSingle("AT","");
 
+
  nakacisena_gateway();
- Delay_ms(3000);
 
  wifi4_socketServerOpen(32000);
  Delay_ms(1500);
  vidiipadresu();
+
 
  state=0;
  state2=0;

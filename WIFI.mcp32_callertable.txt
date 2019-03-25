@@ -135,8 +135,6 @@ main
 							UART4_Write
 							UART5_Write
 							UART6_Write
-				windHandler
-					mikrobus_logWrite
 				ACThandler
 					strncmp
 					strcpy

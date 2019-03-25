@@ -97,11 +97,29 @@ void ACThandler(uint8_t *resp,uint8_t *args)
   }
  }
 }
+
+uint8_t ids;
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
+uint8_t i;
  mikrobus_logWrite(resp,_LOG_LINE);
+ //FOR ID: catching
+  while(resp[i]!=':' && i<strlen(resp))
+  {
+   i++;
+  }
+  if(i<strlen(resp))
+  {
+    if(resp[i-1]=='D' && resp[i-2]=='I')
+    {
+
+      strcpy(resp,resp+i+1);
+      mikrobus_logWrite(resp,_LOG_LINE);
+      ids=atoi(resp[i+1]);
+    }
+  }
  }
- 
+
 void windHandler(uint8_t *resp,uint8_t *args)
 {
    mikrobus_logWrite("AAAA",_LOG_LINE);
@@ -161,7 +179,6 @@ void appInit()
 void appTask()
 {
   wifi4_process();
-
   //RELAY ACT
   if(state == 1 && oldstate == 0)
   {

@@ -135,6 +135,10 @@ main
 							UART4_Write
 							UART5_Write
 							UART6_Write
+					strlen
+					strcpy
+					atoi
+						isdigit
 				ACThandler
 					strncmp
 					strcpy

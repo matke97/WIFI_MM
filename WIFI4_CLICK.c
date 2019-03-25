@@ -642,16 +642,17 @@ void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
 {
   uint16_t len=strlen(wdata);
+
   uint8_t slen[5];
-  uint8_t cmd[40];
+  uint8_t cmd[80];
   uint8_t sid[4];
   IntToStr(len,slen);
-
+ strcpy(slen,Ltrim(slen));
   strcpy(cmd,"AT+S.SOCKW=");
   ByteToStr(id,sid);
-  strcat(cmd,"00");
+  strcat(cmd,Ltrim(sid));
   strcat(cmd,",");
-  strcat(cmd,Ltrim(slen));
+  strcat(cmd,slen);
   
    //AKO JE NEKA DRUGA KOMANDA U TOKU,SACEKAJ
       while(0 != flag_cmdEx)
@@ -660,7 +661,7 @@ void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
        }
   createEvent(cmd,&currentEv);
   WIFI4_writeText2(cmd);
-  Delay_1ms();
+  Delay_10ms();
   WIFI4_writeText2(wdata);
 
      watchDogTime=0; //reset watchdog

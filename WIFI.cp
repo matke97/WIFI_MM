@@ -74,16 +74,15 @@ void wifi4_ping(uint8_t *ipAddr);
 void wifi4_createFile(uint8_t *name,uint16_t len);
 #line 98 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
-
-
+#line 107 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
 void wifi4_socketClose(uint8_t id);
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata);
-#line 111 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+#line 117 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketServerOpen(uint32_t port);
-#line 116 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
-void wifi4_socketServerWrite(uint8_t *txt);
 #line 122 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+void wifi4_socketServerWrite(uint8_t *txt);
+#line 128 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketServerClose();
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
@@ -197,9 +196,27 @@ void ACThandler(uint8_t *resp,uint8_t *args)
  }
  }
 }
+
+uint8_t ids;
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
+uint8_t i;
  mikrobus_logWrite(resp,_LOG_LINE);
+
+ while(resp[i]!=':' && i<strlen(resp))
+ {
+ i++;
+ }
+ if(i<strlen(resp))
+ {
+ if(resp[i-1]=='D' && resp[i-2]=='I')
+ {
+
+ strcpy(resp,resp+i+1);
+ mikrobus_logWrite(resp,_LOG_LINE);
+ ids=atoi(resp[i+1]);
+ }
+ }
  }
 
 void windHandler(uint8_t *resp,uint8_t *args)
@@ -261,7 +278,6 @@ void appInit()
 void appTask()
 {
  wifi4_process();
-
 
  if(state == 1 && oldstate == 0)
  {

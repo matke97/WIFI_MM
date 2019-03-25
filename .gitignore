@@ -3,13 +3,9 @@
 *.hex
 *.cp
 *.wch
-WIFI.cfg
-WIFI.dbg
-WIFI.lst
-WIFI.mcp32
-WIFI.wch
-*.wch
 *.ini
+*.dbg
 *.log
-*.lst
 *.dlt
+*.dct
+*.wch

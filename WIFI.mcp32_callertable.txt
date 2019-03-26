@@ -135,10 +135,6 @@ main
 							UART4_Write
 							UART5_Write
 							UART6_Write
-					strlen
-					strcpy
-					atoi
-						isdigit
 				ACThandler
 					strncmp
 					strcpy
@@ -159,6 +155,22 @@ main
 				strcat
 		vidiipadresu
 			wifi4_cmdSingle
+		uploadujFajlove
+			wifi4_cmdSingle
+			wifi4_createFile
+				strcpy
+				strcat
+				strlen
+				IntToStr
+					WordToStr
+				Ltrim
+				wifi4_cmdSingle
+				Delay_100ms
+				mikrobus_logWrite
+				wifi4_process
+				wifi4_writeText2
+				Delay_1ms
+			Delay_100ms
 		relay_relay1Control
 			_setAN_1
 			_setRST_1
@@ -209,20 +221,11 @@ main
 			_setTX_2
 			_setSCL_2
 			_setSDA_2
-		wifi4_appendFile
-			strlen
-			IntToStr
-				WordToStr
-			Ltrim
-			strcpy
-			strcat
-			mikrobus_logWrite
-			wifi4_cmdSingle
-			wifi4_writeText2
-			Delay_100ms
+		mikrobus_logWrite
 	mikrobus_logWrite
 	appTask
 		wifi4_process
+		mikrobus_logWrite
 		relay_relay1Control
 		wifi4_socketServerWrite
 			wifi4_writeText2

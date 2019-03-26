@@ -578,16 +578,7 @@ void wifi4_process()
     }
 }
 
-void wifi4_createFile(uint8_t *name,uint16_t len)
-{
- uint8_t params[50];
- uint8_t sLen[6];
- strcpy(params,name);
- strcat(params,",");
- IntToStr(len,sLen);
- strcat(params,Ltrim(sLen));
- wifi4_cmdSingle("AT+S.FSC=",params);
-}
+
 
 //SOCKET FUNCTIONS
 
@@ -718,6 +709,10 @@ void wifi4_appendFile()
 </head> \
 <body> \
 <h1> Pokusaj pravljenja web stranice koja ce biti uploadovana unutar WIFI4 click modula \
+<form name=\"CGI Example\" method=\"GET\" action=\"new2.html\"> \
+        	<input type=\"text\" name=\"text\" size=\"40\" maxlength=\"40\">&nbsp;\
+	        <input type=\"submit\" name=\"submit\" value=\"Submit\" >\
+	   </form>\
 </body> \
 </html>";
 uint32_t len;
@@ -735,4 +730,45 @@ Delay_100ms();
 mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
 
 
+}
+
+void wifi4_createFile(uint8_t *name,uint8_t *content)
+{
+ uint8_t params[50];
+ uint8_t sLen[6];
+ uint16_t len;
+ strcpy(params,name);
+ strcat(params,",");
+ len=strlen(content);
+ IntToStr(len,sLen);
+ strcpy(slen,Ltrim(slen));
+ strcat(params,sLen);
+ wifi4_cmdSingle("AT+S.FSC=",params);
+ Delay_100ms();
+
+strcpy(params,"AT+S.FSA=");
+strcat(params,name);
+strcat(params,",");
+strcat(params,slen);
+mikrobus_logWrite(params,_LOG_TEXT);
+while(0 != flag_cmdEx)
+       {
+         wifi4_process();
+       }
+
+//createEvent(params,&currentEv);
+wifi4_writeText2(params);
+Delay_1ms();
+wifi4_writeText2(content);
+//watchDogTime=0; //reset watchdog
+/*waitTime=DEFAULT_WTIME;
+f_wdogStart=1;
+f_timerStart=1;
+flag_cmdEx=1;
+//sacekaj response
+while(0 != flag_cmdEx)
+{
+ wifi4_process();
+} */
+mikrobus_logWrite("USPESNO KREIRAN FAJL U MEM WIFI4 clicka",_LOG_LINE);
 }

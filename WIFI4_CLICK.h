@@ -88,7 +88,14 @@ void wifi4_process();
  * Exaple: WIFI4_ping("8.8.8.8") - ping google.com
 */
 void wifi4_ping(uint8_t *ipAddr);
-void wifi4_createFile(uint8_t *name,uint16_t len);
+
+/**
+ * @brief Ping command
+ * @param[in] name    name of file to be created
+ * @param[in] content file content
+ *
+*/
+
 
 /**
  * @brief AT Engine State Machine
@@ -126,6 +133,6 @@ void wifi4_socketServerWrite(uint8_t *txt);
   *
 */
 void wifi4_socketServerClose();
-
+void wifi4_createFile(uint8_t *name,uint8_t *content);
 void wifi4_appendFile();
 #endif

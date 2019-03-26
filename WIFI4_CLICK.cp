@@ -71,20 +71,19 @@ void wifi4_tick();
 void wifi4_process();
 #line 90 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_ping(uint8_t *ipAddr);
-void wifi4_createFile(uint8_t *name,uint16_t len);
-#line 98 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+#line 105 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
-#line 107 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+#line 114 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol);
 void wifi4_socketClose(uint8_t id);
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata);
-#line 117 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+#line 124 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketServerOpen(uint32_t port);
-#line 122 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+#line 129 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketServerWrite(uint8_t *txt);
-#line 128 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
+#line 135 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketServerClose();
-
+void wifi4_createFile(uint8_t *name,uint8_t *content);
 void wifi4_appendFile();
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/include/stdint.h"
@@ -677,18 +676,7 @@ void wifi4_process()
  }
  }
 }
-
-void wifi4_createFile(uint8_t *name,uint16_t len)
-{
- uint8_t params[50];
- uint8_t sLen[6];
- strcpy(params,name);
- strcat(params,",");
- IntToStr(len,sLen);
- strcat(params,Ltrim(sLen));
- wifi4_cmdSingle("AT+S.FSC=",params);
-}
-#line 601 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 592 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 {
  char tmp[80];
@@ -724,7 +712,7 @@ void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
  }
 
 }
-#line 642 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 633 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
 {
  uint16_t len=strlen(wdata);
@@ -769,7 +757,7 @@ void wifi4_socketClose(uint8_t id)
  wifi4_cmdSIngle("AT+S.SOCKC=",str);
 
 }
-#line 694 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 685 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketServerOpen(uint32_t port)
 {
  uint8_t sPort[6];
@@ -790,8 +778,8 @@ void wifi4_socketServerWrite(uint8_t *txt)
 
 void wifi4_appendFile()
 {
-#line 722 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
- const uint8_t html[]="<!DOCTYPE html> <html> <head> <title>MILOS MATIC</title> </head> <body> <h1> Pokusaj pravljenja web stranice koja ce biti uploadovana unutar WIFI4 click modula </body> </html>";
+#line 717 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+ const uint8_t html[]="<!DOCTYPE html> <html> <head> <title>MILOS MATIC</title> </head> <body> <h1> Pokusaj pravljenja web stranice koja ce biti uploadovana unutar WIFI4 click modula <form name=\"CGI Example\" method=\"GET\" action=\"new2.html\">         	<input type=\"text\" name=\"text\" size=\"40\" maxlength=\"40\">&nbsp;	        <input type=\"submit\" name=\"submit\" value=\"Submit\" >	   </form></body> </html>";
 uint32_t len;
 uint8_t slen[5];
 uint8_t cmd[30];
@@ -807,4 +795,36 @@ Delay_100ms();
 mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
 
 
+}
+
+void wifi4_createFile(uint8_t *name,uint8_t *content)
+{
+ uint8_t params[50];
+ uint8_t sLen[6];
+ uint16_t len;
+ strcpy(params,name);
+ strcat(params,",");
+ len=strlen(content);
+ IntToStr(len,sLen);
+ strcpy(slen,Ltrim(slen));
+ strcat(params,sLen);
+ wifi4_cmdSingle("AT+S.FSC=",params);
+ Delay_100ms();
+
+strcpy(params,"AT+S.FSA=");
+strcat(params,name);
+strcat(params,",");
+strcat(params,slen);
+mikrobus_logWrite(params,_LOG_TEXT);
+while(0 != flag_cmdEx)
+ {
+ wifi4_process();
+ }
+
+
+wifi4_writeText2(params);
+Delay_1ms();
+wifi4_writeText2(content);
+#line 773 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+mikrobus_logWrite("USPESNO KREIRAN FAJL U MEM WIFI4 clicka",_LOG_LINE);
 }

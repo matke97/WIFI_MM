@@ -6,7 +6,7 @@ Value=0
 [BUILD_TYPE]
 Value=0
 [ACTIVE_TAB]
-Value=WIFI.c
+Value=wifi2.c
 [USE_EEPROM]
 Value=0
 [USE_HEAP]
@@ -19,16 +19,17 @@ Value=
 File0=WIFI.c
 File1=WIFI4_CLICK.c
 File2=__WIFI4_hal.c
-Count=3
+File3=wifi2.c
+Count=4
 [BINARIES]
 Count=0
 [IMAGES]
 Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
-File0=WIFI.c
-File1=WIFI4_CLICK.c
-File2=WIFI4_CLICK.h
+File0=WIFI4_CLICK.c
+File1=WIFI4_CLICK.h
+File2=WIFI4_timer.h
 Count=3
 [EEPROM]
 Count=0
@@ -47,7 +48,9 @@ Count=2
 [HEADERS]
 File0=WIFI4_CLICK.h
 File1=WIFI4_timer.h
-Count=2
+File2=page.h
+File3=WIFI4_uart.h
+Count=4
 [PLDS]
 File0=NewUnit_0.pld
 Count=1
@@ -68,5 +71,5 @@ USE_SRS=7
 [EXPANDED_NODES]
 0=WIFI.mcp32
 1=Sources
-5=Header Files
+6=Header Files
 Count=3

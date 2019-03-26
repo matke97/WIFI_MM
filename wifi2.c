@@ -1,37 +1,16 @@
-
 /* EXAMPLE WIFI4 CLICK
-  to see all at commands for WIFI module visit url: 
+  to see all at commands for WIFI module visit url:
   https://www.st.com/content/ccc/resource/technical/document/user_manual/4e/4d/c3/82/43/f1/4c/24/DM00100306.pdf/files/DM00100306.pdf/jcr:content/translations/en.DM00100306.pdf
 
 */
-/*
-
 #include "WIFI4_CLICK.h"
 #include "WIFI4_timer.h"
+#include "WIFI4_uart.h"
+#include "page.h"
 #define T_RELAY_P uint8_t*
-const uint32_t _WIFI4_UART_CFG[ 1 ] =
-{
-        115200
-};
-//UART INTERRUPT INIT
-void uartInterrupt()
-{
-   U2IP0_bit    = 1;
-   U2IP1_bit    = 1;
-   U2IP2_bit    = 1;
-   U2RXIE_bit   = 1;
-   EnableInterrupts();
-}
-//UART INTERRUPT ROUTINE
-void RX_ISR()iv IVT_UART_2 ilevel 7 ics ICS_SRS
-{
-    if( IFS1 & ( 1 << U2RXIF ))
-    {
-      char  tmp = UART2_Read();
-      WIFI4_putc(tmp);
-      U2RXIF_bit = 0;
-    }
-}
+
+
+
 uint8_t state,oldstate,state2,oldstate2;
 void nakacisena_gateway()
 {
@@ -104,25 +83,20 @@ void ACThandler(uint8_t *resp,uint8_t *args)
 uint8_t ids;
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
-uint8_t i;
  mikrobus_logWrite(resp,_LOG_LINE);
- //FOR ID: catching
-  while(resp[i]!=':' && i<strlen(resp))
-  {
-   i++;
-  }
-  if(i<strlen(resp))
-  {
-    if(resp[i-1]=='D' && resp[i-2]=='I')
-    {
 
-      strcpy(resp,resp+i+1);
-      mikrobus_logWrite(resp,_LOG_LINE);
-      ids=atoi(resp[i+1]);
-    }
-  }
  }
-
+ void uploadujFajlove()
+{
+  wifi4_cmdSingle("AT+S.FSL","");
+  wifi4_createFile("/proba.html",html);
+  Delay_100ms();
+  wifi4_createFile("/layout.css",layout);
+  Delay_100ms();
+  wifi4_createFile("/logic.js",js);
+  Delay_100ms();
+  wifi4_cmdSingle("AT+S.FSL","");
+}
 void windHandler(uint8_t *resp,uint8_t *args)
 {
    mikrobus_logWrite("AAAA",_LOG_LINE);
@@ -137,10 +111,11 @@ void systemInit()
     mikrobus_uartInit(_MIKROBUS1,&_WIFI4_UART_CFG[0]);
 
     mikrobus_logInit(_LOG_USBUART_B,115200);
-    
+
     //setting pins for RELAY click
     mikrobus_gpioInit( _MIKROBUS2, _MIKROBUS_CS_PIN, _GPIO_OUTPUT );
     mikrobus_gpioInit( _MIKROBUS2, _MIKROBUS_PWM_PIN, _GPIO_OUTPUT );
+
 }
 
 void appInit()
@@ -159,16 +134,17 @@ void appInit()
  wifi4_modulePower(0);
  Delay_100ms();
  wifi4_modulePower(1);
- Delay_ms(500);
+ Delay_ms(1500);
  wifi4_cmdSingle("AT","");
+ 
   //connect to AP
-
  nakacisena_gateway();
-
- wifi4_socketServerOpen(32000);
-  Delay_ms(1500);
   vidiipadresu();
   
+   Delay_ms(1000);
+   uploadujFajlove();
+   
+   
   //relay default states config
   state=0;
   state2=0;
@@ -176,17 +152,14 @@ void appInit()
   oldstate2=0;
   relay_relay1Control(0);
   relay_relay2Control(0);
-  wifi4_cmdSingle("AT+S.FSC=","/proba.html,1024");
-  wifi4_cmdSingle("AT+S.FSL","");
-  Delay_ms(1000);
-  wifi4_appendFile();
-  Delay_ms(3000);
-  wifi4_cmdSingle("AT+S.FSL","");
+  mikrobus_logWrite("PROBA",_LOG_LINE);
 }
 
 void appTask()
  {
   wifi4_process();
+  mikrobus_logWrite("PROBA",_LOG_LINE);
+ Delay_ms(3000);
   //RELAY ACT
   if(state == 1 && oldstate == 0)
   {
@@ -216,7 +189,7 @@ void appTask()
 }
 
 
-void main() 
+void main()
 {
  systemInit();
  appInit();
@@ -226,4 +199,3 @@ void main()
    appTask();
   }
 }
-*/

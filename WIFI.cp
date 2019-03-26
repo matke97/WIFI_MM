@@ -84,6 +84,8 @@ void wifi4_socketServerOpen(uint32_t port);
 void wifi4_socketServerWrite(uint8_t *txt);
 #line 128 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketServerClose();
+
+void wifi4_appendFile();
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 #line 2 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_timer.h"
@@ -261,7 +263,7 @@ void appInit()
 
  nakacisena_gateway();
 
- wifi4_socketServerOpen(32000);
+
  Delay_ms(1500);
  vidiipadresu();
 
@@ -272,11 +274,16 @@ void appInit()
  oldstate2=0;
  relay_relay1Control(0);
  relay_relay2Control(0);
-
+ wifi4_cmdSingle("AT+S.FSC=","/proba.html,1024");
+ wifi4_cmdSingle("AT+S.FSL","");
+ Delay_ms(1000);
+ wifi4_appendFile();
+ Delay_ms(3000);
+ wifi4_cmdSingle("AT+S.FSL","");
 }
 
 void appTask()
-{
+ {
  wifi4_process();
 
  if(state == 1 && oldstate == 0)

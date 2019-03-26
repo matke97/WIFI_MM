@@ -157,11 +157,6 @@ main
 				wifi4_cmdSingle
 				strcpy
 				strcat
-		wifi4_socketServerOpen
-			IntToStr
-				WordToStr
-			Ltrim
-			wifi4_cmdSingle
 		vidiipadresu
 			wifi4_cmdSingle
 		relay_relay1Control
@@ -214,6 +209,17 @@ main
 			_setTX_2
 			_setSCL_2
 			_setSDA_2
+		wifi4_appendFile
+			strlen
+			IntToStr
+				WordToStr
+			Ltrim
+			strcpy
+			strcat
+			mikrobus_logWrite
+			wifi4_cmdSingle
+			wifi4_writeText2
+			Delay_100ms
 	mikrobus_logWrite
 	appTask
 		wifi4_process

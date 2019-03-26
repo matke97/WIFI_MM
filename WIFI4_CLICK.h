@@ -126,4 +126,6 @@ void wifi4_socketServerWrite(uint8_t *txt);
   *
 */
 void wifi4_socketServerClose();
+
+void wifi4_appendFile();
 #endif

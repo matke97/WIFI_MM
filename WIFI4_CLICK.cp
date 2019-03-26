@@ -84,6 +84,8 @@ void wifi4_socketServerOpen(uint32_t port);
 void wifi4_socketServerWrite(uint8_t *txt);
 #line 128 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketServerClose();
+
+void wifi4_appendFile();
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/include/stdint.h"
 #line 80 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"
@@ -784,4 +786,25 @@ void wifi4_socketServerClose()
 void wifi4_socketServerWrite(uint8_t *txt)
 {
  wifi4_writeText2(txt);
+}
+
+void wifi4_appendFile()
+{
+#line 722 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+ const uint8_t html[]="<!DOCTYPE html> <html> <head> <title>MILOS MATIC</title> </head> <body> <h1> Pokusaj pravljenja web stranice koja ce biti uploadovana unutar WIFI4 click modula </body> </html>";
+uint32_t len;
+uint8_t slen[5];
+uint8_t cmd[30];
+len=strlen(html);
+IntToStr(len,slen);
+strcpy(slen,Ltrim(slen));
+strcpy(cmd,"/proba.html,");
+strcat(cmd,slen);
+mikrobus_logWrite(cmd,_LOG_TEXT);
+wifi4_cmdSingle("AT+S.FSA=",cmd);
+wifi4_writeText2(html);
+Delay_100ms();
+mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
+
+
 }

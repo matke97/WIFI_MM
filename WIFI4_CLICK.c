@@ -708,3 +708,31 @@ void wifi4_socketServerWrite(uint8_t *txt)
 {
      wifi4_writeText2(txt);
 }
+
+void wifi4_appendFile()
+{
+ const uint8_t html[]="<!DOCTYPE html> \
+<html> \
+<head> \
+<title>MILOS MATIC</title> \
+</head> \
+<body> \
+<h1> Pokusaj pravljenja web stranice koja ce biti uploadovana unutar WIFI4 click modula \
+</body> \
+</html>";
+uint32_t len;
+uint8_t slen[5];
+uint8_t cmd[30];
+len=strlen(html);
+IntToStr(len,slen);
+strcpy(slen,Ltrim(slen));
+strcpy(cmd,"/proba.html,");
+strcat(cmd,slen);
+mikrobus_logWrite(cmd,_LOG_TEXT);
+wifi4_cmdSingle("AT+S.FSA=",cmd);
+wifi4_writeText2(html);
+Delay_100ms();
+mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
+
+
+}

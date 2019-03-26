@@ -159,10 +159,10 @@ void appInit()
  Delay_ms(500);
  wifi4_cmdSingle("AT","");
   //connect to AP
-  
+
  nakacisena_gateway();
 
- wifi4_socketServerOpen(32000);
+ //wifi4_socketServerOpen(80);
   Delay_ms(1500);
   vidiipadresu();
   
@@ -173,11 +173,16 @@ void appInit()
   oldstate2=0;
   relay_relay1Control(0);
   relay_relay2Control(0);
-
+  wifi4_cmdSingle("AT+S.FSC=","/proba.html,1024");
+  wifi4_cmdSingle("AT+S.FSL","");
+  Delay_ms(1000);
+  wifi4_appendFile();
+  Delay_ms(3000);
+  wifi4_cmdSingle("AT+S.FSL","");
 }
 
 void appTask()
-{
+ {
   wifi4_process();
   //RELAY ACT
   if(state == 1 && oldstate == 0)

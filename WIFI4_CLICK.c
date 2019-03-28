@@ -21,17 +21,17 @@
 #define EXEC_CALLBACK()                                                        \
 if (0 !=_WIFI4_CALLBACK_EN)                                       \
 { currentEv.evArg[_WIFI4_EVARG_EVENT_T] = _WIFI4_EVENT_CALLBACK; currentEv.fpHdl(txBuff, currentEv.evArg); }
-const uint8_t _WIFI4_EVARG_START_T    = 0;
-const uint8_t _WIFI4_EVARG_END_T      = 1;
-const uint8_t _WIFI4_EVARG_EVENT_T    = 2;
-extern const uint8_t _WIFI4_CALLBACK_EN;
-const uint8_t _WIFI4_EVENT_RESPONSE   = 0x00;
-const uint8_t _WIFI4_EVENT_TIMEOUT    = 0x01;
-const uint8_t _WIFI4_EVENT_BUFFER_OUT = 0x02;
-const uint8_t _WIFI4_EVENT_CALLBACK   = 0x04;
-const uint8_t _WIFI4_STORAGE_SIZE=8;
 
-static uint8_t                      txBuff[BUFF_MAXSIZE];
+
+extern const uint8_t _WIFI4_CALLBACK_EN;
+const uint8_t    _WIFI4_EVARG_START_T    = 0;
+const uint8_t    _WIFI4_EVARG_END_T      = 1;
+const uint8_t    _WIFI4_EVARG_EVENT_T    = 2;
+const uint8_t    _WIFI4_EVENT_RESPONSE   = 0x00;
+const uint8_t    _WIFI4_EVENT_TIMEOUT    = 0x01;
+const uint8_t    _WIFI4_EVENT_BUFFER_OUT = 0x02;
+const uint8_t    _WIFI4_EVENT_CALLBACK   = 0x04;
+const uint8_t    _WIFI4_STORAGE_SIZE = 8;
 
 
 static void DTE_setState(uint8_t state)
@@ -48,6 +48,7 @@ static void DTE_setState(uint8_t state)
 
 }
 
+//get the state of dce
 static uint8_t DCE_getState()
 {
 // True = DCE free / False = DCE busy
@@ -102,13 +103,12 @@ typedef struct
 }T_CORE_event;
 
 
-static volatile T_WIFI4_rx_buff rxB;
-static volatile T_handler_storage hdB; // handler func buffer
-static volatile T_CORE_event currentEv; //trenutna komanda, dogadjaj za obradu
-static volatile T_WIFI4_rx_buff tmpB; //tmp baf
-
-static volatile uint8_t respEnd;// response ENDED
-static volatile uint32_t respTime;
+static volatile T_WIFI4_rx_buff    rxB;  //recive buffer
+static volatile T_handler_storage  hdB; // handler func buffer
+static volatile T_CORE_event       currentEv; //trenutna komanda, dogadjaj za obradu
+static volatile uint8_t            txBuff[BUFF_MAXSIZE];
+static volatile uint8_t            respEnd;// response ENDED
+static volatile uint32_t           respTime;
 
 //HELP FUNCTIONS
 
@@ -270,30 +270,33 @@ static void createEvent( char *pInput, T_CORE_event *pEvent )
 /*
  Flag variables
 */
-static volatile uint16_t watchDogTime;
-static volatile uint8_t flag_timesUp;
-static volatile uint8_t flag_wdogOut;
-static volatile uint8_t flag_cmdEx;
-static volatile uint8_t f_wdogStart;
-static volatile uint8_t f_timerStart;
-static volatile uint32_t waitTime; //set wait for ending of response->for ping
-static volatile uint8_t f_cpyRXtoTmp;
+static volatile uint16_t    watchDogTime;
+static volatile uint8_t     flag_timesUp;
+static volatile uint8_t     flag_wdogOut;
+static volatile uint8_t     flag_cmdEx;
+static volatile uint8_t     f_wdogStart;
+static volatile uint8_t     f_timerStart;
+static volatile uint32_t    waitTime;
 
-void wifi4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog)
+void wifi4_coreInit( T_WIFI4_handler defaultHdl, uint32_t defaultWdog )
 {
-    // KASNIJE SETUJ
-    flag_cmdEx          = 0;
-    //f_buffer_warning           = false;
-    flag_timesUp=0;
-   flag_wdogOut=0;
 
-   waitTime=DEFAULT_WTIME;
+    flag_cmdEx = 0;
+    flag_timesUp = 0;
+    flag_wdogOut = 0;
+    waitTime = DEFAULT_WTIME;
 //  HANDLER STORAGE INIT - 0 POSITION = DEFAULT HANDLER- za sve fje
     hdB.storage[0].handler = defaultHdl;
     hdB.storage[0].timeout = defaultWdog;
     hdB.storage[0].hash    = generateHash("");
     hdB.storage[0].len     = 0;
     hdB.idx                = 1;
+    
+    rxB.ind = 0;
+    respTime = 0;
+    rxB.buff[0] = 0;
+    rxB.ind = 0;
+
 }
 
 uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler )
@@ -339,27 +342,25 @@ uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHan
 void wifi4_responseRec(uint16_t timeW)
 {
      volatile uint32_t cnt;//counter
-     uint32_t nTicks= timeW*20;  //number of "ticks" for waiting on response
+     uint32_t nTicks = timeW * 20;  //number of "ticks" for waiting on response
      uint8_t prev,curr;
-     uint8_t flag1=0,endFLag=0;
-    curr=0;
-    cnt=0;
-   while( 1 != endFlag && rxB.ind<BUFF_MAXSIZE)
-   {
-
-    if(respTime>timeW) //ako nema odgovra vise od 5ms!
-    {
-     endFlag=1; // kraj responsa
-    }
-   }
-    //mikrobus_logWrite("KRAJ RESPONSA",_LOG_LINE);
-   rxB.buff[rxB.ind]='\0';
+     uint8_t flag1=0,endFLag = 0;
+     curr = 0;
+     cnt = 0;
+     while( 1 != endFlag && rxB.ind < BUFF_MAXSIZE )
+     {
+      if(respTime > timeW) //ako nema odgovra vise od 5ms!
+      {
+        endFlag = 1; // kraj responsa
+      }
+     }
+   rxB.buff[rxB.ind] = '\0';
 }
-void StrToHex(uint8_t *string,uint8_t *output)
+void StrToHex( uint8_t *string, uint8_t *output )
 {
  char tmp[3];
  char hex[80];
-  uint8_t i;
+ uint8_t i;
  strcpy(hex,"");
 
  for (i = 0; i < strlen(string) - 1; i++)
@@ -370,10 +371,10 @@ void StrToHex(uint8_t *string,uint8_t *output)
  strcpy(output,hex);
 }
 
-void wifi4_writeText(uint8_t *txt,uint8_t nBytes)
+void wifi4_writeText( uint8_t *txt, uint8_t nBytes )
 {
  uint8_t i;
- for(i=0;i<nBytes;i++)
+ for( i = 0; i < nBytes; i++ )
  {
   hal_uartWrite(txt[i]);
  }
@@ -384,15 +385,12 @@ void wifi4_writeText(uint8_t *txt,uint8_t nBytes)
 */
 void wifi4_writeText2(uint8_t *txt)
 {
-
-
-
- while(0 != *txt)
- {
-    hal_uartWrite(*txt++);
- }
- hal_uartWrite(TERMINATION_CHAR);
- }
+     while(0 != *txt)
+     {
+      hal_uartWrite(*txt++);
+     }
+     hal_uartWrite(TERMINATION_CHAR);
+}
 //USER FUNCTIONS DEFs
 void wifi4_modulePower( uint8_t powerState )
 {
@@ -409,15 +407,11 @@ void wifi4_modulePower( uint8_t powerState )
     }
 }
 
-void wifi4_uartDriverInit(T_WIFI4_P gpio,T_WIFI4_P uart)
+void wifi4_uartDriverInit( T_WIFI4_P gpio, T_WIFI4_P uart )
 {
- hal_gpioMap((T_HAL_P)gpio);
- hal_uartMap((T_HAL_P)uart);
- rxB.ind=0;
- respTime=0;
- rxB.buff[0]=0;
- rxB.ind=0;
- hal_gpio_rstSet(1);
+     hal_gpioMap((T_HAL_P)gpio);
+     hal_uartMap((T_HAL_P)uart);
+     hal_gpio_rstSet(1);
 }
 /*
   Writing nBytes on UART
@@ -425,9 +419,9 @@ void wifi4_uartDriverInit(T_WIFI4_P gpio,T_WIFI4_P uart)
 
 void wifi4_setSSID(uint8_t *ssid)
 {
- char comm[30]="AT+S.SSIDTXT=";
- strcat(comm,ssid);
- WIFI4_writeText2(comm);
+     char comm[30] = "AT+S.SSIDTXT=";
+     strcat(comm,ssid);
+     WIFI4_writeText2(comm);
 }
 void wifi4_getSSID()
 {
@@ -437,28 +431,29 @@ void wifi4_getSSID()
 
 void wifi4_cmdSingle(char* command,char *param)
 {
+     //make command
      char tmp[50];
      strcpy(tmp,command);
      strcat(tmp,param);
      strcpy(txBuff,tmp);
-     //AKO JE NEKA DRUGA KOMANDA U TOKU,SACEKAJ
-      while(0 != flag_cmdEx)
-       {
-         wifi4_process();
-       }
-     createEvent(tmp,&currentEv);
+     //wait if some other command is exec
+     while(0 != flag_cmdEx)
+     {
+       wifi4_process();
+     }
+     createEvent( tmp, &currentEv );
      wifi4_writeText2(tmp);
-
-     watchDogTime=0; //reset watchdog
-     waitTime=3*DEFAULT_WTIME;
-     f_wdogStart=1;
-     f_timerStart=1;
-     flag_cmdEx=1;
+     //setting flags for response cthicng
+     watchDogTime = 0; //reset watchdog
+     waitTime = 3*DEFAULT_WTIME;
+     f_wdogStart = 1;
+     f_timerStart = 1;
+     flag_cmdEx = 1;
      //sacekaj response
-       while(0 != flag_cmdEx)
-       {
-         wifi4_process();
-       }
+     while(0 != flag_cmdEx)
+     {
+      wifi4_process();
+     }
  }
 
 void wifi4_ping(uint8_t *ipAddr)
@@ -466,120 +461,101 @@ void wifi4_ping(uint8_t *ipAddr)
       char tmp[50];
       strcpy(tmp,"AT+S.PING=");
       strcat(tmp,ipAddr);
-       while(0 != flag_cmdEx)
-       {
+      while(0 != flag_cmdEx)
+      {
          wifi4_process();
-       }
-       createEvent(tmp,&currentEv);
-       currentEv.wDogLimit=3*currentEv.wDogLimit;
+      }
+      createEvent(tmp,&currentEv);
+      currentEv.wDogLimit=3*currentEv.wDogLimit;
 
-        waitTime=2000; //wait 1s
-       WIFI4_writeText2(tmp);
-         watchDogTime=0; //reset watchdog
-        f_wdogStart=1;
-        f_timerStart=1;
-        flag_cmdEx=1;
-     //sacekaj response
-       while(0 != flag_cmdEx)
-       {
+      waitTime=2000; //wait 1s
+      WIFI4_writeText2(tmp);
+      watchDogTime=0; //reset watchdog
+      f_wdogStart=1;
+      f_timerStart=1;
+      flag_cmdEx=1;
+      //sacekaj response
+      while(0 != flag_cmdEx)
+      {
          wifi4_process();
-       }
-       waitTime=DEFAULT_WTIME;
+      }
+      waitTime=DEFAULT_WTIME;
        
 }
-void wifi4_connectToAP(uint8_t* ssid,uint8_t *pass)
+void wifi4_connectToAP( uint8_t* ssid, uint8_t *pass )
 {
-  uint8_t newPass[80];
-    wifi4_cmdSingle("AT+S.SCFG=","wifi_priv_mode,2");
-    wifi4_cmdSingle("AT+S.SCFG=","wifi_mode,1");
-    wifi4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
-    
-   wifi4_cmdSingle("AT+S.SSIDTXT=",ssid);
-   
-
-   strcpy(newPass,"wifi_wpa_psk_text,");
-   strcat(newPass,pass);
-    wifi4_cmdSingle("AT+S.SCFG=",newPass);
+     uint8_t newPass[80];
+     wifi4_cmdSingle("AT+S.SCFG=", "wifi_priv_mode,2");
+     wifi4_cmdSingle("AT+S.SCFG=", "wifi_mode,1");
+     wifi4_cmdSingle("AT+S.SCFG=", "ip_use_dhcp,1");
+     wifi4_cmdSingle("AT+S.SSIDTXT=", ssid);
+     strcpy(newPass,"wifi_wpa_psk_text,");
+     strcat(newPass, pass);
+     wifi4_cmdSingle("AT+S.SCFG=", newPass);
 }
 
 void wifi4_putc(char c)
 {
- flag_cmdEx=1;
- f_timerStart=1;
- respTime=0;
- rxB.buff[rxB.ind++]=c;
-
+     flag_cmdEx = 1;
+     f_timerStart = 1;
+     respTime = 0;
+     rxB.buff[rxB.ind++] = c;
 }
 
 void wifi4_tick()
 {
- if(f_timerStart){
+     if(f_timerStart)
+     {
          if((++respTime) > waitTime)
          {
-         flag_timesUp=1;
-
+         flag_timesUp = 1;
          }
- }
- if(f_wdogStart){
- if((++watchDogTime) > currentEv.wDogLimit)
- {
-     flag_wdogOut=1;
-
- }
- }
+     }
+     if( f_wdogStart )
+     {
+         if((++watchDogTime) > currentEv.wDogLimit)
+         {
+             flag_wdogOut=1;
+         }
+     }
 }
-
-
 
 void wifi4_process()
 {
 //WATCHDOG TIMEOUT
-  if(f_wDogStart){
-    if(flag_wdogOut)
+   if(f_wDogStart)
+   {
+       if(flag_wdogOut)
+       {
+           DTE_setState(0);
+           f_wdogStart = 0;
+           f_timerStart = 0;
+           rxB.buff[rxB.ind++] = '\0';
+           createEvent(rxB.buff, &currentEv);
+           EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
+           rxB.buff[0] = 0;
+           rxB.ind = 0;
+           flag_wdogOut = 0;
+           flag_cmdEx = 0;
+           DTE_setState(1);
+       }
+    }
+    if(f_TimerStart)
     {
-    DTE_setState(0);
-
-    f_wdogStart = 0;
-    f_timerStart = 0;
-    rxB.buff[rxB.ind++]='\0';
-    createEvent(rxB.buff, &currentEv);
-    if(f_cpyRXtoTmp)
-    {
-     strcpy(tmpB.buff,rxB.buff);
-     tmpB.ind=rxB.ind;
-     f_cpyRXtoTmp=0;
-    }
-    EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
-    rxB.buff[0]=0;
-    rxB.ind=0;
-    flag_wdogOut=0;
-    flag_cmdEx=0;
-    
-    DTE_setState(1);
-
-    }
-    }
-    if(f_TimerStart){
-    if(flag_timesUp)
-    {
-     DTE_setState(0);
-     f_wdogStart=0;
-      f_timerStart=0;
-       rxB.buff[rxB.ind++]='\0';
-         createEvent(rxB.buff, &currentEv);
-       EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
-       if(f_cpyRXtoTmp)
-    {
-     strcpy(tmpB.buff,rxB.buff);
-     tmpB.ind=rxB.ind;
-     f_cpyRXtoTmp=0;
-    }
-     rxB.buff[0]=0;
-     rxB.ind=0;
-      flag_timesUp=0;
-      flag_cmdEx=0;
-      DTE_setState(1);
-    }
+        if(flag_timesUp)
+        {
+            DTE_setState(0);
+            f_wdogStart=0;
+            f_timerStart=0;
+            rxB.buff[rxB.ind++]='\0';
+            createEvent(rxB.buff, &currentEv);
+            EXEC_EVENT(_WIFI4_EVENT_RESPONSE);
+            rxB.buff[0] = 0;
+            rxB.ind = 0;
+            flag_timesUp = 0;
+            flag_cmdEx = 0;
+            DTE_setState(1);
+        }
     }
 }
 
@@ -621,7 +597,6 @@ void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
      f_wdogStart=1;
      f_timerStart=1;
      flag_cmdEx=1;
-      f_cpyRXtoTmp=1;
      //sacekaj response
        while(0 != flag_cmdEx)
        {
@@ -665,7 +640,6 @@ void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
      f_wdogStart=1;
      f_timerStart=1;
      flag_cmdEx=1;
-     f_cpyRXtoTmp=0;
      //sacekaj response
        while(0 != flag_cmdEx)
        {
@@ -710,8 +684,7 @@ void wifi4_createFile(uint8_t *name,uint8_t *content)
     uint8_t params[50];
     uint8_t sLen[6];
     uint16_t len;
-
-    //
+    //creating command
     strcpy(params, name);
     strcat(params, ",");
     len = strlen(content);
@@ -727,7 +700,7 @@ void wifi4_createFile(uint8_t *name,uint8_t *content)
     {
         wifi4_process();
     }
-    
+    //appending file
     strcpy(params, "AT+S.FSA=");
     strcat(params, name);
     strcat(params, ",");
@@ -740,38 +713,36 @@ void wifi4_createFile(uint8_t *name,uint8_t *content)
     }
 
     createEvent(params, &currentEv);
-     wifi4_writeText2(params);
-     Delay_1ms();
-     wifi4_writeText2(content);
-     watchDogTime=0; //reset watchdog
-     waitTime=DEFAULT_WTIME;
-     f_wdogStart=1;
-     f_timerStart=1;
-     flag_cmdEx=1;
-     //sacekaj response
-       while(0 != flag_cmdEx)
-       {
-         wifi4_process();
-       }
-
-// mikrobus_logWrite("USPESNO KREIRAN FAJL U MEM WIFI4 clicka",_LOG_LINE);
+    wifi4_writeText2(params);
+    Delay_1ms();
+    wifi4_writeText2(content);
+    watchDogTime = 0; //reset watchdog
+    waitTime=DEFAULT_WTIME;
+    f_wdogStart = 1;
+    f_timerStart = 1;
+    flag_cmdEx = 1;
+    //sacekaj response
+    while(0 != flag_cmdEx)
+    {
+       wifi4_process();
+    }
 }
 
 
 void wifi4_appendFile(uint8_t *ime,uint8_t *html)
 {
-uint32_t len;
-uint8_t slen[5];
-uint8_t cmd[30];
-len=strlen(html);
-IntToStr(len,slen);
-strcpy(slen,Ltrim(slen));
-strcpy(cmd,ime);
-strcat(cmd,",");
-strcat(cmd,slen);
-mikrobus_logWrite(cmd,_LOG_TEXT);
-wifi4_cmdSingle("AT+S.FSA=",cmd);
-wifi4_writeText2(html);
-Delay_100ms();
-mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
+     uint32_t len;
+     uint8_t slen[5];
+     uint8_t cmd[30];
+     len=strlen(html);
+     IntToStr(len,slen);
+     strcpy(slen,Ltrim(slen));
+     strcpy(cmd,ime);
+     strcat(cmd,",");
+     strcat(cmd,slen);
+     mikrobus_logWrite(cmd,_LOG_TEXT);
+     wifi4_cmdSingle("AT+S.FSA=",cmd);
+     wifi4_writeText2(html);
+     Delay_100ms();
+     mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
 }

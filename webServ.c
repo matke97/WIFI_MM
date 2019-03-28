@@ -8,6 +8,7 @@
 #include "WIFI4_timer.h"
 #include "WIFI4_uart.h"
 #include "page.h"
+
 #define T_RELAY_P uint8_t*
 
 
@@ -15,22 +16,20 @@
 uint8_t state,oldstate,state2,oldstate2;
 void uploadujFajlove()
 {
-  wifi4_cmdSingle("AT+S.FSL","");
-  //Delay_100ms();
-  wifi4_createFile("/proba.html",html);
-  //Delay_100ms();
-  wifi4_createFile("/style.css",layout);
-  //Delay_100ms();
-  wifi4_createFile("/logic.js",js);
- // Delay_100ms();
-  wifi4_cmdSingle("AT+S.FSL","");
+  wifi4_createFile( "/proba.html", html );
+  
+  wifi4_createFile( "/style.css", layout );
+  
+  wifi4_createFile( "/logic.js", js );
+  
+  wifi4_cmdSingle( "AT+S.FSL", "" );
 }
 void nakacisena_gateway()
 {
     mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
-    wifi4_connectToAP("MikroE Public","mikroe.guest") ;
+    
+    wifi4_connectToAP( "MikroE Public", "mikroe.guest" );
     Delay_ms(4000);
-
     mikrobus_logWrite( "GOTOVO", _LOG_LINE );
 }
 void vidiipadresu()
@@ -157,9 +156,10 @@ void systemInit()
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_RST_PIN, _GPIO_OUTPUT );
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_CS_PIN, _GPIO_INPUT );
     mikrobus_gpioInit( _MIKROBUS1, _MIKROBUS_INT_PIN, _GPIO_OUTPUT );
-    mikrobus_uartInit(_MIKROBUS1,&_WIFI4_UART_CFG[0]);
+    mikrobus_uartInit( _MIKROBUS1, &_WIFI4_UART_CFG[0] );
 
-    mikrobus_logInit(_LOG_USBUART_B,115200);
+    //LOG INIT
+    mikrobus_logInit( _LOG_USBUART_B, 115200 );
 
     //setting pins for RELAY click
     mikrobus_gpioInit( _MIKROBUS2, _MIKROBUS_CS_PIN, _GPIO_OUTPUT );
@@ -169,8 +169,8 @@ void systemInit()
 
 void appInit()
 {
-    wifi4_uartDriverInit((T_WIFI4_P)&_MIKROBUS1_GPIO,(T_WIFI4_P)&_MIKROBUS1_UART);
-    relay_gpioDriverInit((T_RELAY_P)&_MIKROBUS2_GPIO);
+    wifi4_uartDriverInit( (T_WIFI4_P)&_MIKROBUS1_GPIO, (T_WIFI4_P)&_MIKROBUS1_UART );
+    relay_gpioDriverInit( (T_RELAY_P)&_MIKROBUS2_GPIO );
     
     //init interrupts
     InitTimer1();
@@ -178,22 +178,22 @@ void appInit()
     
     //core init WIFI4click
     wifi4_coreInit(defaultHandler, 1500);
-    wifi4_setHandler("+ACT", 1500, ACThandler);
-    wifi4_setHandler("_WEBSERVER",1500,webServHandler);
+    wifi4_setHandler( "+ACT", 1500, ACThandler );
+    wifi4_setHandler( "_WEBSERVER", 1500, webServHandler );
     Delay_100ms();
 
     //reset device
     wifi4_modulePower(0);
     Delay_100ms();
     wifi4_modulePower(1);
-    Delay_ms(1500);
+    Delay_ms( 1500 );
     
-    wifi4_cmdSingle("AT", "");
+    wifi4_cmdSingle( "AT", "" );
 
     //connect to AP
     nakacisena_gateway();
     vidiipadresu();
-    Delay_ms(1000);
+    Delay_ms( 1000 );
     
     //relay default states config
     state = 0;
@@ -203,16 +203,15 @@ void appInit()
     relay_relay1Control(0);
     relay_relay2Control(0);
     Delay_100ms();
-
-    wifi4_createFile("/proba.html",html);
+    //uploading files to web server
+    wifi4_createFile( "/proba.html" ,html );
     Delay_100ms();
     
-    wifi4_createFile("/style.css",layout);
+    wifi4_createFile( "/style.css", layout );
     Delay_100ms();
     
-    wifi4_createFile("/logic.js",js);
+    wifi4_createFile( "/logic.js", js );
     Delay_100ms();
-    // wifi4_cmdSingle("AT+S.FSL","");
 }
 
 void appTask()
@@ -248,7 +247,7 @@ void main()
 {
     systemInit();
     appInit();
-    mikrobus_logWrite("INIT DONE",_LOG_LINE);
+    mikrobus_logWrite( "INIT DONE", _LOG_LINE );
     
     while(1)
     {

@@ -125,7 +125,6 @@ main
 						strncmp
 					strncpy
 					locateHandler
-				strcpy
 				defaultHandler
 					mikrobus_logWrite
 						_log_write

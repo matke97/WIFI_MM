@@ -164,18 +164,16 @@ static uint8_t hal_uartReady()
 {
  return ( uint8_t )fp_uartReady();
 }
-#line 24 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 26 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+extern const uint8_t _WIFI4_CALLBACK_EN;
 const uint8_t _WIFI4_EVARG_START_T = 0;
 const uint8_t _WIFI4_EVARG_END_T = 1;
 const uint8_t _WIFI4_EVARG_EVENT_T = 2;
-extern const uint8_t _WIFI4_CALLBACK_EN;
 const uint8_t _WIFI4_EVENT_RESPONSE = 0x00;
 const uint8_t _WIFI4_EVENT_TIMEOUT = 0x01;
 const uint8_t _WIFI4_EVENT_BUFFER_OUT = 0x02;
 const uint8_t _WIFI4_EVENT_CALLBACK = 0x04;
-const uint8_t _WIFI4_STORAGE_SIZE=8;
-
-static uint8_t txBuff[ 4096 ];
+const uint8_t _WIFI4_STORAGE_SIZE = 8;
 
 
 static void DTE_setState(uint8_t state)
@@ -191,6 +189,7 @@ static void DTE_setState(uint8_t state)
  }
 
 }
+
 
 static uint8_t DCE_getState()
 {
@@ -246,14 +245,17 @@ typedef struct
 }T_CORE_event;
 
 
+
+
+
+
 static volatile T_WIFI4_rx_buff rxB;
 static volatile T_handler_storage hdB;
 static volatile T_CORE_event currentEv;
-static volatile T_WIFI4_rx_buff tmpB;
-
+static volatile uint8_t txBuff[ 4096 ];
 static volatile uint8_t respEnd;
 static volatile uint32_t respTime;
-#line 118 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 122 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static char LUT_START [ 5 ][2] =
 {
  "",
@@ -262,7 +264,7 @@ static char LUT_START [ 5 ][2] =
  "_",
  "#"
 };
-#line 129 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 133 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static char LUT_END[ 5 ][2] =
 {
  "",
@@ -271,7 +273,7 @@ static char LUT_END[ 5 ][2] =
  "-",
  "\r"
 };
-#line 142 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 146 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static uint32_t generateHash( char *pCmd )
 {
  uint8_t cnt = 0;
@@ -285,7 +287,7 @@ static uint32_t generateHash( char *pCmd )
  }
  return hash;
 }
-#line 161 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 165 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static uint16_t locateHandler( char* pCmd )
 {
  uint8_t len;
@@ -312,7 +314,7 @@ static uint16_t locateHandler( char* pCmd )
 
 const uint8_t SEARCH_IDX = 0;
 const uint8_t SEARCH_OFFSET = 1;
-#line 196 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 200 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static uint8_t searchLut( char* pInput, char (*pLut)[  2  ], uint8_t lutSize, uint8_t flag )
 {
  uint8_t inLen = 0;
@@ -346,7 +348,7 @@ static uint8_t searchLut( char* pInput, char (*pLut)[  2  ], uint8_t lutSize, ui
  }
  return 0;
 }
-#line 240 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 244 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static void createEvent( char *pInput, T_CORE_event *pEvent )
 {
  uint8_t hIdx = 0;
@@ -376,7 +378,7 @@ static void createEvent( char *pInput, T_CORE_event *pEvent )
 
 
 }
-#line 273 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 277 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static volatile uint16_t watchDogTime;
 static volatile uint8_t flag_timesUp;
 static volatile uint8_t flag_wdogOut;
@@ -384,7 +386,6 @@ static volatile uint8_t flag_cmdEx;
 static volatile uint8_t f_wdogStart;
 static volatile uint8_t f_timerStart;
 static volatile uint32_t waitTime;
-static volatile uint8_t f_cpyRXtoTmp;
 
 void wifi4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog)
 {
@@ -439,7 +440,7 @@ uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHan
 
  return hdB.idx-1;
 }
-#line 339 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 342 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_responseRec(uint16_t timeW)
 {
  volatile uint32_t cnt;
@@ -483,7 +484,7 @@ void wifi4_writeText(uint8_t *txt,uint8_t nBytes)
  }
  hal_uartWrite( 0x0D );
 }
-#line 385 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 388 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_writeText2(uint8_t *txt)
 {
 
@@ -521,7 +522,7 @@ void wifi4_uartDriverInit( const uint8_t*  gpio, const uint8_t*  uart)
  rxB.ind=0;
  hal_gpio_rstSet(1);
 }
-#line 426 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 429 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_setSSID(uint8_t *ssid)
 {
  char comm[30]="AT+S.SSIDTXT=";
@@ -642,12 +643,7 @@ void wifi4_process()
  f_timerStart = 0;
  rxB.buff[rxB.ind++]='\0';
  createEvent(rxB.buff, &currentEv);
- if(f_cpyRXtoTmp)
- {
- strcpy(tmpB.buff,rxB.buff);
- tmpB.ind=rxB.ind;
- f_cpyRXtoTmp=0;
- }
+
   { currentEv.evArg[_WIFI4_EVARG_EVENT_T] = _WIFI4_EVENT_RESPONSE; currentEv.fpHdl(rxB.buff, currentEv.evArg); } ;
  rxB.buff[0]=0;
  rxB.ind=0;
@@ -667,12 +663,6 @@ void wifi4_process()
  rxB.buff[rxB.ind++]='\0';
  createEvent(rxB.buff, &currentEv);
   { currentEv.evArg[_WIFI4_EVARG_EVENT_T] = _WIFI4_EVENT_RESPONSE; currentEv.fpHdl(rxB.buff, currentEv.evArg); } ;
- if(f_cpyRXtoTmp)
- {
- strcpy(tmpB.buff,rxB.buff);
- tmpB.ind=rxB.ind;
- f_cpyRXtoTmp=0;
- }
  rxB.buff[0]=0;
  rxB.ind=0;
  flag_timesUp=0;
@@ -681,7 +671,7 @@ void wifi4_process()
  }
  }
 }
-#line 597 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 589 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 {
  char tmp[80];
@@ -709,7 +699,6 @@ void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
  f_wdogStart=1;
  f_timerStart=1;
  flag_cmdEx=1;
- f_cpyRXtoTmp=1;
 
  while(0 != flag_cmdEx)
  {
@@ -717,7 +706,7 @@ void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
  }
 
 }
-#line 638 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 629 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
 {
  uint16_t len=strlen(wdata);
@@ -748,7 +737,6 @@ void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
  f_wdogStart=1;
  f_timerStart=1;
  flag_cmdEx=1;
- f_cpyRXtoTmp=0;
 
  while(0 != flag_cmdEx)
  {
@@ -762,7 +750,7 @@ void wifi4_socketClose(uint8_t id)
  wifi4_cmdSIngle("AT+S.SOCKC=",str);
 
 }
-#line 690 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 680 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketServerOpen(uint32_t port)
 {
  uint8_t sPort[6];

@@ -9,7 +9,6 @@ uint8_t html[]=
  <link type = 'text/css' href = 'style.css' rel = 'stylesheet'> \
 </head>\
 <body>\
-<center><h3>Kontorola uredjaja</h3></center>\
     <div class=\"page\">\
 <img class=\"img-responsive\" src=\"https://cdn.mikroe.com/themes/simplicity/img/header/links/mikroelektronika/mikroe-white.png\">\
 <center><h1>Kontorola uredjaja</h1></center>\

@@ -226,8 +226,6 @@ main
 	appTask
 		wifi4_process
 		relay_relay1Control
-		wifi4_socketServerWrite
-			wifi4_writeText2
 		relay_relay2Control
 		Delay_100ms
 RX_ISR

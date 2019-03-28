@@ -28,7 +28,7 @@ void wifi4_uartDriverInit(T_WIFI4_P gpio,T_WIFI4_P uart);
  * execute this function later inside the application to reset AT Engine to
  * the default state.
  */
-void wifi4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
+void wifi4_coreInit( T_WIFI4_handler defaultHdl, uint32_t defaultWdog );
 
 
 //void WIFI4_writeText(uint8_t *txt,uint8_t nBytes);
@@ -40,7 +40,7 @@ void wifi4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
  * Function should be used in case of simple AT commands which have no
  * additional arguments expected. Most of the AT Commands uses this function.
  */
-void wifi4_cmdSingle(char* command,char *param);
+void wifi4_cmdSingle( char* command, char *param );
 /**
   @brief Connecting to AP
   *
@@ -51,9 +51,9 @@ void wifi4_cmdSingle(char* command,char *param);
   *communication to internet throw other AP device.
   *
 */
-void wifi4_connectToAP(uint8_t* ssid,uint8_t *pass);
+void wifi4_connectToAP( uint8_t* ssid , uint8_t *pass );
 //void WIFI4_enabled(bool state);
-void wifi4_putc(char c);
+void wifi4_putc( char c );
 /**
  * @brief Enables or disables module power
  *
@@ -61,9 +61,9 @@ void wifi4_putc(char c);
  *
  * Turn ON or OFF the module.
  */
-void wifi4_modulePower(uint8_t  powerState );
+void wifi4_modulePower( uint8_t  powerState );
 
-void wifi4_setSSID(uint8_t *ssid);
+void wifi4_setSSID( uint8_t *ssid );
 void wifi4_getSSID();
 /**
  * @brief Engine Tick
@@ -87,7 +87,7 @@ void wifi4_process();
  * Function should be used as test for internet connection.
  * Exaple: WIFI4_ping("8.8.8.8") - ping google.com
 */
-void wifi4_ping(uint8_t *ipAddr);
+void wifi4_ping( uint8_t *ipAddr );
 
 /**
  * @brief Ping command
@@ -133,6 +133,6 @@ void wifi4_socketServerWrite(uint8_t *txt);
   *
 */
 void wifi4_socketServerClose();
-void wifi4_createFile(uint8_t *name,uint8_t *content);
-void wifi4_appendFile(uint8_t *ime,uint8_t *html);
+void wifi4_createFile( uint8_t *name, uint8_t *content );
+void wifi4_appendFile( uint8_t *ime, uint8_t *html );
 #endif

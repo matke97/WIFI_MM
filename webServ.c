@@ -19,7 +19,7 @@ void uploadujFajlove()
   //Delay_100ms();
   wifi4_createFile("/proba.html",html);
   //Delay_100ms();
-  wifi4_createFile("/layout.css",layout);
+  wifi4_createFile("/style.css",layout);
   //Delay_100ms();
   wifi4_createFile("/logic.js",js);
  // Delay_100ms();
@@ -128,7 +128,7 @@ void webServHandler(uint8_t *resp,uint8_t *args)
      }
      
    }
-   else if(!strncmp( resp , "RELAY_R2", 8))
+   else if( !strncmp( resp , "RELAY_R2", 8) )
    {
       strcpy(resp,resp+9);
         if(resp[0] == 0x30)
@@ -207,7 +207,7 @@ void appInit()
     wifi4_createFile("/proba.html",html);
     Delay_100ms();
     
-    wifi4_createFile("/layout.css",layout);
+    wifi4_createFile("/style.css",layout);
     Delay_100ms();
     
     wifi4_createFile("/logic.js",js);
@@ -218,32 +218,27 @@ void appInit()
 void appTask()
  {
   wifi4_process();
-
- Delay_ms(3000);
+  
   //RELAY ACT
   if(state == 1 && oldstate == 0)
   {
    oldstate=1;
    relay_relay1Control(1);
-   wifi4_socketServerWrite("REL1 ON\n");
   }
    if(state == 0 && oldstate == 1)
   {
    oldstate=0;
    relay_relay1Control(0);
-   wifi4_socketServerWrite("REL1 OFF\n");
   }
    if(state2 == 1 && oldstate2 == 0)
   {
    oldstate2=1;
    relay_relay2Control(1);
-   wifi4_socketServerWrite("REL2 ON\n");
   }
    if(state2 == 0 && oldstate2 == 1)
   {
    oldstate2=0;
    relay_relay2Control(0);
-   wifi4_socketServerWrite("REL2 OFF\n");
   }
   Delay_100ms();
 }

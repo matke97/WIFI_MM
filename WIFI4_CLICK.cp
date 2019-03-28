@@ -53,24 +53,24 @@ typedef void ( *T_WIFI4_handler )( char *buffer, uint8_t *evArgs );
 #line 20 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_uartDriverInit( const uint8_t*  gpio, const uint8_t*  uart);
 #line 31 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
-void wifi4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog);
+void wifi4_coreInit( T_WIFI4_handler defaultHdl, uint32_t defaultWdog );
 #line 43 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
-void wifi4_cmdSingle(char* command,char *param);
+void wifi4_cmdSingle( char* command, char *param );
 #line 54 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
-void wifi4_connectToAP(uint8_t* ssid,uint8_t *pass);
+void wifi4_connectToAP( uint8_t* ssid , uint8_t *pass );
 
-void wifi4_putc(char c);
+void wifi4_putc( char c );
 #line 64 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
-void wifi4_modulePower(uint8_t powerState );
+void wifi4_modulePower( uint8_t powerState );
 
-void wifi4_setSSID(uint8_t *ssid);
+void wifi4_setSSID( uint8_t *ssid );
 void wifi4_getSSID();
 #line 74 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_tick();
 #line 81 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_process();
 #line 90 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
-void wifi4_ping(uint8_t *ipAddr);
+void wifi4_ping( uint8_t *ipAddr );
 #line 105 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler );
 #line 114 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
@@ -83,8 +83,8 @@ void wifi4_socketServerOpen(uint32_t port);
 void wifi4_socketServerWrite(uint8_t *txt);
 #line 135 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketServerClose();
-void wifi4_createFile(uint8_t *name,uint8_t *content);
-void wifi4_appendFile(uint8_t *ime,uint8_t *html);
+void wifi4_createFile( uint8_t *name, uint8_t *content );
+void wifi4_appendFile( uint8_t *ime, uint8_t *html );
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/include/stdint.h"
 #line 80 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"

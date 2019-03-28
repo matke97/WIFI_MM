@@ -12,6 +12,18 @@
 
 
 uint8_t state,oldstate,state2,oldstate2;
+void uploadujFajlove()
+{
+  wifi4_cmdSingle("AT+S.FSL","");
+  Delay_100ms();
+  wifi4_createFile("/proba.html",html);
+  Delay_100ms();
+  wifi4_createFile("/layout.css",layout);
+  Delay_100ms();
+  wifi4_createFile("/logic.js",js);
+  Delay_100ms();
+  wifi4_cmdSingle("AT+S.FSL","");
+}
 void nakacisena_gateway()
 {
     mikrobus_logWrite( "KACENJE NA GATEWAY ....", _LOG_TEXT );
@@ -80,23 +92,11 @@ void ACThandler(uint8_t *resp,uint8_t *args)
  }
 }
 
-uint8_t ids;
 void defaultHandler(uint8_t *resp,uint8_t *args)
 {
  mikrobus_logWrite(resp,_LOG_LINE);
-
- }
- void uploadujFajlove()
-{
-  wifi4_cmdSingle("AT+S.FSL","");
-  wifi4_createFile("/proba.html",html);
-  Delay_100ms();
-  wifi4_createFile("/layout.css",layout);
-  Delay_100ms();
-  wifi4_createFile("/logic.js",js);
-  Delay_100ms();
-  wifi4_cmdSingle("AT+S.FSL","");
 }
+
 void windHandler(uint8_t *resp,uint8_t *args)
 {
    mikrobus_logWrite("AAAA",_LOG_LINE);

@@ -29115,7 +29115,6 @@ idleif
 idleif
 idleif
 idleif_bit
-ids
 iec0
 iec0bits
 iec0clr
@@ -58845,6 +58844,7 @@ wdtpsta
 wdtpsta
 wdtwinen
 wdtwinen_bit
+webservhandler
 wifi4_appendfile
 wifi4_cmdsingle
 wifi4_connecttoap
@@ -58868,7 +58868,6 @@ wifi4_tick
 wifi4_uartdriverinit
 wifi4_writetext
 wifi4_writetext2
-windhandler
 wordtohex
 wordtostr
 wordtostrwithzeros

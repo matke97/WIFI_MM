@@ -138,6 +138,10 @@ main
 				ACThandler
 					strncmp
 					strcpy
+				webServHandler
+					strcpy
+					mikrobus_logWrite
+					strncmp
 			createEvent
 			wifi4_writeText2
 				hal_uartWrite
@@ -155,22 +159,6 @@ main
 				strcat
 		vidiipadresu
 			wifi4_cmdSingle
-		uploadujFajlove
-			wifi4_cmdSingle
-			wifi4_createFile
-				strcpy
-				strcat
-				strlen
-				IntToStr
-					WordToStr
-				Ltrim
-				wifi4_cmdSingle
-				Delay_100ms
-				mikrobus_logWrite
-				wifi4_process
-				wifi4_writeText2
-				Delay_1ms
-			Delay_100ms
 		relay_relay1Control
 			_setAN_1
 			_setRST_1
@@ -221,11 +209,22 @@ main
 			_setTX_2
 			_setSCL_2
 			_setSDA_2
-		mikrobus_logWrite
+		wifi4_createFile
+			strcpy
+			strcat
+			strlen
+			WordToStr
+			Ltrim
+			wifi4_cmdSingle
+			Delay_100ms
+			wifi4_process
+			mikrobus_logWrite
+			createEvent
+			wifi4_writeText2
+			Delay_1ms
 	mikrobus_logWrite
 	appTask
 		wifi4_process
-		mikrobus_logWrite
 		relay_relay1Control
 		wifi4_socketServerWrite
 			wifi4_writeText2

@@ -134,5 +134,5 @@ void wifi4_socketServerWrite(uint8_t *txt);
 */
 void wifi4_socketServerClose();
 void wifi4_createFile(uint8_t *name,uint8_t *content);
-void wifi4_appendFile();
+void wifi4_appendFile(uint8_t *ime,uint8_t *html);
 #endif

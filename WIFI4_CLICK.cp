@@ -84,7 +84,7 @@ void wifi4_socketServerWrite(uint8_t *txt);
 #line 135 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/wifi4_click.h"
 void wifi4_socketServerClose();
 void wifi4_createFile(uint8_t *name,uint8_t *content);
-void wifi4_appendFile();
+void wifi4_appendFile(uint8_t *ime,uint8_t *html);
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/include/stdint.h"
 #line 80 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"
@@ -175,7 +175,7 @@ const uint8_t _WIFI4_EVENT_BUFFER_OUT = 0x02;
 const uint8_t _WIFI4_EVENT_CALLBACK = 0x04;
 const uint8_t _WIFI4_STORAGE_SIZE=8;
 
-static uint8_t txBuff[ 2500 ];
+static uint8_t txBuff[ 4096 ];
 
 
 static void DTE_setState(uint8_t state)
@@ -224,7 +224,7 @@ typedef struct
 
 typedef struct
 {
- volatile uint8_t buff[ 2500 ];
+ volatile uint8_t buff[ 4096 ];
  volatile uint16_t ind;
 }T_WIFI4_rx_buff;
 
@@ -254,22 +254,24 @@ static volatile T_WIFI4_rx_buff tmpB;
 static volatile uint8_t respEnd;
 static volatile uint32_t respTime;
 #line 118 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
-static char LUT_START [4][2] =
+static char LUT_START [ 5 ][2] =
 {
  "",
  "+",
  "&",
+ "_",
  "#"
 };
-#line 128 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
-static char LUT_END[4][2] =
+#line 129 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+static char LUT_END[ 5 ][2] =
 {
  "",
  "=" ,
  ":",
+ "-",
  "\r"
 };
-#line 140 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 142 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static uint32_t generateHash( char *pCmd )
 {
  uint8_t cnt = 0;
@@ -283,7 +285,7 @@ static uint32_t generateHash( char *pCmd )
  }
  return hash;
 }
-#line 159 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 161 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static uint16_t locateHandler( char* pCmd )
 {
  uint8_t len;
@@ -310,7 +312,7 @@ static uint16_t locateHandler( char* pCmd )
 
 const uint8_t SEARCH_IDX = 0;
 const uint8_t SEARCH_OFFSET = 1;
-#line 194 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 196 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static uint8_t searchLut( char* pInput, char (*pLut)[  2  ], uint8_t lutSize, uint8_t flag )
 {
  uint8_t inLen = 0;
@@ -344,7 +346,7 @@ static uint8_t searchLut( char* pInput, char (*pLut)[  2  ], uint8_t lutSize, ui
  }
  return 0;
 }
-#line 238 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 240 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static void createEvent( char *pInput, T_CORE_event *pEvent )
 {
  uint8_t hIdx = 0;
@@ -356,10 +358,10 @@ static void createEvent( char *pInput, T_CORE_event *pEvent )
  char tmp[ 10  + 1] = { 0 };
 
 
- startIdx = searchLut(pInput, LUT_START,  4 , SEARCH_IDX);
- startOff = searchLut(pInput, LUT_START,  4 , SEARCH_OFFSET);
- endIdx = searchLut(pInput, LUT_END,  4 , SEARCH_IDX);
- endOff = searchLut(pInput, LUT_END,  4 , SEARCH_OFFSET);
+ startIdx = searchLut(pInput, LUT_START,  5 , SEARCH_IDX);
+ startOff = searchLut(pInput, LUT_START,  5 , SEARCH_OFFSET);
+ endIdx = searchLut(pInput, LUT_END,  5 , SEARCH_IDX);
+ endOff = searchLut(pInput, LUT_END,  5 , SEARCH_OFFSET);
 
  if (0 == endOff)
  {
@@ -374,7 +376,7 @@ static void createEvent( char *pInput, T_CORE_event *pEvent )
 
 
 }
-#line 271 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 273 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static volatile uint16_t watchDogTime;
 static volatile uint8_t flag_timesUp;
 static volatile uint8_t flag_wdogOut;
@@ -437,7 +439,7 @@ uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHan
 
  return hdB.idx-1;
 }
-#line 337 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 339 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_responseRec(uint16_t timeW)
 {
  volatile uint32_t cnt;
@@ -446,7 +448,7 @@ void wifi4_responseRec(uint16_t timeW)
  uint8_t flag1=0,endFLag=0;
  curr=0;
  cnt=0;
- while( 1 != endFlag && rxB.ind< 2500 )
+ while( 1 != endFlag && rxB.ind< 4096 )
  {
 
  if(respTime>timeW)
@@ -464,7 +466,7 @@ void StrToHex(uint8_t *string,uint8_t *output)
  uint8_t i;
  strcpy(hex,"");
 
- for(i=0;i<strlen(string)-1;i++)
+ for (i = 0; i < strlen(string) - 1; i++)
  {
  ByteToHex(string[i],tmp);
  strcat(hex,tmp);
@@ -481,9 +483,11 @@ void wifi4_writeText(uint8_t *txt,uint8_t nBytes)
  }
  hal_uartWrite( 0x0D );
 }
-#line 383 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
- void wifi4_writeText2(uint8_t *txt)
+#line 385 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+void wifi4_writeText2(uint8_t *txt)
 {
+
+
 
  while(0 != *txt)
  {
@@ -517,7 +521,7 @@ void wifi4_uartDriverInit( const uint8_t*  gpio, const uint8_t*  uart)
  rxB.ind=0;
  hal_gpio_rstSet(1);
 }
-#line 422 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 426 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_setSSID(uint8_t *ssid)
 {
  char comm[30]="AT+S.SSIDTXT=";
@@ -526,11 +530,12 @@ void wifi4_setSSID(uint8_t *ssid)
 }
 void wifi4_getSSID()
 {
- const char comm[]="AT+S.GCFG=wifi_ssid";
+ char comm[] = "AT+S.GCFG=wifi_ssid";
  WIFI4_cmdSingle(comm,"");
 }
 
-void wifi4_cmdSingle(char* command,char *param){
+void wifi4_cmdSingle(char* command,char *param)
+{
  char tmp[50];
  strcpy(tmp,command);
  strcat(tmp,param);
@@ -544,7 +549,7 @@ void wifi4_cmdSingle(char* command,char *param){
  wifi4_writeText2(tmp);
 
  watchDogTime=0;
- waitTime= 3 ;
+ waitTime=3* 3 ;
  f_wdogStart=1;
  f_timerStart=1;
  flag_cmdEx=1;
@@ -633,8 +638,8 @@ void wifi4_process()
  {
  DTE_setState(0);
 
- f_wdogStart=0;
- f_timerStart=0;
+ f_wdogStart = 0;
+ f_timerStart = 0;
  rxB.buff[rxB.ind++]='\0';
  createEvent(rxB.buff, &currentEv);
  if(f_cpyRXtoTmp)
@@ -676,7 +681,7 @@ void wifi4_process()
  }
  }
 }
-#line 592 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 597 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 {
  char tmp[80];
@@ -712,7 +717,7 @@ void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
  }
 
 }
-#line 633 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 638 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
 {
  uint16_t len=strlen(wdata);
@@ -757,7 +762,7 @@ void wifi4_socketClose(uint8_t id)
  wifi4_cmdSIngle("AT+S.SOCKC=",str);
 
 }
-#line 685 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 690 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketServerOpen(uint32_t port)
 {
  uint8_t sPort[6];
@@ -776,55 +781,73 @@ void wifi4_socketServerWrite(uint8_t *txt)
  wifi4_writeText2(txt);
 }
 
-void wifi4_appendFile()
+void wifi4_createFile(uint8_t *name,uint8_t *content)
 {
-#line 717 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
- const uint8_t html[]="<!DOCTYPE html> <html> <head> <title>MILOS MATIC</title> </head> <body> <h1> Pokusaj pravljenja web stranice koja ce biti uploadovana unutar WIFI4 click modula <form name=\"CGI Example\" method=\"GET\" action=\"new2.html\">         	<input type=\"text\" name=\"text\" size=\"40\" maxlength=\"40\">&nbsp;	        <input type=\"submit\" name=\"submit\" value=\"Submit\" >	   </form></body> </html>";
+ uint8_t params[50];
+ uint8_t sLen[6];
+ uint16_t len;
+
+
+ strcpy(params, name);
+ strcat(params, ",");
+ len = strlen(content);
+ WordToStr(len,sLen);
+
+ strcpy(slen, Ltrim(slen));
+ strcat(params, sLen);
+
+ wifi4_cmdSingle("AT+S.FSC=", params);
+ Delay_100ms();
+ Delay_100ms();
+ while(0 != flag_cmdEx)
+ {
+ wifi4_process();
+ }
+
+ strcpy(params, "AT+S.FSA=");
+ strcat(params, name);
+ strcat(params, ",");
+ strcat(params, slen);
+ mikrobus_logWrite(params, _LOG_TEXT);
+
+ while(0 != flag_cmdEx)
+ {
+ wifi4_process();
+ }
+
+ createEvent(params, &currentEv);
+ wifi4_writeText2(params);
+ Delay_1ms();
+ wifi4_writeText2(content);
+ watchDogTime=0;
+ waitTime= 3 ;
+ f_wdogStart=1;
+ f_timerStart=1;
+ flag_cmdEx=1;
+
+ while(0 != flag_cmdEx)
+ {
+ wifi4_process();
+ }
+
+
+}
+
+
+void wifi4_appendFile(uint8_t *ime,uint8_t *html)
+{
 uint32_t len;
 uint8_t slen[5];
 uint8_t cmd[30];
 len=strlen(html);
 IntToStr(len,slen);
 strcpy(slen,Ltrim(slen));
-strcpy(cmd,"/proba.html,");
+strcpy(cmd,ime);
+strcat(cmd,",");
 strcat(cmd,slen);
 mikrobus_logWrite(cmd,_LOG_TEXT);
 wifi4_cmdSingle("AT+S.FSA=",cmd);
 wifi4_writeText2(html);
 Delay_100ms();
 mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
-
-
-}
-
-void wifi4_createFile(uint8_t *name,uint8_t *content)
-{
- uint8_t params[50];
- uint8_t sLen[6];
- uint16_t len;
- strcpy(params,name);
- strcat(params,",");
- len=strlen(content);
- IntToStr(len,sLen);
- strcpy(slen,Ltrim(slen));
- strcat(params,sLen);
- wifi4_cmdSingle("AT+S.FSC=",params);
- Delay_100ms();
-
-strcpy(params,"AT+S.FSA=");
-strcat(params,name);
-strcat(params,",");
-strcat(params,slen);
-mikrobus_logWrite(params,_LOG_TEXT);
-while(0 != flag_cmdEx)
- {
- wifi4_process();
- }
-
-
-wifi4_writeText2(params);
-Delay_1ms();
-wifi4_writeText2(content);
-#line 773 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
-mikrobus_logWrite("USPESNO KREIRAN FAJL U MEM WIFI4 clicka",_LOG_LINE);
 }

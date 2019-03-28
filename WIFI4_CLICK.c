@@ -2,7 +2,7 @@
 #include "__WIFI4_hal.c"
 
 #define TERMINATION_CHAR 0x0D
-#define BUFF_MAXSIZE 2500
+#define BUFF_MAXSIZE     4096
 /*
 #define CR_CHAR 0x0D
 #define LF_CHAR 0x0A
@@ -10,8 +10,8 @@
  //podrazumevano vreme cekanja sa poslednjeg prijema poruke sa uarta
 #define DEFAULT_WTIME 3
 #define  LUTS_WIDTH 2
-#define LUT_SIZE 4
-#define LUT_SIZE_END 4
+#define LUT_SIZE 5
+#define LUT_SIZE_END 5
 #define _WIFI4_CMD_MAXSIZE 10
 
 
@@ -115,21 +115,23 @@ static volatile uint32_t respTime;
 /*
  * Look up table for START MARK string, must have "" as first member
  */
-static char LUT_START [4][2] =
+static char LUT_START [LUT_SIZE][2] =
 {
  "", //default
  "+", //
  "&",
+ "_",
  "#"
 };
 /*
  * Look up table for END MARK string, must have "" as 0 member
  */
-static char LUT_END[4][2] =
+static char LUT_END[LUT_SIZE_END][2] =
 {
   "", //default
   "=" ,
   ":",
+  "-",
   "\r" //exec
 };
 
@@ -360,7 +362,7 @@ void StrToHex(uint8_t *string,uint8_t *output)
   uint8_t i;
  strcpy(hex,"");
 
- for(i=0;i<strlen(string)-1;i++)
+ for (i = 0; i < strlen(string) - 1; i++)
  {
     ByteToHex(string[i],tmp);
     strcat(hex,tmp);
@@ -380,8 +382,10 @@ void wifi4_writeText(uint8_t *txt,uint8_t nBytes)
 /*
   Writing text to WIFI4 Click module.
 */
- void wifi4_writeText2(uint8_t *txt)
+void wifi4_writeText2(uint8_t *txt)
 {
+
+
 
  while(0 != *txt)
  {
@@ -427,11 +431,12 @@ void wifi4_setSSID(uint8_t *ssid)
 }
 void wifi4_getSSID()
 {
-   const char comm[]="AT+S.GCFG=wifi_ssid";
-   WIFI4_cmdSingle(comm,"");
+    char comm[] = "AT+S.GCFG=wifi_ssid";
+    WIFI4_cmdSingle(comm,"");
 }
 
-void wifi4_cmdSingle(char* command,char *param){
+void wifi4_cmdSingle(char* command,char *param)
+{
      char tmp[50];
      strcpy(tmp,command);
      strcat(tmp,param);
@@ -445,7 +450,7 @@ void wifi4_cmdSingle(char* command,char *param){
      wifi4_writeText2(tmp);
 
      watchDogTime=0; //reset watchdog
-     waitTime=DEFAULT_WTIME;
+     waitTime=3*DEFAULT_WTIME;
      f_wdogStart=1;
      f_timerStart=1;
      flag_cmdEx=1;
@@ -534,8 +539,8 @@ void wifi4_process()
     {
     DTE_setState(0);
 
-    f_wdogStart=0;
-    f_timerStart=0;
+    f_wdogStart = 0;
+    f_timerStart = 0;
     rxB.buff[rxB.ind++]='\0';
     createEvent(rxB.buff, &currentEv);
     if(f_cpyRXtoTmp)
@@ -700,75 +705,73 @@ void wifi4_socketServerWrite(uint8_t *txt)
      wifi4_writeText2(txt);
 }
 
-void wifi4_appendFile()
+void wifi4_createFile(uint8_t *name,uint8_t *content)
 {
- const uint8_t html[]="<!DOCTYPE html> \
-<html> \
-<head> \
-<title>MILOS MATIC</title> \
-</head> \
-<body> \
-<h1> Pokusaj pravljenja web stranice koja ce biti uploadovana unutar WIFI4 click modula \
-<form name=\"CGI Example\" method=\"GET\" action=\"new2.html\"> \
-        	<input type=\"text\" name=\"text\" size=\"40\" maxlength=\"40\">&nbsp;\
-	        <input type=\"submit\" name=\"submit\" value=\"Submit\" >\
-	   </form>\
-</body> \
-</html>";
+    uint8_t params[50];
+    uint8_t sLen[6];
+    uint16_t len;
+
+    //
+    strcpy(params, name);
+    strcat(params, ",");
+    len = strlen(content);
+    WordToStr(len,sLen);
+    
+    strcpy(slen, Ltrim(slen));
+    strcat(params, sLen);
+    
+    wifi4_cmdSingle("AT+S.FSC=", params);
+    Delay_100ms();
+    Delay_100ms();
+    while(0 != flag_cmdEx)
+    {
+        wifi4_process();
+    }
+    
+    strcpy(params, "AT+S.FSA=");
+    strcat(params, name);
+    strcat(params, ",");
+    strcat(params, slen);
+    mikrobus_logWrite(params, _LOG_TEXT);
+
+    while(0 != flag_cmdEx)
+    {
+        wifi4_process();
+    }
+
+    createEvent(params, &currentEv);
+     wifi4_writeText2(params);
+     Delay_1ms();
+     wifi4_writeText2(content);
+     watchDogTime=0; //reset watchdog
+     waitTime=DEFAULT_WTIME;
+     f_wdogStart=1;
+     f_timerStart=1;
+     flag_cmdEx=1;
+     //sacekaj response
+       while(0 != flag_cmdEx)
+       {
+         wifi4_process();
+       }
+
+// mikrobus_logWrite("USPESNO KREIRAN FAJL U MEM WIFI4 clicka",_LOG_LINE);
+}
+
+
+void wifi4_appendFile(uint8_t *ime,uint8_t *html)
+{
 uint32_t len;
 uint8_t slen[5];
 uint8_t cmd[30];
 len=strlen(html);
 IntToStr(len,slen);
 strcpy(slen,Ltrim(slen));
-strcpy(cmd,"/proba.html,");
+strcpy(cmd,ime);
+strcat(cmd,",");
 strcat(cmd,slen);
 mikrobus_logWrite(cmd,_LOG_TEXT);
 wifi4_cmdSingle("AT+S.FSA=",cmd);
 wifi4_writeText2(html);
 Delay_100ms();
 mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
-
-
-}
-
-void wifi4_createFile(uint8_t *name,uint8_t *content)
-{
- uint8_t params[50];
- uint8_t sLen[6];
- uint16_t len;
- strcpy(params,name);
- strcat(params,",");
- len=strlen(content);
- IntToStr(len,sLen);
- strcpy(slen,Ltrim(slen));
- strcat(params,sLen);
- wifi4_cmdSingle("AT+S.FSC=",params);
- Delay_100ms();
-
-strcpy(params,"AT+S.FSA=");
-strcat(params,name);
-strcat(params,",");
-strcat(params,slen);
-mikrobus_logWrite(params,_LOG_TEXT);
-while(0 != flag_cmdEx)
-       {
-         wifi4_process();
-       }
-
-//createEvent(params,&currentEv);
-wifi4_writeText2(params);
-Delay_1ms();
-wifi4_writeText2(content);
-//watchDogTime=0; //reset watchdog
-/*waitTime=DEFAULT_WTIME;
-f_wdogStart=1;
-f_timerStart=1;
-flag_cmdEx=1;
-//sacekaj response
-while(0 != flag_cmdEx)
-{
- wifi4_process();
-} */
-mikrobus_logWrite("USPESNO KREIRAN FAJL U MEM WIFI4 clicka",_LOG_LINE);
 }

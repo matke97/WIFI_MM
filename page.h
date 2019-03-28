@@ -14,7 +14,7 @@ uint8_t html[]=
 Relay1: <input type=\"button\" name=\"btn1\" value=\"Promeni stanje\" onclick=\"funkcijaRel1()\">\
 </form>\
 <div class=\"onoffswitch\">\
-    <input type=\"checkbox\" name=\"onoffswitch\" class=\"onoffswitch-checkbox\" id=\"myonoffswitch\" onclick=\"alert('AA')\">\
+    <input type=\"checkbox\" name=\"onoffswitch\" class=\"onoffswitch-checkbox\" id=\"myonoffswitch\" onclick=\"funkcijaRel1()\">\
     <label class=\"onoffswitch-label\" for=\"myonoffswitch\">\
     <span class=\"onoffswitch-inner\"></span>\
     <span class=\"onoffswitch-switch\"></span>\
@@ -75,10 +75,9 @@ var relay1_state=0;\
 var relay2_state=0;\
 function funkcijaRel1()\
 {\
-	document.write(\"AAA\");\
-	relay1_state=1;\
-	$.get('output.cgi',\
-	{\
-		text: '+ACT:RELAY_R1,1'\
-	});\
+        relay1_state=1-relay1_state;\
+        $.get('output.cgi',\
+        {\
+                text: '_WEBSERVER-RELAY_R1-1'\
+        });\
 }";

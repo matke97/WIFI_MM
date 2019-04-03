@@ -10,14 +10,14 @@
 #include "WIFI4_CLICK.h"
 #include "__WIFI4_hal.c"
 
-#define TERMINATION_CHAR 0x0D
-#define BUFF_MAXSIZE     4096
+#define TERMINATION_CHAR    0x0D
+#define BUFF_MAXSIZE        4096
 
-#define DEFAULT_WTIME 3
-#define  LUTS_WIDTH 2
-#define LUT_SIZE 5
-#define LUT_SIZE_END 5
-#define _WIFI4_CMD_MAXSIZE 10
+#define  DEFAULT_WTIME      3
+#define  LUTS_WIDTH         2
+#define  LUT_SIZE           5
+#define  LUT_SIZE_END       5
+#define  _WIFI4_CMD_MAXSIZE 10
 
 
 #define EXEC_EVENT(x)                                                          \
@@ -36,7 +36,7 @@ const uint8_t    _WIFI4_EVENT_RESPONSE   = 0x00;
 const uint8_t    _WIFI4_EVENT_TIMEOUT    = 0x01;
 const uint8_t    _WIFI4_EVENT_BUFFER_OUT = 0x02;
 const uint8_t    _WIFI4_EVENT_CALLBACK   = 0x04;
-const uint8_t    _WIFI4_STORAGE_SIZE = 8;
+const uint8_t    _WIFI4_STORAGE_SIZE     = 8;
 
 
 static void DTE_setState(uint8_t state)
@@ -142,6 +142,7 @@ static char LUT_START [LUT_SIZE][2] =
  "_",
  "#"
 };
+
 /*
  * Look up table for END MARK string, must have "" as 0 member
  */

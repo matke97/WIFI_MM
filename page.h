@@ -1,4 +1,6 @@
-
+ /*
+   html code for web page
+ */
 uint8_t html[]=
 "<!DOCTYPE html>\
 <html>\
@@ -36,7 +38,9 @@ uint8_t html[]=
 </div>\
 </body>\
 </html>";
-
+ /*
+   css code for web page
+ */
 uint8_t layout[]=
 "body { background: #58595b;}\
 .page { width:1170px; margin: auto; background:#58595b; ; color:  #ffcb05} \
@@ -89,7 +93,9 @@ body > div > form:nth-child(6) { position: absolute;  float: right; top: 183px; 
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {\
     right: 0px;\
 } ";
-
+/*
+  javascript code for web page
+*/
 uint8_t js[]="\
 var relay1_state=0;\
 var relay2_state=0;\

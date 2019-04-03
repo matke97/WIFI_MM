@@ -1,9 +1,15 @@
 #include "WIFI4_CLICK.h"
+
+/**
+  * Setting baud rate for UART  
+*/
 const uint32_t _WIFI4_UART_CFG[ 1 ] =
 {
         115200
 };
-//UART INTERRUPT INIT
+/**
+  *	UART INTERRUPT INIT
+*/
 void uartInterrupt()
 {
    U2IP0_bit    = 1;
@@ -12,7 +18,9 @@ void uartInterrupt()
    U2RXIE_bit   = 1;
    EnableInterrupts();
 }
-//UART INTERRUPT ROUTINE
+/*
+	UART INTERRUPT ROUTINE
+*/
 void RX_ISR()iv IVT_UART_2 ilevel 7 ics ICS_SRS
 {
     if( IFS1 & ( 1 << U2RXIF ))

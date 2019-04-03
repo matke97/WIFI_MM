@@ -19,7 +19,7 @@ The application is composed of three sections :
 - System Initialization - Initializes all necessary GPIO pins, UART used for
 the communcation with Wifi4 click.
 - Application Initialization - Initializes driver, power on module.
-Commands are sent to prepare the module for communication with the g2c.
+Commands are sent to prepare the module for communication with the wifi4.
 - Application Task - running in parallel core state machine and checks for the URC
 message from Wifi4.
 

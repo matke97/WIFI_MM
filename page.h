@@ -11,7 +11,7 @@ uint8_t html[]=
 <body>\
     <div class=\"page\">\
 <img class=\"img-responsive\" src=\"https://cdn.mikroe.com/themes/simplicity/img/header/links/mikroelektronika/mikroe-white.png\">\
-<center><h1>Kontorola uredjaja</h1></center>\
+<center><h1>Kontrola uredjaja</h1></center>\
 <form name=\"mojaforma\" METHOD=\"POST\" >\
 <span class=\"power-on\">Power switch 1</span>\
     <div class=\"onoffswitch\">\

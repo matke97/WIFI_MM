@@ -31,8 +31,7 @@ File0=WIFI4_CLICK.c
 File1=WIFI4_CLICK.h
 File2=webServ.c
 File3=page.h
-File4=wifi4_uart.h
-Count=5
+Count=4
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]

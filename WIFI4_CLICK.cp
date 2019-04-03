@@ -245,17 +245,13 @@ typedef struct
 }T_CORE_event;
 
 
-
-
-
-
 static volatile T_WIFI4_rx_buff rxB;
 static volatile T_handler_storage hdB;
 static volatile T_CORE_event currentEv;
 static volatile uint8_t txBuff[ 4096 ];
 static volatile uint8_t respEnd;
 static volatile uint32_t respTime;
-#line 122 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 118 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static char LUT_START [ 5 ][2] =
 {
  "",
@@ -264,7 +260,7 @@ static char LUT_START [ 5 ][2] =
  "_",
  "#"
 };
-#line 133 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 129 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static char LUT_END[ 5 ][2] =
 {
  "",
@@ -273,7 +269,7 @@ static char LUT_END[ 5 ][2] =
  "-",
  "\r"
 };
-#line 146 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 142 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static uint32_t generateHash( char *pCmd )
 {
  uint8_t cnt = 0;
@@ -287,7 +283,7 @@ static uint32_t generateHash( char *pCmd )
  }
  return hash;
 }
-#line 165 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 161 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static uint16_t locateHandler( char* pCmd )
 {
  uint8_t len;
@@ -314,7 +310,7 @@ static uint16_t locateHandler( char* pCmd )
 
 const uint8_t SEARCH_IDX = 0;
 const uint8_t SEARCH_OFFSET = 1;
-#line 200 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 196 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static uint8_t searchLut( char* pInput, char (*pLut)[  2  ], uint8_t lutSize, uint8_t flag )
 {
  uint8_t inLen = 0;
@@ -348,7 +344,7 @@ static uint8_t searchLut( char* pInput, char (*pLut)[  2  ], uint8_t lutSize, ui
  }
  return 0;
 }
-#line 244 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 240 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static void createEvent( char *pInput, T_CORE_event *pEvent )
 {
  uint8_t hIdx = 0;
@@ -378,7 +374,7 @@ static void createEvent( char *pInput, T_CORE_event *pEvent )
 
 
 }
-#line 277 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 273 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 static volatile uint16_t watchDogTime;
 static volatile uint8_t flag_timesUp;
 static volatile uint8_t flag_wdogOut;
@@ -387,21 +383,25 @@ static volatile uint8_t f_wdogStart;
 static volatile uint8_t f_timerStart;
 static volatile uint32_t waitTime;
 
-void wifi4_coreInit(T_WIFI4_handler defaultHdl, uint32_t defaultWdog)
+void wifi4_coreInit( T_WIFI4_handler defaultHdl, uint32_t defaultWdog )
 {
 
  flag_cmdEx = 0;
-
- flag_timesUp=0;
- flag_wdogOut=0;
-
- waitTime= 3 ;
+ flag_timesUp = 0;
+ flag_wdogOut = 0;
+ waitTime =  3 ;
 
  hdB.storage[0].handler = defaultHdl;
  hdB.storage[0].timeout = defaultWdog;
  hdB.storage[0].hash = generateHash("");
  hdB.storage[0].len = 0;
  hdB.idx = 1;
+
+ rxB.ind = 0;
+ respTime = 0;
+ rxB.buff[0] = 0;
+ rxB.ind = 0;
+
 }
 
 uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHandler )
@@ -444,23 +444,21 @@ uint16_t wifi4_setHandler( uint8_t *pCmd, uint32_t timeout, T_WIFI4_handler pHan
 void wifi4_responseRec(uint16_t timeW)
 {
  volatile uint32_t cnt;
- uint32_t nTicks= timeW*20;
+ uint32_t nTicks = timeW * 20;
  uint8_t prev,curr;
- uint8_t flag1=0,endFLag=0;
- curr=0;
- cnt=0;
- while( 1 != endFlag && rxB.ind< 4096 )
+ uint8_t flag1=0,endFLag = 0;
+ curr = 0;
+ cnt = 0;
+ while( 1 != endFlag && rxB.ind <  4096  )
  {
-
- if(respTime>timeW)
+ if(respTime > timeW)
  {
- endFlag=1;
+ endFlag = 1;
  }
  }
-
- rxB.buff[rxB.ind]='\0';
+ rxB.buff[rxB.ind] = '\0';
 }
-void StrToHex(uint8_t *string,uint8_t *output)
+void StrToHex( uint8_t *string, uint8_t *output )
 {
  char tmp[3];
  char hex[80];
@@ -475,27 +473,24 @@ void StrToHex(uint8_t *string,uint8_t *output)
  strcpy(output,hex);
 }
 
-void wifi4_writeText(uint8_t *txt,uint8_t nBytes)
+void wifi4_writeText( uint8_t *txt, uint8_t nBytes )
 {
  uint8_t i;
- for(i=0;i<nBytes;i++)
+ for( i = 0; i < nBytes; i++ )
  {
  hal_uartWrite(txt[i]);
  }
  hal_uartWrite( 0x0D );
 }
-#line 388 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 386 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_writeText2(uint8_t *txt)
 {
-
-
-
  while(0 != *txt)
  {
  hal_uartWrite(*txt++);
  }
  hal_uartWrite( 0x0D );
- }
+}
 
 void wifi4_modulePower( uint8_t powerState )
 {
@@ -512,20 +507,16 @@ void wifi4_modulePower( uint8_t powerState )
  }
 }
 
-void wifi4_uartDriverInit( const uint8_t*  gpio, const uint8_t*  uart)
+void wifi4_uartDriverInit(  const uint8_t*  gpio,  const uint8_t*  uart )
 {
  hal_gpioMap(( const uint8_t* )gpio);
  hal_uartMap(( const uint8_t* )uart);
- rxB.ind=0;
- respTime=0;
- rxB.buff[0]=0;
- rxB.ind=0;
  hal_gpio_rstSet(1);
 }
-#line 429 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 420 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_setSSID(uint8_t *ssid)
 {
- char comm[30]="AT+S.SSIDTXT=";
+ char comm[30] = "AT+S.SSIDTXT=";
  strcat(comm,ssid);
  WIFI4_writeText2(comm);
 }
@@ -537,6 +528,7 @@ void wifi4_getSSID()
 
 void wifi4_cmdSingle(char* command,char *param)
 {
+
  char tmp[50];
  strcpy(tmp,command);
  strcat(tmp,param);
@@ -546,14 +538,14 @@ void wifi4_cmdSingle(char* command,char *param)
  {
  wifi4_process();
  }
- createEvent(tmp,&currentEv);
+ createEvent( tmp, &currentEv );
  wifi4_writeText2(tmp);
 
- watchDogTime=0;
- waitTime=3* 3 ;
- f_wdogStart=1;
- f_timerStart=1;
- flag_cmdEx=1;
+ watchDogTime = 0;
+ waitTime = 3* 3 ;
+ f_wdogStart = 1;
+ f_timerStart = 1;
+ flag_cmdEx = 1;
 
  while(0 != flag_cmdEx)
  {
@@ -587,74 +579,66 @@ void wifi4_ping(uint8_t *ipAddr)
  waitTime= 3 ;
 
 }
-void wifi4_connectToAP(uint8_t* ssid,uint8_t *pass)
+void wifi4_connectToAP( uint8_t* ssid, uint8_t *pass )
 {
  uint8_t newPass[80];
- wifi4_cmdSingle("AT+S.SCFG=","wifi_priv_mode,2");
- wifi4_cmdSingle("AT+S.SCFG=","wifi_mode,1");
- wifi4_cmdSingle("AT+S.SCFG=","ip_use_dhcp,1");
-
- wifi4_cmdSingle("AT+S.SSIDTXT=",ssid);
-
-
+ wifi4_cmdSingle("AT+S.SCFG=", "wifi_priv_mode,2");
+ wifi4_cmdSingle("AT+S.SCFG=", "wifi_mode,1");
+ wifi4_cmdSingle("AT+S.SCFG=", "ip_use_dhcp,1");
+ wifi4_cmdSingle("AT+S.SSIDTXT=", ssid);
  strcpy(newPass,"wifi_wpa_psk_text,");
- strcat(newPass,pass);
- wifi4_cmdSingle("AT+S.SCFG=",newPass);
+ strcat(newPass, pass);
+ wifi4_cmdSingle("AT+S.SCFG=", newPass);
 }
 
 void wifi4_putc(char c)
 {
- flag_cmdEx=1;
- f_timerStart=1;
- respTime=0;
- rxB.buff[rxB.ind++]=c;
-
+ flag_cmdEx = 1;
+ f_timerStart = 1;
+ respTime = 0;
+ rxB.buff[rxB.ind++] = c;
 }
 
 void wifi4_tick()
 {
- if(f_timerStart){
+ if(f_timerStart)
+ {
  if((++respTime) > waitTime)
  {
- flag_timesUp=1;
-
+ flag_timesUp = 1;
  }
  }
- if(f_wdogStart){
+ if( f_wdogStart )
+ {
  if((++watchDogTime) > currentEv.wDogLimit)
  {
  flag_wdogOut=1;
-
  }
  }
 }
 
-
-
 void wifi4_process()
 {
 
- if(f_wDogStart){
+ if(f_wDogStart)
+ {
  if(flag_wdogOut)
  {
  DTE_setState(0);
-
  f_wdogStart = 0;
  f_timerStart = 0;
- rxB.buff[rxB.ind++]='\0';
+ rxB.buff[rxB.ind++] = '\0';
  createEvent(rxB.buff, &currentEv);
-
   { currentEv.evArg[_WIFI4_EVARG_EVENT_T] = _WIFI4_EVENT_RESPONSE; currentEv.fpHdl(rxB.buff, currentEv.evArg); } ;
- rxB.buff[0]=0;
- rxB.ind=0;
- flag_wdogOut=0;
- flag_cmdEx=0;
-
+ rxB.buff[0] = 0;
+ rxB.ind = 0;
+ flag_wdogOut = 0;
+ flag_cmdEx = 0;
  DTE_setState(1);
-
  }
  }
- if(f_TimerStart){
+ if(f_TimerStart)
+ {
  if(flag_timesUp)
  {
  DTE_setState(0);
@@ -663,15 +647,15 @@ void wifi4_process()
  rxB.buff[rxB.ind++]='\0';
  createEvent(rxB.buff, &currentEv);
   { currentEv.evArg[_WIFI4_EVARG_EVENT_T] = _WIFI4_EVENT_RESPONSE; currentEv.fpHdl(rxB.buff, currentEv.evArg); } ;
- rxB.buff[0]=0;
- rxB.ind=0;
- flag_timesUp=0;
- flag_cmdEx=0;
+ rxB.buff[0] = 0;
+ rxB.ind = 0;
+ flag_timesUp = 0;
+ flag_cmdEx = 0;
  DTE_setState(1);
  }
  }
 }
-#line 589 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 573 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
 {
  char tmp[80];
@@ -706,7 +690,7 @@ void wifi4_socketOpen(uint8_t *host,uint32_t port,uint8_t protocol)
  }
 
 }
-#line 629 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 613 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketWrite(uint8_t id,uint8_t *wdata)
 {
  uint16_t len=strlen(wdata);
@@ -750,7 +734,7 @@ void wifi4_socketClose(uint8_t id)
  wifi4_cmdSIngle("AT+S.SOCKC=",str);
 
 }
-#line 680 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
+#line 664 "C:/Users/Software/Documents/Mikroelektronika/mikroC PRO for PIC32/Packages/WIFI_MM/WIFI4_CLICK.c"
 void wifi4_socketServerOpen(uint32_t port)
 {
  uint8_t sPort[6];
@@ -774,7 +758,6 @@ void wifi4_createFile(uint8_t *name,uint8_t *content)
  uint8_t params[50];
  uint8_t sLen[6];
  uint16_t len;
-
 
  strcpy(params, name);
  strcat(params, ",");
@@ -807,35 +790,33 @@ void wifi4_createFile(uint8_t *name,uint8_t *content)
  wifi4_writeText2(params);
  Delay_1ms();
  wifi4_writeText2(content);
- watchDogTime=0;
+ watchDogTime = 0;
  waitTime= 3 ;
- f_wdogStart=1;
- f_timerStart=1;
- flag_cmdEx=1;
+ f_wdogStart = 1;
+ f_timerStart = 1;
+ flag_cmdEx = 1;
 
  while(0 != flag_cmdEx)
  {
  wifi4_process();
  }
-
-
 }
 
 
 void wifi4_appendFile(uint8_t *ime,uint8_t *html)
 {
-uint32_t len;
-uint8_t slen[5];
-uint8_t cmd[30];
-len=strlen(html);
-IntToStr(len,slen);
-strcpy(slen,Ltrim(slen));
-strcpy(cmd,ime);
-strcat(cmd,",");
-strcat(cmd,slen);
-mikrobus_logWrite(cmd,_LOG_TEXT);
-wifi4_cmdSingle("AT+S.FSA=",cmd);
-wifi4_writeText2(html);
-Delay_100ms();
-mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
+ uint32_t len;
+ uint8_t slen[5];
+ uint8_t cmd[30];
+ len=strlen(html);
+ IntToStr(len,slen);
+ strcpy(slen,Ltrim(slen));
+ strcpy(cmd,ime);
+ strcat(cmd,",");
+ strcat(cmd,slen);
+ mikrobus_logWrite(cmd,_LOG_TEXT);
+ wifi4_cmdSingle("AT+S.FSA=",cmd);
+ wifi4_writeText2(html);
+ Delay_100ms();
+ mikrobus_logWrite("USPESNO UPISAN U HTML FAJL",_LOG_LINE);
 }

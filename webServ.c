@@ -34,17 +34,17 @@ void nakacisena_gateway()
 }
 void vidiipadresu()
 {
-    wifi4_cmdSingle("AT+S.STS=","ip_ipaddr");
+    wifi4_cmdSingle( "AT+S.STS=", "ip_ipaddr" );
 
 }
 void pisiWIFIstatus()
 {
-    wifi4_cmdSingle("AT+S.STS=","wifi_state");
+    wifi4_cmdSingle( "AT+S.STS=", "wifi_state" );
 
 }
 void ACThandler(uint8_t *resp,uint8_t *args)
 {
- if(!strncmp(resp,"+ACT-",5))
+ if(!strncmp(resp, "+ACT:", 5))
  {
   uint8_t read;
   // act signal
@@ -58,14 +58,14 @@ void ACThandler(uint8_t *resp,uint8_t *args)
      }
      else  if(resp[0] == 0x31)
      {
-      read=1;
+      read = 1;
      }
      if(0 != read)
      {
-      state=1;
+      state = 1;
      }else
      {
-      state=0;
+      state = 0;
      }
   }else {
   if(!strncmp(resp,"RELAY_R2",8))
@@ -74,18 +74,18 @@ void ACThandler(uint8_t *resp,uint8_t *args)
 
      if(resp[0] == 0x30)
      {
-      read=0;
+      read = 0;
      }
      else if(resp[0] == 0x31)
      {
-      read=1;
+      read = 1;
      }
      if(0 != read)
      {
-      state2=1;
+      state2 = 1;
      }else
      {
-      state2=0;
+      state2 = 0;
      }
   }
   }
@@ -99,7 +99,7 @@ void defaultHandler(uint8_t *resp,uint8_t *args)
 
 void webServHandler(uint8_t *resp,uint8_t *args)
 {
-   uint8_t id=0;
+   uint8_t id = 0;
    uint8_t read;
    while(resp[id]!='-')
    {
@@ -109,41 +109,43 @@ void webServHandler(uint8_t *resp,uint8_t *args)
    mikrobus_logWrite(resp,_LOG_LINE);
    if(!strncmp(resp , "RELAY_R1" , 8))
    {
-     strcpy(resp,resp+9);
-       if(resp[0] == 0x30)
+     strcpy(resp, resp+9);
+     if(resp[0] == 0x30)
      {
       read=0;
      }
      else if(resp[0] == 0x31)
      {
-      read=1;
+      read = 1;
      }
      if(0 != read)
      {
-      state=1;
-     }else
+      state = 1;
+     }
+     else
      {
-      state=0;
+      state = 0;
      }
      
    }
    else if( !strncmp( resp , "RELAY_R2", 8) )
    {
       strcpy(resp,resp+9);
-        if(resp[0] == 0x30)
+     if(resp[0] == 0x30)
      {
-      read=0;
+      read = 0;
      }
      else if(resp[0] == 0x31)
      {
-      read=1;
+      read = 1;
      }
      if(0 != read)
      {
-      state2=1;
-     }else
+      state2 = 1;
+     }
+     else
      {
-      state2=0;
+      state2 = 0;
      }
       
    }
@@ -169,6 +171,7 @@ void systemInit()
 
 void appInit()
 {
+    //driver init
     wifi4_uartDriverInit( (T_WIFI4_P)&_MIKROBUS1_GPIO, (T_WIFI4_P)&_MIKROBUS1_UART );
     relay_gpioDriverInit( (T_RELAY_P)&_MIKROBUS2_GPIO );
     
@@ -187,7 +190,6 @@ void appInit()
     Delay_100ms();
     wifi4_modulePower(1);
     Delay_ms( 1500 );
-    
     wifi4_cmdSingle( "AT", "" );
 
     //connect to AP
@@ -203,13 +205,12 @@ void appInit()
     relay_relay1Control(0);
     relay_relay2Control(0);
     Delay_100ms();
+    
     //uploading files to web server
     wifi4_createFile( "/proba.html" ,html );
     Delay_100ms();
-    
     wifi4_createFile( "/style.css", layout );
     Delay_100ms();
-    
     wifi4_createFile( "/logic.js", js );
     Delay_100ms();
 }
@@ -217,7 +218,7 @@ void appInit()
 void appTask()
  {
   wifi4_process();
-  
+
   //RELAY ACT
   if(state == 1 && oldstate == 0)
   {

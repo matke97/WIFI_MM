@@ -25,7 +25,9 @@ Key functions :
 - ``` wifi4_cmdSingle ``` - Sends provided command to the module
 - ``` wifi4_modulePower ``` - Turn on module
 
-Declarations and description of other libary functions can be read in ```WIFI4_CLICK.h``` header file. 
+
+### Declarations and descriptions of other libary functions can be read in ```WIFI4_CLICK.h``` header file. 
+
 ---
 
 ## Examples Description

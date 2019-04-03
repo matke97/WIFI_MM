@@ -122,9 +122,9 @@ static void hal_gpioMap( const uint8_t*  gpioObj)
  hal_gpio_intSet = tmp->gpioSet[  7  ];
 #line 291 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__wifi4_hal.c"
 }
-#line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__hal_pic32.c"
+#line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/hal/__hal_pic32.c"
 #line 1 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/include/stdint.h"
-#line 143 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/__hal_pic32.c"
+#line 143 "c:/users/software/documents/mikroelektronika/mikroc pro for pic32/packages/wifi_mm/hal/__hal_pic32.c"
 typedef void ( *T_hal_uartWriteFp )(unsigned int);
 typedef unsigned int ( *T_hal_uartReadFp )();
 typedef unsigned int ( *T_hal_uartReadyFp )();

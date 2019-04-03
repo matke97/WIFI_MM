@@ -9,3 +9,8 @@
 *.dlt
 *.dct
 *.wch
+*.lst
+*.dic
+*.brk
+*.cfg
+*.mcp32

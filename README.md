@@ -1,8 +1,8 @@
 
 # WIFI_4 Click
 ---
-[Wifi4](https://www.mikroe.com/wifi-4-click) click libary with examples.
-Libary and examples are tested on EasyPIC Fusion v7 board and PIC P32MX795F512L MCU.
+[Wifi4](https://www.mikroe.com/wifi-4-click) click library with examples.
+Library and examples are tested on EasyPIC Fusion v7 board and PIC P32MX795F512L MCU.
 
 ---
 
